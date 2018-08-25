@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+ <link rel="stylesheet" href="app.css">
+ <link rel="stylesheet" href="testWindowFunctions.css">
+ <script src="dist/app.js"></script>
+ <title>Window Functions Test</title>
+</head>
+<body data-appl-id="testWindowFunctions">
+
+<h1>Window Functions Test</h1>
+
+<div class="parmsBlock">
+ <div class="windowFunctionParm">
+  <label for="windowFunctionSelect">Window function:</label>
+  <select id="windowFunctionSelect">
+  </select>
+ </div>
+ <div class="normalizeToMaxParm">
+  <label for="normalizeToMax">Normalize spectrum to maximum peek:</label>
+  <input type="checkbox" id="normalizeToMax" checked>
+ </div>
+</div>
+
+<div class="viewersBlock">
+ <div class="windowFunctionViewerContainer">
+  <canvas class="functionCurveViewer" id="windowFunctionViewer" tabindex="1">
+  </canvas>
+  <div class="functionViewerLegend">
+   Window function curve
+  </div>
+ </div>
+ <div class="windowSpectrumViewerContainer">
+  <canvas class="functionCurveViewer" id="windowSpectrumViewer" tabindex="1">
+  </canvas>
+  <div class="functionViewerLegend">
+   Window function spectrum
+  </div>
+ </div>
+</div>
+
+</body>
+</html>

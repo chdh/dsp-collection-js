@@ -1,0 +1,33 @@
+.parmsBlock {
+   display: flex; }
+
+.windowFunctionParm {
+   width: 525px; }
+
+.normalizeToMaxParm {
+   width: 500px; }
+
+.parmsBlock label + select {
+   margin-left: 8px; }
+
+input[type=checkbox] {
+   vertical-align: middle; }
+
+.viewersBlock {
+   display: flex;
+   margin-top: 20px; }
+
+.windowFunctionViewerContainer,
+.windowSpectrumViewerContainer {
+   width: 500px; }
+.windowSpectrumViewerContainer {
+   margin-left: 25px; }
+
+#windowFunctionViewer,
+#windowSpectrumViewer {
+   width: 100%;
+   height: 300px; }
+
+div.functionViewerLegend {
+   margin-top: 12px;
+   text-align: center; }

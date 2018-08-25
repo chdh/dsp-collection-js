@@ -1,0 +1,26 @@
+{
+   "compilerOptions": {
+      "alwaysStrict": true,
+      "baseUrl": "src",
+      "declaration": true,
+      "lib": ["ES6"],
+      "module": "ES6",
+      "moduleResolution": "node",
+      "noFallthroughCasesInSwitch": true,
+      "noImplicitAny": true,
+      "noImplicitReturns": true,
+      "noImplicitThis": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "outDir": "dist",
+      "removeComments": true,
+      "sourceMap": true,
+      "rootDir": "src",
+      "strictFunctionTypes": true,
+      "strictNullChecks": true,
+      "target": "ES6"
+   },
+   "include": [
+      "src/**/*"
+   ]
+}
