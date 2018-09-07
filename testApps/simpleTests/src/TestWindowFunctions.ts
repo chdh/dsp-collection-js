@@ -1,3 +1,5 @@
+// Window Functions Test - A test application for the Window functions in dsp-collection/transform/WindowFunctions
+
 import Complex from "dsp-collection/math/Complex";
 import * as ArrayUtils from "dsp-collection/utils/ArrayUtils";
 import * as WindowFunctions from "dsp-collection/transform/WindowFunctions";
@@ -17,9 +19,10 @@ var windowFunction:              WindowFunctions.WindowFunction;
 function loadWindowFunctionViewer() {
    const viewerState : FunctionCurveViewer.ViewerState = {
       viewerFunction:  windowFunction,
-      planeOrigin:     {x: -0.1, y: -0.1},
-      zoomFactorX:     windowFunctionViewerElement.width / 1.2,
-      zoomFactorY:     windowFunctionViewerElement.height / 1.2,
+      xMin:            -0.1,
+      xMax:            1.1,
+      yMin:            -0.1,
+      yMax:            1.1,
       gridEnabled:     true,
       primaryZoomMode: FunctionCurveViewer.ZoomMode.x };
    windowFunctionViewerWidget.setViewerState(viewerState); }
@@ -55,9 +58,10 @@ function loadSpectrumViewer() {
    const viewerFunction = FunctionCurveViewer.createViewerFunctionForFloat64Array(spectrum, fftOversizeFactor, fftSize / 2);
    const viewerState : FunctionCurveViewer.ViewerState = {
       viewerFunction:  viewerFunction,
-      planeOrigin:     {x: -40, y: -130},
-      zoomFactorX:     windowFunctionViewerElement.width / 80,
-      zoomFactorY:     windowFunctionViewerElement.height / 135,
+      xMin:            -40,
+      xMax:            40,
+      yMin:            -130,
+      yMax:            5,
       gridEnabled:     true,
       primaryZoomMode: FunctionCurveViewer.ZoomMode.x };
    windowSpectrumViewerWidget.setViewerState(viewerState); }
@@ -84,7 +88,7 @@ export function startup() {
 
    // Set up parameter elements:
    for (const d of WindowFunctions.windowFunctionIndex) {
-      const sel = d.id == "rect";
+      const sel = d.id == "hann";
       windowFunctionSelectElement.add(new Option(d.name, d.id, sel, sel)); }
    windowFunctionSelectElement.addEventListener("change", refresh);
    normalizeToMaxElement.addEventListener("change", refresh);
