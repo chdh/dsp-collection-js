@@ -95,8 +95,6 @@ export function startup() {
 
    // Set up function viewer widgets:
    windowFunctionViewerWidget = new FunctionCurveViewer.Widget(windowFunctionViewerElement);
-   windowFunctionViewerWidget.connectedCallback();
    windowSpectrumViewerWidget = new FunctionCurveViewer.Widget(windowSpectrumViewerElement);
-   windowSpectrumViewerWidget.connectedCallback();
 
    displayWindowFunction(); }
