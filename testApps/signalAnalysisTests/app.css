@@ -1,0 +1,122 @@
+*, *:before, *:after {
+   box-sizing: inherit; }
+
+html {
+   font-size: 14px;
+   box-sizing: border-box; }
+
+body, button, input, select, textarea {
+   font-family: Lato, sans-serif;
+   font-size: inherit;
+   line-height: 1.4375; }
+
+body {
+   margin: 20px; }
+
+H1 {
+   font-size: 22px; }
+
+code,
+.code {
+   font-family: Consolas, monospace; }
+code {
+   background-color: #eff0f1; }
+
+input[type="text"], input[type="number"] {
+   padding: 1px 2px; }
+
+input[type="number"]::-webkit-inner-spin-button {
+   -webkit-appearance: none; }
+input[type="number"] {
+   -moz-appearance: textfield; }
+
+.hidden {
+   display: none !important; }
+
+div.actionButtons {
+   display: flex;
+   align-items: center;
+   margin-top: 15px;
+   margin-bottom: 15px; }
+
+div.actionButtons button {
+   width: 110px;
+   padding: 3px 0px;
+   margin-right: 20px; }
+
+.miniPseudoButton {
+   color: #07C;
+   cursor: pointer;
+   font-size: 12px; }
+
+/*--- Analysis parameters ---*/
+
+div.analysisParms {
+   margin-top: 20px;
+   margin-bottom: 20px; }
+
+.width1 {
+   width: 110px; }
+label.width1 {
+   display: inline-Block; }
+label.gap1 {
+   margin-left: 20px; }
+
+div.parmLine {
+   margin-top: 8px; }
+
+/*--- Analysis result ---*/
+
+.analysisResultBlock {
+   }
+
+.analysisResultBlock .title {
+   margin-top: 20px;
+   font-size: 13px; }
+
+#signalViewer,
+canvas.resultViewer {
+   display: block;
+   width: 800px;
+   border: 1px solid #888;
+   outline: none; }
+#signalViewer {
+   margin-top: 18px;
+   height: 200px; }
+canvas.resultViewer {
+   margin-top: 8px; }
+.amplitudeResult canvas.resultViewer {
+   height: 250px; }
+.phaseResult canvas.resultViewer {
+   height: 100px; }
+
+div.miniButtonsBelow {
+   margin-top: 5px;
+   display: flex; }
+
+div.miniButtonsBelow div {
+   margin-right: 10px; }
+
+/*--- Signal viewer help --*/
+
+#signalViewerHelpText {
+   background-color: #FEFAE2;
+   border: 1px solid #F3EED5;
+   padding: 3px;
+   margin-top: 8px;
+   margin-bottom: 20px;
+   width: 450px; }
+
+table.functionCurveViewerHelp {
+   border-collapse: collapse;
+   width: 100%; }
+
+table.functionCurveViewerHelp td {
+   padding: 3px;
+   vertical-align: top;
+   border-bottom: 1px solid #eee; }
+table.functionCurveViewerHelp tr:last-child td {
+   border-bottom: none; }
+
+.functionCurveViewerHelpCol1 {
+   width: 230px; }

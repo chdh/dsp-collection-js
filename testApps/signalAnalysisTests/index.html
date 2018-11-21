@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+ <link rel="stylesheet" href="app.css">
+ <script src="app.js"></script>
+ <title>Signal Analysis Tests</title>
+</head>
+<body>
+
+<h1>Signal Analysis Tests</h1>
+
+<canvas id="signalViewer" tabindex="1">
+</canvas>
+<div class="miniButtonsBelow">
+ <div id="signalViewerHelpButton" class="miniPseudoButton">Help</div>
+</div>
+<div id="signalViewerHelpText" class="hidden"></div>
+
+<div class="actionButtons">
+ <button id="loadLocalAudioFileButton">Load audio file</button>
+</div>
+
+<div class="analysisParms">
+ <div class="parmLine">
+  <label class="width1" for="analysisModuleSelect">Module:</label>
+  <select id="analysisModuleSelect">
+  </select>
+ </div>
+ <form id="moduleSpecificParmsForm">
+ </form>
+</div>
+
+<div class="actionButtons">
+ <button id="analyzeButton">Analyze</button>
+ <button id="playButton">Play</button>
+</div>
+
+<div id="analysisResult">
+</div>
+
+</body>
+</html>

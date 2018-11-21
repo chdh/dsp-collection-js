@@ -31,6 +31,10 @@ function main2() {
          copyToDist([".npmignore", "LICENSE.md", "README.md", "package.json", "build.js"]);
          console.log("Build completed.");
          break; }
+      case "doc": {
+         rimrafSync("apiDoc");
+         shell("typedoc --options typedoc.config.js");
+         break; }
       case "verifyCurrentDirIsDist": {
          if (!process.cwd().endsWith("dist")) {
             console.log("Current directory is: " + process.cwd());

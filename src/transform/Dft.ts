@@ -3,7 +3,7 @@
 *
 * This module contains a collection of DFT-related functions.
 *
-* The `Goertzel` and `Fft` modules contains faster versions of some of the functions in this module.
+* The `Goertzel` and `Fft` modules contain faster versions of some of the functions in this module.
 */
 
 import Complex from "../math/Complex";

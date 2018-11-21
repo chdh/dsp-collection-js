@@ -1,0 +1,28 @@
+{
+   "compilerOptions": {
+      "alwaysStrict": true,
+      "baseUrl": "src",
+      "lib": ["ES6", "DOM", "DOM.Iterable"],
+      "module": "ES6",
+      "moduleResolution": "node",
+      "noFallthroughCasesInSwitch": true,
+      "noImplicitAny": true,
+      "noImplicitReturns": true,
+      "noImplicitThis": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "outDir": "tempBuild",
+      "paths": {
+         "dsp-collection/*": ["../../../dist/*"]
+      },
+      "removeComments": true,
+      "sourceMap": true,
+      "strictFunctionTypes": true,
+      "strictNullChecks": true,
+      "target": "ES2017",
+      "typeRoots" : ["./node_modules/@types"],  // to prevent usage of type definitions in node_modules of parent directories
+   },
+   "include": [
+      "src/**/*"
+   ]
+}

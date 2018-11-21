@@ -2,7 +2,7 @@
 
 import Complex from "dsp-collection/math/Complex";
 import * as ArrayUtils from "dsp-collection/utils/ArrayUtils";
-import * as WindowFunctions from "dsp-collection/transform/WindowFunctions";
+import * as WindowFunctions from "dsp-collection/signal/WindowFunctions";
 import * as Fft from "dsp-collection/transform/Fft";
 import * as DspUtils from "dsp-collection/utils/DspUtils";
 import * as FunctionCurveViewer from "function-curve-viewer";

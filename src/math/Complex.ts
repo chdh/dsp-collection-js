@@ -47,7 +47,7 @@ export default class Complex {
       this.re = re;
       this.im = im; }
 
-   //--- Value retrieval and test ----------------------------------------------
+   //--- Value retrieval and value test ----------------------------------------
 
    /**
    * Returns a string representing the complex number.

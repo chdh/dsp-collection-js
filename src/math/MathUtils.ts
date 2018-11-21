@@ -1,3 +1,5 @@
+import Complex from "./Complex";
+
 export function fuzzyEquals (a: number, b: number, eps: number) : boolean {
    if (!isFinite(a) || !isFinite(b)) {
       return false; }
@@ -14,3 +16,15 @@ export function isPowerOf2 (i: number) : boolean {
    if (!Number.isSafeInteger(i) || i < 1 || i > 0x40000000) {
       return false; }
    return (i & (i - 1)) == 0; }
+
+export function getAmplitudesFromComplexArray (c: Complex[]) : Float64Array {
+   const a = new Float64Array(c.length);
+   for (let i = 0; i < c.length; i++) {
+      a[i] = c[i].abs(); }
+   return a; }
+
+export function getPhasesFromComplexArray (c: Complex[]) : Float64Array {
+   const a = new Float64Array(c.length);
+   for (let i = 0; i < c.length; i++) {
+      a[i] = c[i].arg(); }
+   return a; }

@@ -13,7 +13,7 @@ export interface WindowFunctionDescr {                     // window function de
    id:             string;                                 // internal ID
    f:              WindowFunction; }                       // function object
 
-export const windowFunctionIndex : WindowFunctionDescr[] = [
+export const windowFunctionIndex: WindowFunctionDescr[] = [
    { name: "Blackman",         id: "blackman",         f: blackmanWindow        },
    { name: "Blackman-Harris",  id: "blackmanHarris",   f: blackmanHarrisWindow  },
    { name: "Blackman-Nuttall", id: "blackmanNuttall",  f: blackmanNuttallWindow },
@@ -29,6 +29,20 @@ export function getFunctionbyId (id: string) : WindowFunction {
       if (descr.id == id) {
          return descr.f; }}
    throw new Error("Undefined window function id \"" + id + "\"."); }
+
+// Applies a window function to an array as a "pediodic" window (for DFT).
+export function applyWindow (a: Float64Array, windowFunction: WindowFunction) : Float64Array {
+   const a2 = new Float64Array(a.length);
+   for (let i = 0; i < a.length; i++) {
+      a2[i] = a[i] * windowFunction(i / a.length); }
+   return a2; }
+
+// Creates an array with the window function values for a "pediodic" window (for DFT).
+export function createArray (windowFunction: WindowFunction, n: number) : Float64Array {
+   const a = new Float64Array(n);
+   for (let i = 0; i < n; i++) {
+      a[i] = windowFunction(i / n); }
+   return a; }
 
 //------------------------------------------------------------------------------
 
