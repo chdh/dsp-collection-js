@@ -1,24 +1,24 @@
 // Window Functions Test - A test application for the Window functions in dsp-collection/transform/WindowFunctions
 
 import Complex from "dsp-collection/math/Complex";
-import * as ArrayUtils from "dsp-collection/utils/ArrayUtils";
 import * as WindowFunctions from "dsp-collection/signal/WindowFunctions";
 import * as Fft from "dsp-collection/transform/Fft";
 import * as DspUtils from "dsp-collection/utils/DspUtils";
 import * as FunctionCurveViewer from "function-curve-viewer";
 
 var windowFunctionSelectElement: HTMLSelectElement;
-var normalizeToMaxElement:       HTMLInputElement;
+var normalizeElement:            HTMLInputElement;
 var windowFunctionViewerElement: HTMLCanvasElement;
 var windowSpectrumViewerElement: HTMLCanvasElement;
 
 var windowFunctionViewerWidget:  FunctionCurveViewer.Widget;
 var windowSpectrumViewerWidget:  FunctionCurveViewer.Widget;
-var windowFunction:              WindowFunctions.WindowFunction;
+var windowFunctionRaw:           WindowFunctions.WindowFunction;
+var windowFunctionNormalized:    WindowFunctions.WindowFunction;
 
 function loadWindowFunctionViewer() {
    const viewerState : FunctionCurveViewer.ViewerState = {
-      viewerFunction:  windowFunction,
+      viewerFunction:  windowFunctionRaw,
       xMin:            -0.1,
       xMax:            1.1,
       yMin:            -0.1,
@@ -27,7 +27,7 @@ function loadWindowFunctionViewer() {
       primaryZoomMode: FunctionCurveViewer.ZoomMode.x };
    windowFunctionViewerWidget.setViewerState(viewerState); }
 
-function computeSpectrum (a1: Float64Array, amplScalingFactor: number, normalizeToMax: boolean) : Float64Array {
+function computeSpectrum (a1: Float64Array, amplScalingFactor: number) : Float64Array {
    // TODO: Optimize
    const n = a1.length;
    const a2: Complex[] = Array(n);
@@ -39,10 +39,6 @@ function computeSpectrum (a1: Float64Array, amplScalingFactor: number, normalize
    for (let p = 0; p < n; p++) {
       const a = a4[p].abs() / n * amplScalingFactor;
       a5[p] = Math.max(-999, DspUtils.convertAmplitudeToDb(a)); }
-   if (normalizeToMax) {
-      const max = ArrayUtils.findFloat64ArrayMax(a5);
-      for (let p = 0; p < n; p++) {
-         a5[p] -= max; }}
    return a5; }
 
 function loadSpectrumViewer() {
@@ -51,10 +47,11 @@ function loadSpectrumViewer() {
    const windowSize = fftSize / fftOversizeFactor;         // number of samples for the window function
    const windowDistance = windowSize - 1;                  // distance from first sample to last
    const fftSamples = new Float64Array(fftSize);
+   const normalize = normalizeElement.checked;
+   const windowFunction = normalize ? windowFunctionNormalized : windowFunctionRaw;
    for (let p = 0; p < fftSize; p++) {
       fftSamples[p] = windowFunction(p / windowDistance); }
-   const normalizeToMax = normalizeToMaxElement.checked;
-   const spectrum = computeSpectrum(fftSamples, fftOversizeFactor, normalizeToMax);
+   const spectrum = computeSpectrum(fftSamples, fftOversizeFactor);
    const viewerFunction = FunctionCurveViewer.createViewerFunctionForFloat64Array(spectrum, fftOversizeFactor, fftSize / 2);
    const viewerState : FunctionCurveViewer.ViewerState = {
       viewerFunction:  viewerFunction,
@@ -68,7 +65,9 @@ function loadSpectrumViewer() {
 
 function displayWindowFunction() {
    const windowFunctionId = windowFunctionSelectElement.value;
-   windowFunction = WindowFunctions.getFunctionbyId(windowFunctionId);
+   windowFunctionRaw = WindowFunctions.getFunctionbyId(windowFunctionId, false);
+   windowFunctionNormalized = WindowFunctions.getFunctionbyId(windowFunctionId, true);
+   // console.log("Coherent gain: " + WindowFunctions.calculateCoherentGain(windowFunctionRaw, 32768));
    loadWindowFunctionViewer();
    loadSpectrumViewer(); }
 
@@ -82,7 +81,7 @@ export function startup() {
 
    // Get DOM elements:
    windowFunctionSelectElement = <HTMLSelectElement>document.getElementById("windowFunctionSelect")!;
-   normalizeToMaxElement       = <HTMLInputElement>document.getElementById("normalizeToMax")!;
+   normalizeElement            = <HTMLInputElement>document.getElementById("normalize")!;
    windowFunctionViewerElement = <HTMLCanvasElement>document.getElementById("windowFunctionViewer")!;
    windowSpectrumViewerElement = <HTMLCanvasElement>document.getElementById("windowSpectrumViewer")!;
 
@@ -91,7 +90,7 @@ export function startup() {
       const sel = d.id == "hann";
       windowFunctionSelectElement.add(new Option(d.name, d.id, sel, sel)); }
    windowFunctionSelectElement.addEventListener("change", refresh);
-   normalizeToMaxElement.addEventListener("change", refresh);
+   normalizeElement.addEventListener("change", refresh);
 
    // Set up function viewer widgets:
    windowFunctionViewerWidget = new FunctionCurveViewer.Widget(windowFunctionViewerElement);
