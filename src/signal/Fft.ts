@@ -17,7 +17,7 @@ import * as MathUtils from "../math/MathUtils";
 *    The input values. The array length must be a power of 2.
 * @param direction
 *    `true` for FFT (forward FFT), `false` for iFFT (inverse FFT).
-* @return
+* @returns
 *    The result of the FFT, without any normalization.
 *    The returned array has the same length as the input array.
 */

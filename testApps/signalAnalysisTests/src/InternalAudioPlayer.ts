@@ -1,3 +1,5 @@
+import EventTargetPolyfill from "./EventTargetPolyfill";
+
 export default class InternalAudioPlayer {
 
    private audioContext:          AudioContext;
@@ -6,7 +8,7 @@ export default class InternalAudioPlayer {
 
    public constructor (audioContext: AudioContext) {
       this.audioContext = audioContext;
-      this.eventTarget = new EventTarget(); }
+      this.eventTarget = new EventTargetPolyfill(); }
 
    public addEventListener (type: string, listener: EventListener) {
       this.eventTarget.addEventListener(type, listener); }
@@ -21,6 +23,13 @@ export default class InternalAudioPlayer {
       sourceNode.start();
       this.activeAudioSourceNode = sourceNode;
       this.fireEvent("stateChange"); }
+
+   public async playSamples (samples: Float64Array, sampleRate: number) {
+      const buffer = this.audioContext.createBuffer(1, samples.length, sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < samples.length; i++) {
+         data[i] = samples[i]; }
+      await this.playAudioBuffer(buffer); }
 
    public isPlaying() : boolean {
       return !!this.activeAudioSourceNode; }

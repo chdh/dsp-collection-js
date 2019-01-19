@@ -2,7 +2,7 @@
 
 import Complex from "dsp-collection/math/Complex";
 import * as WindowFunctions from "dsp-collection/signal/WindowFunctions";
-import * as Fft from "dsp-collection/transform/Fft";
+import * as Fft from "dsp-collection/signal/Fft";
 import * as DspUtils from "dsp-collection/utils/DspUtils";
 import * as FunctionCurveViewer from "function-curve-viewer";
 
@@ -35,22 +35,21 @@ function computeSpectrum (a1: Float64Array, amplScalingFactor: number) : Float64
       a2[p] = new Complex(a1[p]); }
    const a3 = Fft.fft(a2, true);
    const a4 = Fft.fftShift(a3);
-   const a5 = new Float64Array(n);
+   const logAmpl = new Float64Array(n);
    for (let p = 0; p < n; p++) {
       const a = a4[p].abs() / n * amplScalingFactor;
-      a5[p] = Math.max(-999, DspUtils.convertAmplitudeToDb(a)); }
-   return a5; }
+      logAmpl[p] = DspUtils.convertAmplitudeToDb(a); }
+   return logAmpl; }
 
 function loadSpectrumViewer() {
    const fftSize = 32768;                                  // number of samples for the FFT used to compute the spectrum
    const fftOversizeFactor = 256;                          // how much larger the FFT size is compared to the window size
    const windowSize = fftSize / fftOversizeFactor;         // number of samples for the window function
-   const windowDistance = windowSize - 1;                  // distance from first sample to last
    const fftSamples = new Float64Array(fftSize);
    const normalize = normalizeElement.checked;
    const windowFunction = normalize ? windowFunctionNormalized : windowFunctionRaw;
    for (let p = 0; p < fftSize; p++) {
-      fftSamples[p] = windowFunction(p / windowDistance); }
+      fftSamples[p] = windowFunction(p / windowSize); }
    const spectrum = computeSpectrum(fftSamples, fftOversizeFactor);
    const viewerFunction = FunctionCurveViewer.createViewerFunctionForFloat64Array(spectrum, fftOversizeFactor, fftSize / 2);
    const viewerState : FunctionCurveViewer.ViewerState = {
@@ -60,13 +59,14 @@ function loadSpectrumViewer() {
       yMin:            -130,
       yMax:            5,
       gridEnabled:     true,
-      primaryZoomMode: FunctionCurveViewer.ZoomMode.x };
+      primaryZoomMode: FunctionCurveViewer.ZoomMode.x,
+      yAxisUnit:       "dB"};
    windowSpectrumViewerWidget.setViewerState(viewerState); }
 
 function displayWindowFunction() {
    const windowFunctionId = windowFunctionSelectElement.value;
-   windowFunctionRaw = WindowFunctions.getFunctionbyId(windowFunctionId, false);
-   windowFunctionNormalized = WindowFunctions.getFunctionbyId(windowFunctionId, true);
+   windowFunctionRaw = WindowFunctions.getFunctionbyId(windowFunctionId, {normalize: false});
+   windowFunctionNormalized = WindowFunctions.getFunctionbyId(windowFunctionId);
    // console.log("Coherent gain: " + WindowFunctions.calculateCoherentGain(windowFunctionRaw, 32768));
    loadWindowFunctionViewer();
    loadSpectrumViewer(); }

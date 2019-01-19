@@ -2,8 +2,8 @@
 
 import Complex from "dsp-collection/math/Complex";
 import * as MathUtils from "dsp-collection/math/MathUtils";
-import * as Dft from "dsp-collection/transform/Dft";
-import * as Goertzel from "dsp-collection/transform/Goertzel";
+import * as Dft from "dsp-collection/signal/Dft";
+import * as Goertzel from "dsp-collection/signal/Goertzel";
 
 function main() {
    testDftRealKnown();

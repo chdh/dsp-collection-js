@@ -2,20 +2,30 @@
 
 import * as FunctionCurveViewer from "function-curve-viewer";
 import * as ShortTimeFourierTransform from "./ShortTimeFourierTransform";
-import * as ShortTimePitchDetection from "./ShortTimePitchDetection";
+import * as ShortTimePitchDetectionAtTime from "./ShortTimePitchDetectionAtTime";
+import * as ShortTimePitchDetectionOverTime from "./ShortTimePitchDetectionOverTime";
+import * as InstantaneousFrequencyAtTime from "./InstantaneousFrequencyAtTime";
+import * as InstantaneousFrequencyOverTime from "./InstantaneousFrequencyOverTime";
+import * as SignalEnvelope from "./SignalEnvelope";
 
-export type AnalysisFunction = (parms: AnalysisParms) => AnalysisResult;
+export type AnalysisFunction = (parms: AnalysisParms) => AnalysisResult | Promise<AnalysisResult>;
 
 export interface AnalysisModuleDescr {                     // analysis module descriptor
    name:                     string;                       // descriptive name
    id:                       string;                       // internal ID
    f:                        AnalysisFunction;             // function performing the analysis
    formParmsHtml:            string;                       // HTML for module-specific form parameters
-   refreshFormParms?:        Function; }                   // function to refresh the module-specific form parameters
+   onFormParmsChange?:       (event?: Event) => void;      // called when the module-specific form parameters have been changed
+   onSignalViewportChange?:  (viewerState: FunctionCurveViewer.ViewerState) => void; // called when the vieport of the signal viewer has changed
+   wideRange?:               boolean; }                    // true if this is a wide range analysis
 
 export const analysisModuleIndex: AnalysisModuleDescr[] = [
    ShortTimeFourierTransform.moduleDescriptor,
-   ShortTimePitchDetection.moduleDescriptor,
+   InstantaneousFrequencyAtTime.moduleDescriptor,
+   InstantaneousFrequencyOverTime.moduleDescriptor,
+   ShortTimePitchDetectionAtTime.moduleDescriptor,
+   ShortTimePitchDetectionOverTime.moduleDescriptor,
+   SignalEnvelope.moduleDescriptor,
    ];
 
 export function getModuleDescrById (id: string) : AnalysisModuleDescr {
@@ -29,7 +39,8 @@ export interface AnalysisParms {
    sampleRate:               number;                       // sample rate in Hz
    viewportXMin:             number;                       // viewport start position in seconds
    viewportXMax:             number;                       // viewport end position in seconds
-   formParms:                FormData; }                   // module-specific form parameters
+   viewportSamples:          Float64Array;                 // viewport segment samples (subset of samples array)
+   fileName:                 string; }                     // file name of audio signal
 
 export interface AnalysisResultBlock {
    title:                    string;

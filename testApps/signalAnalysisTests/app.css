@@ -29,6 +29,8 @@ input[type="number"]::-webkit-inner-spin-button {
    -webkit-appearance: none; }
 input[type="number"] {
    -moz-appearance: textfield; }
+input[type="text"]:invalid:not(:focus), input[type="number"]:invalid:not(:focus) {
+   box-shadow: 0 0 1px 1px #f00; }
 
 .hidden {
    display: none !important; }
@@ -44,66 +46,55 @@ div.actionButtons button {
    padding: 3px 0px;
    margin-right: 20px; }
 
+#segmentPlayMode {
+   margin-left: 10px;
+   width: 110px; }
+
 .miniPseudoButton {
    color: #07C;
    cursor: pointer;
    font-size: 12px; }
 
-/*--- Analysis parameters ---*/
+/*--- Signal viewer ---*/
 
-div.analysisParms {
-   margin-top: 20px;
-   margin-bottom: 20px; }
+.signalViewerBlock {
+   position: relative;
+   margin-top: 18px; }
 
-.width1 {
-   width: 110px; }
-label.width1 {
-   display: inline-Block; }
-label.gap1 {
-   margin-left: 20px; }
-
-div.parmLine {
-   margin-top: 8px; }
-
-/*--- Analysis result ---*/
-
-.analysisResultBlock {
-   }
-
-.analysisResultBlock .title {
-   margin-top: 20px;
-   font-size: 13px; }
-
-#signalViewer,
-canvas.resultViewer {
+#signalViewer {
    display: block;
    width: 800px;
+   height: 200px;
    border: 1px solid #888;
    outline: none; }
-#signalViewer {
-   margin-top: 18px;
-   height: 200px; }
-canvas.resultViewer {
-   margin-top: 8px; }
-.amplitudeResult canvas.resultViewer {
-   height: 250px; }
-.phaseResult canvas.resultViewer {
-   height: 100px; }
 
-div.miniButtonsBelow {
-   margin-top: 5px;
-   display: flex; }
+#fileName {
+   position: absolute;
+   font-size: 12px;
+   bottom: 66px;
+   margin-left: 810px; }
 
-div.miniButtonsBelow div {
-   margin-right: 10px; }
+#viewportWidth {
+   position: absolute;
+   font-size: 12px;
+   bottom: 44px;
+   margin-left: 810px; }
 
-/*--- Signal viewer help --*/
+#zoomToFitButton {
+   position: absolute;
+   bottom: 22px;
+   margin-left: 810px; }
+
+#signalViewerHelpButton {
+   position: absolute;
+   bottom: 0;
+   margin-left: 810px; }
 
 #signalViewerHelpText {
    background-color: #FEFAE2;
    border: 1px solid #F3EED5;
    padding: 3px;
-   margin-top: 8px;
+   margin-top: 15px;
    margin-bottom: 20px;
    width: 450px; }
 
@@ -120,3 +111,80 @@ table.functionCurveViewerHelp tr:last-child td {
 
 .functionCurveViewerHelpCol1 {
    width: 230px; }
+
+/*--- Analysis parameters ---*/
+
+div.analysisParms {
+   margin-top: 15px;
+   margin-bottom: 15px; }
+
+.width1 {
+   width: 110px; }
+.width3 {
+   width: 350px; }
+.width4 {
+   width: 480px; }
+.width5 {
+   width: 590px; }
+label.gap1 {
+   margin-left: 20px; }
+
+label[title] {
+   text-decoration: underline dotted #aaa;
+   text-underline-position: under; }
+
+/*
+label[title] {
+   position: relative; }
+label[title]:after {
+   content: '';
+   width: 100px;
+   position: absolute;
+   left: 0;
+   bottom: 0;
+   border-bottom: 1px dotted #aaa; }
+*/
+
+div.parmLine {
+   display: flex;
+   align-items: baseline;
+   margin-top: 8px; }
+
+#zoomOutNote {
+   margin-left: 20px;
+   color: #c00; }
+
+/*--- Analysis result ---*/
+
+.analysisResultBlock {
+   }
+
+.analysisResultBlock .title {
+   margin-top: 20px;
+   font-size: 13px; }
+
+canvas.resultViewer {
+   display: block;
+   width: 800px;
+   height: 200px;
+   margin-top: 8px;
+   border: 1px solid #888;
+   outline: none;
+   --curve-color1: #3366ff; }
+.result100 canvas.resultViewer {
+   height: 100px; }
+.result150 canvas.resultViewer {
+   height: 150px; }
+.result200 canvas.resultViewer {
+   height: 200px; }
+.result250 canvas.resultViewer {
+   height: 250px; }
+.result300 canvas.resultViewer {
+   height: 300px; }
+
+div.miniButtonsBelow {
+   margin-top: 5px;
+   display: flex; }
+
+div.miniButtonsBelow div {
+   margin-right: 10px; }

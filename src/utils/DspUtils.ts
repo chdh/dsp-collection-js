@@ -1,6 +1,6 @@
 // Returns -Infinity for 0.
-export function convertAmplitudeToDb (v: number) {
-   return 20 * Math.log10(v); }
+export function convertAmplitudeToDb (x: number) {
+   return 20 * Math.log10(x); }
 
-export function convertDbToAmplitude (v: number) {
-   return Math.pow(10, v / 20); }
+export function convertDbToAmplitude (x: number) {
+   return Math.pow(10, x / 20); }

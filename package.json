@@ -1,6 +1,6 @@
 {
    "name": "dsp-collection",
-   "version": "0.1.0",
+   "version": "0.1.1",
    "description": "A collection of JavaScript modules for digital signal processing (written in TypeScript)",
    "keywords": [
       "DSP",
@@ -8,7 +8,9 @@
       "DFT",
       "Goertzel",
       "FFT",
-      "Window functions"
+      "Window functions",
+      "Instantaneous frequency",
+      "Pitch estimation"
    ],
    "license": "MIT",
    "homepage": "http://www.source-code.biz/dsp/js",
@@ -27,8 +29,8 @@
       "doPublish": "cd dist && npm publish"
    },
    "devDependencies": {
-      "@types/node": "^10.0.0",
-      "rimraf": "^2.6.2",
-      "source-map-support": "^0.5.9"
+      "@types/node": "^10.12.18",
+      "rimraf": "^2.6.3",
+      "source-map-support": "^0.5.10"
    }
 }

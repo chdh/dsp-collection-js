@@ -2,7 +2,7 @@
    "compilerOptions": {
       "alwaysStrict": true,
       "baseUrl": "src",
-      "lib": ["ES6", "DOM", "DOM.Iterable"],
+      "lib": ["ES2017", "DOM", "DOM.Iterable"],
       "module": "ES6",
       "moduleResolution": "node",
       "noFallthroughCasesInSwitch": true,

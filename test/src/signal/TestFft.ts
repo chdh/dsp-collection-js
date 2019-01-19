@@ -2,8 +2,8 @@
 
 import Complex from "dsp-collection/math/Complex";
 import * as MathUtils from "dsp-collection/math/MathUtils";
-import * as Fft from "dsp-collection/transform/Fft";
-import * as Dft from "dsp-collection/transform/Dft";
+import * as Fft from "dsp-collection/signal/Fft";
+import * as Dft from "dsp-collection/signal/Dft";
 
 function main() {
    testFftKnown();

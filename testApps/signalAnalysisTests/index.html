@@ -10,9 +10,12 @@
 
 <h1>Signal Analysis Tests</h1>
 
-<canvas id="signalViewer" tabindex="1">
-</canvas>
-<div class="miniButtonsBelow">
+<div class="signalViewerBlock">
+ <canvas id="signalViewer" tabindex="1">
+ </canvas>
+ <div id="fileName"></div>
+ <div id="viewportWidth"></div>
+ <div id="zoomToFitButton" class="miniPseudoButton hidden">Zoom to fit</div>
  <div id="signalViewerHelpButton" class="miniPseudoButton">Help</div>
 </div>
 <div id="signalViewerHelpText" class="hidden"></div>
@@ -24,8 +27,9 @@
 <div class="analysisParms">
  <div class="parmLine">
   <label class="width1" for="analysisModuleSelect">Module:</label>
-  <select id="analysisModuleSelect">
+  <select id="analysisModuleSelect" class="width3">
   </select>
+  <div id="zoomOutNote" class="hidden">(zoom out to see a meaningful result)</div>
  </div>
  <form id="moduleSpecificParmsForm">
  </form>
@@ -34,6 +38,16 @@
 <div class="actionButtons">
  <button id="analyzeButton">Analyze</button>
  <button id="playButton">Play</button>
+ <button id="playSegmentButton">Play Segment</button>
+ <div>Mode:</div>
+ <select id="segmentPlayMode">
+  <option value="1sCorr">1s repeated correlated+superimposed</option>
+  <option value="1sWin">1s repeated windowed</option>
+  <option value="1sRaw">1s repeated raw</option>
+  <option value="faded">fade-in/out</option>
+  <option value="windowed">Windowed</option>
+  <option value="raw">Raw</option>
+ </select>
 </div>
 
 <div id="analysisResult">

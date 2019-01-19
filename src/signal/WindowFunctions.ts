@@ -6,49 +6,86 @@
 * In this module, the normal parameter range for the window functions is 0 to 1.
 */
 
+import * as MiscUtils from "../utils/MiscUtils";
+
 export type WindowFunction = (x: number) => number;
 
 export interface WindowFunctionDescr {                     // window function descriptor
    name:           string;                                 // descriptive name
    id:             string;                                 // internal ID
-   f:              WindowFunction;                         // function object
-   gain:           number; }                               // coherent gain (arithmetic mean) of the window function
+   f:              WindowFunction;                         // non-normalized window function
+   fNorm:          WindowFunction;                         // gain-normalized window function
+   cpuCost:        number; }                               // relative complexity of computation
 
 export const windowFunctionIndex: WindowFunctionDescr[] = [
-   { name: "Blackman",         id: "blackman",         f: blackmanWindow,        gain: 0.42       },
-   { name: "Blackman-Harris",  id: "blackmanHarris",   f: blackmanHarrisWindow,  gain: 0.35875    },
-   { name: "Blackman-Nuttall", id: "blackmanNuttall",  f: blackmanNuttallWindow, gain: 0.3635819  },
-   { name: "Flat top",         id: "flatTop",          f: flatTopWindow,         gain: 0.21557895 },
-   { name: "Hamming",          id: "hamming",          f: hammingWindow,         gain: 0.53836    },
-   { name: "Hann",             id: "hann",             f: hannWindow,            gain: 0.5        },
-   { name: "Nuttall",          id: "nuttall",          f: nuttallWindow,         gain: 0.355768   },
-   { name: "Rectangular",      id: "rect",             f: rectangularWindow,     gain: 1          },
-   { name: "Triangular",       id: "triangular",       f: triangularWindow,      gain: 0.5        },
+   { name: "Blackman",             id: "blackman",        f: blackmanWindow,        fNorm: blackmanWindowNorm,        cpuCost: 2 },
+   { name: "Blackman-Harris",      id: "blackmanHarris",  f: blackmanHarrisWindow,  fNorm: blackmanHarrisWindowNorm,  cpuCost: 3 },
+   { name: "Blackman-Nuttall",     id: "blackmanNuttall", f: blackmanNuttallWindow, fNorm: blackmanNuttallWindowNorm, cpuCost: 3 },
+   { name: "Flat top",             id: "flatTop",         f: flatTopWindow,         fNorm: flatTopWindowNorm,         cpuCost: 4 },
+   { name: "Hamming",              id: "hamming",         f: hammingWindow,         fNorm: hammingWindowNorm,         cpuCost: 1 },
+   { name: "Hann",                 id: "hann",            f: hannWindow,            fNorm: hannWindowNorm,            cpuCost: 1 },
+   { name: "Nuttall",              id: "nuttall",         f: nuttallWindow,         fNorm: nuttallWindowNorm,         cpuCost: 3 },
+   { name: "Parabolic",            id: "parabolic",       f: parabolicWindow,       fNorm: parabolicWindowNorm,       cpuCost: 0 },
+   { name: "Rectangular",          id: "rect",            f: rectangularWindow,     fNorm: rectangularWindow,         cpuCost: 0 },
+   { name: "Triangular",           id: "triangular",      f: triangularWindow,      fNorm: triangularWindowNorm,      cpuCost: 0 },
+// { name: "chdh1 (experimental)", id: "chdh1",           f: chdh1Window,           fNorm: chdh1WindowNorm,           cpuCost: 1 },
    ];
 
-export function getFunctionbyId (id: string, normalize = true) : WindowFunction {
+export function getFunctionDescrById (id: string) : WindowFunctionDescr {
    for (const descr of windowFunctionIndex) {
       if (descr.id == id) {
-         if (normalize && descr.gain != 1) {
-            const gain = descr.gain;
-            return (x: number) => descr.f(x) / gain; }
-          else {
-            return descr.f; }}}
+         return descr; }}
    throw new Error("Undefined window function id \"" + id + "\"."); }
 
-// Applies a window function to an array as a "pediodic" window (for DFT).
-export function applyWindow (a: Float64Array, windowFunction: WindowFunction) : Float64Array {
-   const a2 = new Float64Array(a.length);
-   for (let i = 0; i < a.length; i++) {
-      a2[i] = a[i] * windowFunction(i / a.length); }
-   return a2; }
+export function getFunctionbyId (id: string, {normalize = true, valueCacheCostLimit = 0, tableCacheCostLimit = 0} = {}) : WindowFunction {
+   const descr = getFunctionDescrById(id);
+   let f = normalize ? descr.fNorm : descr.f;
+   const origF = f;
+   if (valueCacheCostLimit && descr.cpuCost >= valueCacheCostLimit) {
+      f = MiscUtils.createMapBackedFunction(f); }
+   if (tableCacheCostLimit && descr.cpuCost >= tableCacheCostLimit) {
+      if (f == origF) {
+         // Create a dummy function object to attach the cache map.
+         const tempF = f;
+         f = (x: number) => tempF(x); }
+      (<any>f).windowTableCache = new Map(); }
+   return f; }
 
-// Creates an array with the window function values for a "pediodic" window (for DFT).
-export function createArray (windowFunction: WindowFunction, n: number) : Float64Array {
+// Returns an array with the window function values for a "pediodic" window (for DFT).
+// If table caching is enabled for the window function, the generated tables are kept in
+// memory and re-used.
+export function getWindowTable (windowFunction: WindowFunction, n: number) : Float64Array {
+   const windowTableCache: Map<number,Float64Array> = (<any>windowFunction).windowTableCache;
+   if (windowTableCache) {
+      const oldTable = windowTableCache.get(n);
+      if (oldTable) {
+         return oldTable; }}
+   const newTable = createWindowTable(windowFunction, n);
+   if (windowTableCache) {
+      windowTableCache.set(n, newTable); }
+   return newTable; }
+
+function createWindowTable (windowFunction: WindowFunction, n: number) : Float64Array {
    const a = new Float64Array(n);
    for (let i = 0; i < n; i++) {
       a[i] = windowFunction(i / n); }
    return a; }
+
+// Applies a window function to an array as a "pediodic" window (for DFT).
+export function applyWindow (a: Float64Array, windowFunction: WindowFunction) : Float64Array {
+   const a2 = new Float64Array(a.length);
+   if ((<any>windowFunction).windowTableCache) {
+      const table = getWindowTable(windowFunction, a.length);
+      for (let i = 0; i < a.length; i++) {
+         a2[i] = a[i] * table[i]; }}
+    else {
+      for (let i = 0; i < a.length; i++) {
+         a2[i] = a[i] * windowFunction(i / a.length); }}
+   return a2; }
+
+export function applyWindowById (a: Float64Array, windowFunctionId: string) : Float64Array {
+   const windowFunction = getFunctionbyId(windowFunctionId);
+   return applyWindow(a, windowFunction); }
 
 // Calculates the coherent gain of a window function ("pediodic" window, used for DFT).
 // The returned value is the arithmetic mean of the function values, which is the same as
@@ -60,7 +97,21 @@ export function calculateCoherentGain (windowFunction: WindowFunction, n: number
       sum += windowFunction(i / n); }
    return sum / n; }
 
-//------------------------------------------------------------------------------
+//--- Gain-normalized versions -------------------------------------------------
+
+// The function value is divided by the coherent gain (arithmetic mean) of the window function.
+export function blackmanWindowNorm        (x: number) { return blackmanWindow(x)        / 0.42       ; }
+export function blackmanHarrisWindowNorm  (x: number) { return blackmanHarrisWindow(x)  / 0.35875    ; }
+export function blackmanNuttallWindowNorm (x: number) { return blackmanNuttallWindow(x) / 0.3635819  ; }
+export function flatTopWindowNorm         (x: number) { return flatTopWindow(x)         / 0.21557895 ; }
+export function hammingWindowNorm         (x: number) { return hammingWindow(x)         / 0.53836    ; }
+export function hannWindowNorm            (x: number) { return hannWindow(x)            / 0.5        ; }
+export function nuttallWindowNorm         (x: number) { return nuttallWindow(x)         / 0.355768   ; }
+export function parabolicWindowNorm       (x: number) { return parabolicWindow(x)       / (2/3)      ; }
+export function triangularWindowNorm      (x: number) { return triangularWindow(x)      / 0.5        ; }
+export function chdh1WindowNorm           (x: number) { return chdh1Window(x)           / 0.497595   ; }
+
+//--- Non-normalized versions --------------------------------------------------
 
 export function rectangularWindow (x: number) : number {
    if (x < 0 || x >= 1) {
@@ -74,6 +125,11 @@ export function triangularWindow (x: number) : number {
       return x * 2; }
     else {
       return (1 - x) * 2; }}
+
+export function parabolicWindow (x: number) : number {
+   if (x < 0 || x >= 1) {
+      return 0; }
+   return 1 - (2 * x - 1) ** 2; }
 
 export function hammingWindow (x: number) : number {
    if (x < 0 || x >= 1) {
@@ -137,3 +193,10 @@ export function flatTopWindow (x: number) : number {
    const a4 = 0.006947368;
    const w  = 2 * Math.PI * x;
    return a0 - a1 * Math.cos(w) + a2 * Math.cos(2 * w) - a3 * Math.cos(3 * w) + a4 * Math.cos(4 * w); }
+
+// Experimental window. Similar to Hann.
+export function chdh1Window (x: number) : number {
+   if (x < 0 || x >= 1) {
+      return 0; }
+   const p = 1 - Math.abs(1 - 2 * x);
+   return p ** (2 * (1 - p)); }

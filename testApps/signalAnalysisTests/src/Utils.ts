@@ -1,5 +1,6 @@
 import {ViewerFunction} from "function-curve-viewer";
-import {windowFunctionIndex} from "dsp-collection/signal/WindowFunctions";
+import * as WindowFunctions from "dsp-collection/signal/WindowFunctions";
+import * as Autocorrelation from "dsp-collection/signal/Autocorrelation";
 import * as DspUtils from "dsp-collection/utils/DspUtils";
 
 export function openFileOpenDialog (callback: (file: File) => void) {
@@ -20,40 +21,14 @@ export function loadFileData (file: File) : Promise<ArrayBuffer> {
       fileReader.addEventListener("error", () => reject(fileReader.error));
       fileReader.readAsArrayBuffer(file); }}
 
-// This function is used to swap a viewer function between frequency input and wavelength input.
-export function createReciprocalViewerFunction (f: ViewerFunction) : ViewerFunction {
-   if ((<any>f).cachedReciprocalFunction) {
-      return (<any>f).cachedReciprocalFunction; }
-   const f2 = function (x: number, sampleWidth: number) {
-      if (!x || !sampleWidth) {
-         return; }
-      return f(1 / x, 1 / sampleWidth); };
-   (<any>f).cachedReciprocalFunction = f2;
-   (<any>f2).cachedReciprocalFunction = f;
-   return f2; }
-
-export function createHarmonicSpectrumViewerFunction (f0: number, harmonics: Float64Array) : ViewerFunction {
-   const harmonicsDb = harmonics.map(DspUtils.convertAmplitudeToDb);
-   const n = harmonicsDb.length;
-   const lineWidth = 3;
-   return (x: number, sampleWidth: number) => {
-      const i = Math.round(x / f0);
-      if (!(i >= 1 && i <= n)) {
-         return; }
-      if (Math.abs(x - i * f0) > lineWidth * sampleWidth / 2) {
-         return; }
-      return [-999, harmonicsDb[i - 1]]; }; }
-
-export function createTableBackedFunction<T> (f: (x: number) => T, startValue: number, increment: number, tableSize: number, outOfRangeValue: T) : (x: number) => T {
-   const table: T[] = Array(tableSize);
-   for (let p = 0; p < tableSize; p++) {
-      const x = startValue + p * increment;
-      table[p] = f(x); }
-   return function (x: number) {
-      const p = Math.round((x - startValue) / increment);
-      if (p < 0 || p >= tableSize) {
-         return outOfRangeValue; }
-      return table[p]; }; }
+export function getNumericUrlSearchParam (usp: URLSearchParams, paramName: string, defaultValue?: number) : number | undefined {
+   const s = usp.get(paramName);
+   if (!s) {
+      return defaultValue; }
+   const v = Number(s);
+   if (!isFinite(v)) {
+      return defaultValue; }
+   return v; }
 
 export function escapeHtml (s: string) : string {
    let out = "";
@@ -77,21 +52,124 @@ export function escapeHtml (s: string) : string {
       out += s.substring(p2); }
    return out; }
 
+// This function is used to swap a viewer function between frequency input and wavelength input.
+export function createReciprocalViewerFunction (f: ViewerFunction) : ViewerFunction {
+   if ((<any>f).cachedReciprocalFunction) {
+      return (<any>f).cachedReciprocalFunction; }
+   const f2 = function (x: number, sampleWidth: number, channel: number) {
+      if (!x || !sampleWidth) {
+         return; }
+      return f(1 / x, 1 / sampleWidth, channel); };
+   (<any>f).cachedReciprocalFunction = f2;
+   (<any>f2).cachedReciprocalFunction = f;
+   return f2; }
+
+export function createHarmonicSpectrumViewerFunction (f0: number, harmonics: Float64Array) : ViewerFunction {
+   const harmonicsDb = harmonics.map(DspUtils.convertAmplitudeToDb);
+   const n = harmonicsDb.length;
+   const lineWidth = 3;
+   return (x: number, sampleWidth: number) => {
+      const i = Math.round(x / f0);
+      if (!(i >= 1 && i <= n)) {
+         return; }
+      if (Math.abs(x - i * f0) > lineWidth * sampleWidth / 2) {
+         return; }
+      return [-999, harmonicsDb[i - 1]]; }; }
+
+export function createArrayBackedFunction<T> (f: (x: number) => T, xMin: number, xMax: number, arraySize: number, outOfRangeValue: T) : (x: number) => T {
+   const a: T[] = Array(arraySize);
+   const increment = (xMax - xMin) / (arraySize - 1);
+   for (let p = 0; p < arraySize; p++) {
+      const x = xMin + p * increment;
+      a[p] = f(x); }
+   return function (x: number) {
+      const p = Math.round((x - xMin) / increment);
+      if (p < 0 || p >= arraySize) {
+         return outOfRangeValue; }
+      return a[p]; }; }
+
 export function genWindowFunctionOptionsHtml (defaultId: string) : string {
    let html = "";
-   for (const descr of windowFunctionIndex) {
+   for (const descr of WindowFunctions.windowFunctionIndex) {
       const selected = descr.id == defaultId;
       html += `<option value="${descr.id}"${selected?" selected":""}>${escapeHtml(descr.name)}</option>`; }
    return html; }
 
-export function scanFunctionMax (f: (x: number) => number, argMin: number, argMax: number, argIncr: number) : number {
-   let maxArg: number = NaN;
-   let maxVal: number = -Infinity;
-   for (let x = argMin; x < argMax; x += argIncr) {
-      const v = f(x);
-      if (v > maxVal) {
-         maxArg = x;
-         maxVal = v; }}
-   if (argMax > argMin && f(argMax) > maxVal) {
-      maxArg = argMax; }
-   return maxArg; }
+export async function catchError (f: Function, ...args: any[]) {
+   try {
+      const r = f(...args);
+      if (r instanceof Promise) {
+         await r; }}
+    catch (error) {
+      console.log(error);
+      alert("Error: " + error); }}
+
+export function fadeAudioSignal (samples: Float64Array, fadeMargin: number, windowFunction: WindowFunctions.WindowFunction) : Float64Array {
+   const samples2 = samples.slice();
+   fadeAudioSignalInPlace(samples2, fadeMargin, windowFunction);
+   return samples2; }
+
+export function fadeAudioSignalInPlace (samples: Float64Array, fadeMargin: number, windowFunction: WindowFunctions.WindowFunction) {
+   const d = Math.min(samples.length, 2 * fadeMargin);
+   for (let i = 0; i < d / 2; i++) {
+      const w = windowFunction(i / d);
+      samples[i] *= w;
+      samples[samples.length - 1 - i] *= w; }}
+
+export function repeatSignal (samples: Float64Array, outputLength: number) : Float64Array {
+   if (samples.length >= outputLength) {
+      return samples.slice(0, outputLength); }
+   const a = new Float64Array(outputLength);
+   for (let i = 0; i < outputLength; i++) {
+      a[i] = samples[i % samples.length]; }
+   return a; }
+
+export function repeatSignalCorrelatedSuperimposed (samples: Float64Array, outputLength: number, minOverlap: number, maxOverlap: number) : Float64Array {
+   if (samples.length >= outputLength) {
+      return samples.slice(0, outputLength); }
+   // const samplesWin = WindowFunctions.applyWindow(samples, WindowFunctions.hannWindow);
+   const repetitionLength = Autocorrelation.findNonPeriodicAutocorrelationMaximum(samples, samples.length - maxOverlap, samples.length - minOverlap, false);
+   // const overlap = samples.length - repetitionLength;
+   const overlap = minOverlap;                             // always use minOverlap to join the segments
+   // console.log(samples.length, minOverlap, maxOverlap, overlap, repetitionLength);
+   const a = new Float64Array(outputLength);
+   for (let i = 0; i < outputLength; i++) {
+      const p = i % repetitionLength;
+      if (p < overlap && i >= repetitionLength) {
+         a[i] = (samples[repetitionLength + p] * (overlap - p) + samples[p] * (p + 1)) / (overlap + 1); }
+       else {
+         a[i] = samples[p]; }}
+   return a; }
+
+export function delay (delayTimeMs: number) {
+   return new Promise((resolve: any) => {
+      setTimeout(resolve, delayTimeMs); }); }
+
+export function getWindowSubArrayTrunc (a: Float64Array, windowCenterPosition: number, windowWidth: number) : Float64Array {
+   // This version truncates the window if it overlaps the edges of the array.
+   return a.subarray(Math.max(0, Math.round(windowCenterPosition - windowWidth / 2)), Math.min(a.length, Math.round(windowCenterPosition + windowWidth / 2))); }
+
+export function openSaveAsDialog (blob: Blob, fileName: string) {
+   const url = URL.createObjectURL(blob);
+   const element = document.createElement("a");
+   element.href = url;
+   element.download = fileName;
+   const clickEvent = new MouseEvent("click");
+   element.dispatchEvent(clickEvent);
+   setTimeout(() => URL.revokeObjectURL(url), 60000);
+   (<any>document).dummySaveAsElementHolder = element; }   // to prevent garbage collection
+
+export function buildSinSynComponentsString (f0: number, amplitudes: Float64Array, minAmplitudeDb: number) : string {
+   if (!isFinite(f0) || amplitudes.length < 1) {
+      return ""; }
+   let s = "";
+   for (let i = 1; i <= amplitudes.length; i++) {
+      const a = amplitudes[i - 1];
+      const db = DspUtils.convertAmplitudeToDb(a);
+      if (i == 1 || db >= minAmplitudeDb) {
+         if (i == 1) {
+            s += f0; }
+          else {
+            s += " *" + i; }
+         s += "/" + Math.round(db * 10) / 10; }}
+   return s; }

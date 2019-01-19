@@ -22,7 +22,7 @@ import MutableComplex from "../math/MutableComplex";
 *    It represents the number of sinusoidal oscillations within `x`
 *    and is normally within the range 0 (for DC) to `Math.floor((x.length - 1) / 2)`.
 *    The absolute frequency is `relativeFrequency * samplingRate / x.length`.
-* @return
+* @returns
 *    A complex number that corresponds to the amplitude and phase of a sinusoidal frequency component.
 *    The amplitude can be normalized by mutliplying `1 / x.length` for DC and `2 / x.length`
 *    for frequencies `> 0` and `< x.length / 2`.
@@ -50,7 +50,7 @@ export function dftRealSingle (x: Float64Array, relativeFrequency: number) : Mut
 *    A frequency relative to `x.length`.
 * @param direction
 *    `true` for DFT (forward DFT), `false` for iDFT (inverse DFT).
-* @return
+* @returns
 *    A complex number that corresponds to the amplitude and phase of the frequency component.
 */
 export function dftSingle (x: Complex[], relativeFrequency: number, direction: boolean) : MutableComplex  {
@@ -70,7 +70,7 @@ export function dftSingle (x: Complex[], relativeFrequency: number, direction: b
 *
 * @param x
 *    The input values (samples).
-* @return
+* @returns
 *    An array of complex numbers. It has the same size as the input array.
 *    The upper half of the array contains complex conjugates of the lower half.
 */
@@ -88,7 +88,7 @@ export function dftReal (x: Float64Array) : MutableComplex[] {
 *    The complex input values.
 * @param direction
 *    `true` for DFT (forward DFT), `false` for iDFT (inverse DFT).
-* @return
+* @returns
 *    An array of complex numbers. It has the same size as the input array.
 */
 export function dft (x: Complex[], direction: boolean) : MutableComplex[] {
@@ -111,7 +111,7 @@ export function dft (x: Complex[], direction: boolean) : MutableComplex[] {
 *
 * @param x
 *    The input values (samples).
-* @return
+* @returns
 *    An array of complex numbers that represent spectrum of the input signal.
 */
 export function dftRealSpectrum (x: Float64Array) : MutableComplex[] {
@@ -143,7 +143,7 @@ export function dftRealSpectrum (x: Float64Array) : MutableComplex[] {
 * @param odd
 *    If `odd` is `true`, `2 * x.length - 1` output values are generated.
 *    Otherwise `2 * x.length - 2` output values are generated.
-* @return
+* @returns
 *    The sampled signal that is the sum of the sinusoidal components.
 */
 export function iDftRealSpectrum (x: Complex[], odd: boolean) : Float64Array {

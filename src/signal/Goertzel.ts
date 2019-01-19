@@ -13,9 +13,9 @@ import MutableComplex from "../math/MutableComplex";
 * @param relativeFrequency
 *    A frequency relative to `x.length`.
 *    It represents the number of sinusoidal oscillations within `x`
-*    and is normally within the range 0 (for DC) to `Math.floor((x.length - 1) / 2)`.
+*    and is normally an integer within the range 0 (for DC) to `Math.floor((x.length - 1) / 2)`.
 *    The absolute frequency is `relativeFrequency * samplingRate / x.length`.
-* @return
+* @returns
 *    A complex number that corresponds to the amplitude and phase of a sinusoidal frequency component.
 *    The amplitude can be normalized by mutliplying `1 / x.length` for DC and `2 / x.length`
 *    for frequencies `> 0` and `< x.length / 2`.
@@ -40,7 +40,7 @@ export function goertzelSingle (x: Float64Array, relativeFrequency: number) : Mu
 *
 * @param x
 *    The input values (samples).
-* @return
+* @returns
 *    An array of complex numbers. It has the same size as the input array.
 *    The upper half of the array contains complex conjugates of the lower half.
 */
@@ -64,7 +64,7 @@ export function goertzel (x: Float64Array) : MutableComplex[] {
 *
 * @param x
 *    The input values (samples).
-* @return
+* @returns
 *    An array of complex numbers that represent spectrum of the input signal.
 */
 export function goertzelSpectrum (x: Float64Array) : Complex[] {
