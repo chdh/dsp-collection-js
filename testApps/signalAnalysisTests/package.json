@@ -1,15 +1,14 @@
 {
    "private": true,
    "dependencies": {
+      "common-tags": "^1.8.0",
       "dialog-manager": "^1.0.1",
-      "escape-html": "^1.0.3",
-      "function-curve-viewer": "^1.0.14"
+      "function-curve-viewer": "^1.0.17"
    },
    "devDependencies": {
       "@types/common-tags": "^1.8.0",
-      "common-tags": "^1.8.0",
       "rollup-plugin-alias": "^1.5.1",
-      "rollup-plugin-node-resolve": "^3.3.0"
+      "rollup-plugin-node-resolve": "^4.0.0"
    },
    "scripts": {
       "build": "tsc && rollup -c"

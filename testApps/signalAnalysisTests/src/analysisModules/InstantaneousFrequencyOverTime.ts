@@ -9,6 +9,7 @@ import * as DspUtils from "dsp-collection/utils/DspUtils";
 import * as PitchDetectionHarm from "dsp-collection/signal/PitchDetectionHarm";
 import * as EnvelopeDetection from "dsp-collection/signal/EnvelopeDetection";
 import * as ArrayUtils from "dsp-collection/utils/ArrayUtils";
+import * as MathUtils from "dsp-collection/math/MathUtils";
 import * as FunctionCurveViewer from "function-curve-viewer";
 import * as AnalysisBase from "./AnalysisBase";
 import * as Utils from "../Utils";
@@ -34,7 +35,7 @@ const formParmsHtml = strip`
     <label class="width1 gap1" for="maxWindowWidth" title="Maximum window width in ms">Win. width [ms]:</label>
     <input class="width1" id="maxWindowWidth" type="number" step="any" required value="50">
     <label class="width1 gap1" for="relWindowWidth" title="Window width relative to F0 wavelength (for multi-frequency tracking) or tracking frequency (for single frequency tracking).">Relative window:</label>
-    <input class="width1" id="relWindowWidth" type="number" min="1" required value="16">
+    <input class="width1" id="relWindowWidth" type="number" min="1" required value="12">
    </div>
    <div class="parmLine">
     <label class="width1" for="measuringFrequency" title="Measuring frequency in Hz">Measuring f. [Hz]:</label>
@@ -53,10 +54,25 @@ const formParmsHtml = strip`
     <input class="width1" id="minTrackingAmplitudeDb" type="number" step="any" value="-55" required>
     <label class="width1 gap1" for="harmonics" title="Number of harmonic frequencies to track">Harmonics:</label>
     <input class="width1" id="harmonics" type="number" min="1" value="10" required>
-    <label class="width1 gap1" for="exportInterval" title="Export interval as a multiple of the tracking interval">Export interval:</label>
-    <input class="width1" id="exportInterval" type="number" min="1" value="1" required>
+    <label class="width1 gap1" for="fCutoff" title="Upper frequency limit for the harmonics">Cutoff freq. [Hz]:</label>
+    <input class="width1" id="fCutoff" type="number" min="1" step="any" value="5000" required>
     <label class="width1 gap1" for="exportFlag" title="Export result to text file">Export:</label>
     <input id="exportFlag" type="checkbox">
+   </div>
+   <div class="parmLineHeading" id="parmLineExportHeading">
+    <div>Export parameters</div>
+   </div>
+   <div class="parmLine" id="parmLineExport">
+    <label class="width1" for="exportInterval" title="Export interval as a multiple of the tracking interval">Export interval:</label>
+    <input class="width1" id="exportInterval" type="number" min="1" value="5" required>
+    <label class="width1 gap1" for="minExportAmplitudeDb" title="Minimum harmonic amplitude for export in dB">Min. ampl. [dB]:</label>
+    <input class="width1" id="minExportAmplitudeDb" type="number" step="any" value="-55" required>
+    <label class="width1 gap1" for="windowFunctionExport" title="Window function for computing harmonic amplitudes for export">Window funct.:</label>
+    <select class="width1" id="windowFunctionExport">
+     ${Utils.genWindowFunctionOptionsHtml("flatTop")}
+    </select>
+    <label class="width1 gap1" for="relWindowWidthExport" title="Window width relative to F0 wavelength for computing harmonic amplitudes for export">Relative window:</label>
+    <input class="width1" id="relWindowWidthExport" type="number" min="1" required value="12">
    </div>
    `;
 
@@ -70,6 +86,7 @@ export const moduleDescriptor: AnalysisBase.AnalysisModuleDescr = {
 function onFormParmsChange() {
    const variantId = DomUtils.getValue("iftVariant");
    const tracking = variantId == "singleFreqTracking" || variantId == "multiFreqTracking" || variantId == "harmTracking";
+   const exportMode = variantId == "harmTracking" && DomUtils.getChecked("exportFlag");
    DomUtils.showElement("maxWindowWidth",         !tracking);
    DomUtils.showElement("relWindowWidth",         tracking);
    DomUtils.showElement("shiftFactor",            variantId != "fixedFreqPhase");
@@ -79,8 +96,10 @@ function onFormParmsChange() {
    DomUtils.showElement("maxFrequencyDerivative", tracking);
    DomUtils.showElement("parmLine3",              tracking);
    DomUtils.showElement("harmonics",              variantId == "multiFreqTracking" || variantId == "harmTracking");
-   DomUtils.showElement("exportInterval",         variantId == "harmTracking");
-   DomUtils.showElement("exportFlag",             variantId == "harmTracking"); }
+   DomUtils.showElement("fCutoff",                variantId == "harmTracking");
+   DomUtils.showElement("exportFlag",             variantId == "harmTracking");
+   DomUtils.showElement("parmLineExportHeading",  exportMode);
+   DomUtils.showElement("parmLineExport",         exportMode); }
 
 function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult {
    const sampleRate = parms.sampleRate;
@@ -92,11 +111,15 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
    const fixedMeasuringFrequency = DomUtils.getValueNum("measuringFrequency");
    const startFrequencySpec      = DomUtils.getValueNum("startFrequency");
    const trackingInterval        = DomUtils.getValueNum("trackingInterval") / 1000;
+   const minExportAmplitudeDb    = DomUtils.getValueNum("minExportAmplitudeDb");
    const exportInterval          = DomUtils.getValueNum("exportInterval");
    const exportFlag              = DomUtils.getChecked("exportFlag");
+   const relWindowWidthExport    = DomUtils.getValueNum("relWindowWidthExport");
+   const windowFunctionIdExport  = DomUtils.getValue("windowFunctionExport");
    const maxFrequencyDerivative  = DomUtils.getValueNum("maxFrequencyDerivative");
    const minTrackingAmplitudeDb  = DomUtils.getValueNum("minTrackingAmplitudeDb");
    const harmonics               = DomUtils.getValueNum("harmonics");
+   const fCutoff                 = DomUtils.getValueNum("fCutoff");
    const shiftFactor             = DomUtils.getValueNum("shiftFactor");
    const variantId               = DomUtils.getValue("iftVariant");
    const minTrackingAmplitude = DspUtils.convertDbToAmplitude(minTrackingAmplitudeDb);
@@ -278,7 +301,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
             xMin:            xMin,
             xMax:            xMax,
             yMin:            0,
-            yMax:            startFrequency * harmonics * 1.2,
+            yMax:            startFrequency * harmonics * 1.1,
             primaryZoomMode: FunctionCurveViewer.ZoomMode.x,
             xAxisUnit:       "s",
             yAxisUnit:       "Hz" };
@@ -320,13 +343,14 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
       case "harmTracking": {
          const startFrequency = startFrequencySpec || findTrackingStartFrequency(parms.samples, sampleRate, xMin, xMax) || defaultFrequency;
          const trackingPositions = Math.floor((xMax - xMin) / trackingInterval) + 1;
-         const buf = trackHarmonics(parms.samples, xMin * sampleRate, trackingInterval * sampleRate, trackingPositions, startFrequency / sampleRate, maxFrequencyDerivative / sampleRate, minTrackingAmplitude, harmonics, shiftFactor, relWindowWidth, windowFunction);
+         const buf = trackHarmonics(parms.samples, xMin * sampleRate, trackingInterval * sampleRate, trackingPositions, startFrequency / sampleRate, maxFrequencyDerivative / sampleRate, minTrackingAmplitude, harmonics, fCutoff / sampleRate, shiftFactor, relWindowWidth, windowFunction);
          if (exportFlag) {
+            const windowFunctionExport = (windowFunctionIdExport == "rect") ? undefined : WindowFunctions.getFunctionbyId(windowFunctionIdExport, {tableCacheCostLimit: 1});
+            const harmSynRecords = genHarmSynRecords(parms.samples, buf, xMin * sampleRate, trackingInterval * sampleRate, exportInterval, fCutoff / sampleRate, relWindowWidthExport, windowFunctionExport);
             const header = "; Signal filename: " + parms.fileName + eol;
-            const textFile = header + createHarmSynFile(buf, xMin, trackingInterval, exportInterval, minTrackingAmplitudeDb, sampleRate);
-               // (minTrackingAmplitudeDb is also used as the minimum amplitude for the export file)
+            const textFile = header + createHarmSynFile(harmSynRecords, trackingInterval * exportInterval, minExportAmplitudeDb, sampleRate);
             const blob = new Blob([textFile], {type: "text/plain"});
-            Utils.openSaveAsDialog(blob, "HarmSyn.txt"); }
+            Utils.openSaveAsDialog(blob, Utils.removeFileNameExtension(parms.fileName) + "-HarmSyn.txt"); }
          function getBufEntry (time: number) {
             const p = Math.round((time - xMin) / trackingInterval);
             return (p >= 0 && p < trackingPositions) ? buf[p] : undefined; }
@@ -341,6 +365,25 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
          const amplitudeViewerFunction = (time: number, _sampleWidth: number, channel: number) => {
             const r = getBufEntry(time);
             return r ? DspUtils.convertAmplitudeToDb(r.amplitudes[channel]) : NaN; };
+         const amplitudeOverFrequencyPaintFunction = (pctx: FunctionCurveViewer.CustomPaintContext) => {
+            const ctx = pctx.ctx;
+            ctx.save();
+            for (let harmonic = 1; harmonic <= harmonics; harmonic++) {
+               ctx.strokeStyle = pctx.curveColors[harmonic - 1] || "#666666";
+               // ctx.globalCompositeOperation = "multiply";
+               ctx.beginPath();
+               for (let p = 0; p < trackingPositions; p++) {
+                  const r = buf[p];
+                  const frequency = r.f0 * harmonic * sampleRate;
+                  const amplitude = r.amplitudes[harmonic - 1];
+                  if (isNaN(amplitude)) {
+                     ctx.stroke();
+                     ctx.beginPath();
+                     continue; }
+                  const amplitudeDb = DspUtils.convertAmplitudeToDb(amplitude);
+                  ctx.lineTo(pctx.mapLogicalToCanvasXCoordinate(frequency), pctx.mapLogicalToCanvasYCoordinate(amplitudeDb)); }
+               ctx.stroke(); }
+            ctx.restore(); };
          const overallAmplitudeViewerFunction = (time: number) => {
             const r = getBufEntry(time);
             return r ? DspUtils.convertAmplitudeToDb(r.overallAmplitude) : NaN; };
@@ -359,16 +402,24 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
             channels:        harmonics,
             xMin:            xMin,
             xMax:            xMax,
-            yMin:            -90,
+            yMin:            -80,
             yMax:            0,
             primaryZoomMode: FunctionCurveViewer.ZoomMode.x,
             xAxisUnit:       "s",
             yAxisUnit:       "dB" };
+         const amplitudeOverFrequencyViewerState: FunctionCurveViewer.ViewerState = {
+            xMin:            0,
+            xMax:            startFrequency * harmonics * 1.1,
+            yMin:            -80,
+            yMax:            0,
+            xAxisUnit:       "Hz",
+            yAxisUnit:       "dB",
+            customPaintFunction: amplitudeOverFrequencyPaintFunction };
          const overallAmplitudeViewerState: FunctionCurveViewer.ViewerState = {
             viewerFunction:  overallAmplitudeViewerFunction,
             xMin:            xMin,
             xMax:            xMax,
-            yMin:            -90,
+            yMin:            -80,
             yMax:            0,
             primaryZoomMode: FunctionCurveViewer.ZoomMode.x,
             xAxisUnit:       "s",
@@ -376,10 +427,13 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
          return {
             blocks: [
                { title:          "Fundamental frequency (green = tracked, blue = instantaneous)",
-                 cssClass:       "result300",
+                 cssClass:       "result200",
                  viewerState:    f0ViewerState,
                  syncXPosition:  true },
-               { title:          "Harmonic amplitudes",
+               { title:          "Harmonic amplitudes over frequency",
+                 cssClass:       "result300",
+                 viewerState:    amplitudeOverFrequencyViewerState },
+               { title:          "Harmonic amplitudes over time",
                  cssClass:       "result300",
                  viewerState:    amplitudeViewerState,
                  syncXPosition:  true },
@@ -423,7 +477,7 @@ interface HarmonicTrackingInfo {                           // harmonic tracking 
    overallAmplitude:         number; }                     // sum of the amplitudes of the harmonics
 
 function trackHarmonics (samples: Float64Array, startPosition: number, trackingInterval: number, trackingPositions: number,
-      f0Start: number, maxFrequencyDerivative: number, minAmplitude: number, harmonics: number,
+      f0Start: number, maxFrequencyDerivative: number, minAmplitude: number, harmonics: number, fCutoff: number,
       shiftFactor: number, relWindowWidth: number, windowFunction: WindowFunctions.WindowFunction | undefined) : HarmonicTrackingInfo[] {
    const buf: HarmonicTrackingInfo[] = new Array(trackingPositions);
    let f0Current = f0Start;
@@ -432,21 +486,25 @@ function trackHarmonics (samples: Float64Array, startPosition: number, trackingI
       const maxDiff = maxFrequencyDerivative * trackingInterval * f0Current;
       const tInfo = <HarmonicTrackingInfo>{};
       tInfo.amplitudes = new Float64Array(harmonics);
+      tInfo.amplitudes.fill(NaN);
       let amplitudeSum = 0;
       let weightedInstF0Sum = 0;
       let weightedCorrSum = 0;
       for (let harmonic = 1; harmonic <= harmonics; harmonic++) {
          const harmonicFrequency = f0Current * harmonic;
+         if (harmonicFrequency >= fCutoff) {
+            continue; }
          const r = InstFreq.instFreqSingle_relWindow(samples, position, harmonicFrequency, shiftFactor, relWindowWidth * harmonic, windowFunction);
-         if (!r || r.amplitude < minAmplitude) {
-            tInfo.amplitudes[harmonic - 1] = r ? r.amplitude : NaN;
+         if (!r) {
+            continue; }
+         tInfo.amplitudes[harmonic - 1] = r.amplitude;
+         if (r.amplitude < minAmplitude) {
             continue; }
          const diff = (r.instFrequency - harmonicFrequency) / harmonic;
          const corr = Math.max(-maxDiff, Math.min(maxDiff, diff));
          amplitudeSum += r.amplitude;
          weightedInstF0Sum += r.instFrequency / harmonic * r.amplitude;
-         weightedCorrSum += corr * r.amplitude;
-         tInfo.amplitudes[harmonic - 1] = r.amplitude; }
+         weightedCorrSum += corr * r.amplitude; }
       const corrSum = amplitudeSum ? weightedCorrSum / amplitudeSum : 0;
       f0Current += corrSum;
       tInfo.f0 = f0Current;
@@ -462,8 +520,7 @@ function findTrackingStartFrequency(samples: Float64Array, sampleRate: number, s
    const minPitchAmplitude = DspUtils.convertDbToAmplitude(minPitchAmplitudeDb);
    const pitchParms = PitchDetectionHarm.getDefaultHarmonicSumParms();
    const pitchWindowWidth = (pitchParms.relWindowWidth + 0.1) / f0Min;
-   // const envStartPos = findEnvelopeStart(samples, sampleRate, segmentStart - pitchWindowWidth / 2, segmentEnd - pitchWindowWidth / 2, minPitchAmplitude);
-   const envStartPos = findEnvelopeStart(samples, sampleRate, segmentStart, segmentEnd - pitchWindowWidth / 2, minPitchAmplitude);
+   const envStartPos = findEnvelopeStart(samples, sampleRate, segmentStart - pitchWindowWidth / 2, segmentEnd - pitchWindowWidth / 2, minPitchAmplitude);
    if (isNaN(envStartPos)) {
       return NaN; }
    const pitchPos = envStartPos + pitchWindowWidth / 2;
@@ -479,14 +536,35 @@ function findEnvelopeStart (samples: Float64Array, sampleRate: number, segmentSt
    const envelopeSeg = envelope.subarray(segStartPos, segEndPos);
    return (segStartPos + ArrayUtils.argGte(envelopeSeg, minAmplitude)) / sampleRate; }
 
-function createHarmSynFile (buf: HarmonicTrackingInfo[], startTime: number, trackingInterval: number, exportInterval: number, minAmplitudeDb: number, sampleRate: number) : string {
-   let out = "";
-   const f0Digits = (trackingInterval >= 0.001 && Number.isInteger(trackingInterval * 1000)) ? 3 : 6;
-   for (let p = 0; p < buf.length; p += exportInterval) {
-      const time = startTime + p * trackingInterval;
-      const tInfo = buf[p];
+interface HarmSynRecord {                                  // record for harmonic synthesizer
+   f0:                       number;                       // fundamental frequency (normalized)
+   amplitudes:               Float64Array; }               // amplitudes of the harmonic frequency components
+
+function genHarmSynRecords (samples: Float64Array, trackingInfos: HarmonicTrackingInfo[], startPosition: number, trackingInterval: number,
+      exportInterval: number, fCutoff: number, relWindowWidth: number, windowFunction: WindowFunctions.WindowFunction | undefined) : HarmSynRecord[] {
+   const n = Math.floor(trackingInfos.length / exportInterval);
+   const buf: HarmSynRecord[] = new Array(n);
+   for (let p = 0; p < n; p++) {
+      const position = startPosition + p * exportInterval * trackingInterval;
+      const tInfo = trackingInfos[p * exportInterval];
       if (isNaN(tInfo.f0) || !tInfo.overallAmplitude) {
          continue; }
-      const f0 = Math.round(tInfo.f0 * sampleRate * 10) / 10;
-      out += time.toFixed(f0Digits) + " " + Utils.buildSinSynComponentsString(f0, tInfo.amplitudes, minAmplitudeDb) + eol; }
+      const f0 = tInfo.f0;                                 // only f0 is used from the trackingInfos array
+      const harmonics = Math.floor(fCutoff / f0);
+      const amplitudes = AdaptiveStft.getHarmonicAmplitudes(samples, position, f0, harmonics, relWindowWidth, windowFunction);
+      if (!amplitudes) {
+         continue; }
+      buf[p] = {f0, amplitudes}; }
+   return buf; }
+
+function createHarmSynFile (harmSynRecords: HarmSynRecord[], interval: number, minAmplitudeDb: number, sampleRate: number) : string {
+   let out = "";
+   const f0Digits = (interval >= 0.001 && MathUtils.isFuzzyInteger(interval * 1000, 1E-10)) ? 3 : 6;
+   for (let p = 0; p < harmSynRecords.length; p++) {
+      const relTime = p * interval;
+      const r = harmSynRecords[p];
+      if (!r) {
+         continue; }
+      const f0 = Math.round(r.f0 * sampleRate * 10) / 10;
+      out += relTime.toFixed(f0Digits) + " " + Utils.buildSinSynComponentsString(f0, r.amplitudes, minAmplitudeDb) + eol; }
    return out; }

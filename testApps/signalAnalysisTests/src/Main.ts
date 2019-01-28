@@ -42,7 +42,8 @@ function loadSignalViewer (centerPosition: number, viewportWidth: number) {
       yMax:            yRange,
       gridEnabled:     true,
       primaryZoomMode: FunctionCurveViewer.ZoomMode.x,
-      xAxisUnit:       "s" };
+      xAxisUnit:       "s",
+      focusShield:     true };
    signalViewerWidget.setViewerState(viewerState); }
 
 function signalViewer_viewportchange() {
@@ -140,13 +141,14 @@ function showAnalysisResult (analysisResult: AnalysisBase.AnalysisResult) {
       const html = strip`
          <div class="analysisResultBlock ${block.cssClass}">
           <div class="title">${block.title}</div>
-          <canvas class="resultViewer" tabindex="1"></canvas>
+          <canvas class="resultViewer" tabindex="-1"></canvas>
          </div>`;
       const fragment = document.createRange().createContextualFragment(html);
       const canvasElement = fragment.querySelector("canvas")!;
       analysisResultElement.appendChild(fragment);
       const viewerWidget = new FunctionCurveViewer.Widget(canvasElement);
       dynamicViewerWidgets.push(viewerWidget);
+      block.viewerState.focusShield = true;
       viewerWidget.setViewerState(block.viewerState);
       if (block.syncXPosition) {
          syncWidgets.push(viewerWidget);

@@ -173,3 +173,7 @@ export function buildSinSynComponentsString (f0: number, amplitudes: Float64Arra
             s += " *" + i; }
          s += "/" + Math.round(db * 10) / 10; }}
    return s; }
+
+export function removeFileNameExtension (s: string) : string {
+   const p = s.lastIndexOf(".");
+   return (p > 0) ? s.substring(0, p) : s; }

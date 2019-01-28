@@ -9,6 +9,9 @@ export function fuzzyEquals (a: number, b: number, eps: number) : boolean {
    const mag = Math.max(Math.abs(a), Math.abs(b));
    return diff <= mag * eps; }
 
+export function isFuzzyInteger (i: number, eps: number) : boolean {
+   return Math.abs(i - Math.round(i)) <= eps; }
+
 /**
 * Returns true if `x` is a power of 2 between 1 and 2^30.
 */

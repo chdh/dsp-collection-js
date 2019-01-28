@@ -130,7 +130,7 @@ export function getSingle (samples: Float64Array, roughFrequency: number, window
 *    `undefined` is returned if the amplitudes cannot be computed.
 */
 export function getHarmonicAmplitudes (samples: Float64Array, windowCenterPosition: number, f0: number, harmonics: number, relWindowWidth = 7, windowFunction = WindowFunctions.flatTopWindowNorm) : Float64Array | undefined {
-   if (!isFinite(f0) || f0 <= 0) {
+   if (!isFinite(f0) || f0 <= 0 || harmonics <= 0) {
       return; }
    if (!Number.isInteger(relWindowWidth)) {
       throw new Error("Parameter relWindowWidth is not an integer."); }

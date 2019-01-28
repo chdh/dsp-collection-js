@@ -5,7 +5,7 @@
    },
    "devDependencies": {
       "rollup-plugin-alias": "^1.5.1",
-      "rollup-plugin-node-resolve": "^3.4.0"
+      "rollup-plugin-node-resolve": "^4.0.0"
    },
    "scripts": {
       "build": "tsc && rollup -c"

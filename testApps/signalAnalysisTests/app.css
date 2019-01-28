@@ -32,6 +32,9 @@ input[type="number"] {
 input[type="text"]:invalid:not(:focus), input[type="number"]:invalid:not(:focus) {
    box-shadow: 0 0 1px 1px #f00; }
 
+input[type="text"]:focus, input[type="number"]:focus, select:focus, canvas:focus {
+   outline: 1px auto #4D90FE; }
+
 .hidden {
    display: none !important; }
 
@@ -65,8 +68,7 @@ div.actionButtons button {
    display: block;
    width: 800px;
    height: 200px;
-   border: 1px solid #888;
-   outline: none; }
+   border: 1px solid #888; }
 
 #fileName {
    position: absolute;
@@ -150,6 +152,29 @@ div.parmLine {
    align-items: baseline;
    margin-top: 8px; }
 
+div.parmLine input[type="checkbox"] {
+   margin-left: 0; }
+
+div.parmLineHeading {
+   display: flex;
+   width: 940px;
+   position: relative;
+   margin-top: 12px;
+   margin-bottom: 12px; }
+div.parmLineHeading div {
+   z-index: 1;
+   font-size: 11px;
+   padding-left: 5px;
+   padding-right: 5px;
+   background-color: white;
+   margin-left: 15px; }
+div.parmLineHeading:after {
+   content: '';
+   position: absolute;
+   top: 8px;
+   width: 100%;
+   border-top: 1px dotted #bbb; }
+
 #zoomOutNote {
    margin-left: 20px;
    color: #c00; }
@@ -169,7 +194,6 @@ canvas.resultViewer {
    height: 200px;
    margin-top: 8px;
    border: 1px solid #888;
-   outline: none;
    --curve-color1: #3366ff; }
 .result100 canvas.resultViewer {
    height: 100px; }
