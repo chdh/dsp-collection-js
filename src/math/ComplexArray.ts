@@ -60,6 +60,20 @@ export default class ComplexArray {
       a2.length = end - begin;
       return a2; }
 
+   public set (i: number, c: Complex) {
+      this.re[i] = c.re;
+      this.im[i] = c.im; }
+
+   public setReIm (i: number, re: number, im: number) {
+      this.re[i] = re;
+      this.im[i] = im; }
+
+   public static copy1 (a1: ComplexArray, i1: number, a2: ComplexArray, i2: number) {
+      a2.re[i2] = a1.re[i1];
+      a2.im[i2] = a1.im[i1]; }
+
+   //--- Value retrieval -------------------------------------------------------
+
    public toString() : string {
       let s = "[";
       for (let i = 0; i < this.length; i++) {
@@ -72,17 +86,11 @@ export default class ComplexArray {
    public get (i: number) : MutableComplex {
       return new MutableComplex(this.re[i], this.im[i]); }
 
-   public set (i: number, c: Complex) {
-      this.re[i] = c.re;
-      this.im[i] = c.im; }
+   public getAbs (i: number) : number {
+      return Math.hypot(this.re[i], this.im[i]); }
 
-   public setReIm (i: number, re: number, im: number) {
-      this.re[i] = re;
-      this.im[i] = im; }
-
-   public static copy1 (a1: ComplexArray, i1: number, a2: ComplexArray, i2: number) {
-      a2.re[i2] = a1.re[i1];
-      a2.im[i2] = a1.im[i1]; }
+   public getArg (i: number) : number {
+      return Math.atan2(this.im[i], this.re[i]); }
 
    //--- Single value operations -----------------------------------------------
 
