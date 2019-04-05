@@ -3,7 +3,7 @@
 import {stripIndents as strip} from "common-tags";
 import * as AnalysisBase from "./AnalysisBase";
 import Complex from "dsp-collection/math/Complex";
-import * as Goertzel from "dsp-collection/signal/Goertzel";
+import * as Fft from "dsp-collection/signal/Fft";
 import * as AdaptiveStft from "dsp-collection/signal/AdaptiveStft";
 import * as WindowFunctions from "dsp-collection/signal/WindowFunctions";
 import * as DspUtils from "dsp-collection/utils/DspUtils";
@@ -15,7 +15,7 @@ const formParmsHtml = strip`
    <div class="parmLine">
     <label class="width1" for="stftVariant">Variant:</label>
     <select id="stftVariant" class="width3">
-     <option value="dft">Classic DFT with a fixed window width</option>
+     <option value="fft">Classic FFT with a fixed window width</option>
      <option value="adaptiveStftMaxWindow" selected>Adaptive window filling the specified maximum width optimally</option>
      <option value="adaptiveStftRelWindow">Adaptive window for a fixed number of oscillations</option>
     </select>
@@ -56,10 +56,10 @@ export const moduleDescriptor: AnalysisBase.AnalysisModuleDescr = {
 
 function onFormParmsChange() {
    const variantId = (<HTMLSelectElement>document.getElementById("stftVariant")!).value;
-   DomUtils.showElement("fixedWindowWidth", variantId == "dft");
+   DomUtils.showElement("fixedWindowWidth", variantId == "fft");
    DomUtils.showElement("maxWindowWidth",   variantId == "adaptiveStftMaxWindow");
    DomUtils.showElement("relWindowWidth",   variantId == "adaptiveStftRelWindow");
-   DomUtils.showElement("bufferedOutput",   variantId != "dft"); }
+   DomUtils.showElement("bufferedOutput",   variantId != "fft"); }
 
 function onSignalViewportChange (viewerState: FunctionCurveViewer.ViewerState) {
    const viewportMs = Math.max(1, Math.round((viewerState.xMax - viewerState.xMin) * 1000));
@@ -77,17 +77,17 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
    const amplitudeMode    = DomUtils.getValue("amplitudeMode");
    const variantId        = DomUtils.getValue("stftVariant");
    const windowFunction = (windowFunctionId == "rect") ? undefined : WindowFunctions.getFunctionbyId(windowFunctionId, {tableCacheCostLimit: 1});
-   const xMax = (xAxisMode == "frequency") ? 5000 : viewportDuration;
+   const xMax = (xAxisMode == "frequency") ? 5500 : viewportDuration;
    let frequencyWaveComponentFunction: (frequency: number) => Complex;
    switch (variantId) {
-      case "dft": {
+      case "fft": {
          const windowWidth = DomUtils.getValueNum("fixedWindowWidth", defaultWindowWidthInMs) / 1000 * sampleRate;
          const windowSamples = Utils.getWindowSubArrayTrunc(parms.samples, windowCenterPosition, windowWidth);
          const samples = windowFunction ? WindowFunctions.applyWindow(windowSamples, windowFunction) : windowSamples;
-         const spectrum = Goertzel.goertzelSpectrum(samples);
+         const spectrum = Fft.fftRealSpectrum(samples);
          frequencyWaveComponentFunction = (frequency: number) => {
             const relativeFrequency = Math.round(samples.length * frequency / sampleRate);
-            return (relativeFrequency >= 0 && relativeFrequency < spectrum.length) ? spectrum[relativeFrequency] : Complex.NaN; };
+            return (relativeFrequency >= 0 && relativeFrequency < spectrum.length) ? spectrum.get(relativeFrequency) : Complex.NaN; };
          break; }
       case "adaptiveStftMaxWindow": {
          const maxWindowWidth = Math.round(DomUtils.getValueNum("maxWindowWidth", defaultWindowWidthInMs) / 1000 * sampleRate);
@@ -113,7 +113,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
          break; }
       default: {
          throw new Error("Unknown xAxisMode."); }}
-   if (DomUtils.getChecked("bufferedOutput") && variantId != "dft") {
+   if (DomUtils.getChecked("bufferedOutput") && variantId != "fft") {
       waveComponentFunction = Utils.createArrayBackedFunction(waveComponentFunction, 0, xMax, 1024, Complex.NaN); }
    const linearAmplitudeViewerFunction = (x: number) => waveComponentFunction(x).abs();
    const phaseViewerFunction = (x: number) => waveComponentFunction(x).arg();

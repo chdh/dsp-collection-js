@@ -18,7 +18,18 @@ export function isFuzzyInteger (i: number, eps: number) : boolean {
 export function isPowerOf2 (i: number) : boolean {
    if (!Number.isSafeInteger(i) || i < 1 || i > 0x40000000) {
       return false; }
-   return (i & (i - 1)) == 0; }
+   return (i & (i - 1)) == 0; }                            // tslint:disable-line:no-bitwise
+
+/**
+* Returns the lowest power of 2 that is higher than `x`.
+*/
+export function getNextPowerOf2 (x: number) : number {
+   if (!isFinite(x)) {
+      return NaN; }
+   let n = 1;
+   while (n <= x) {
+      n *= 2; }
+   return n; }
 
 /**
 * Calculates a hyperbolic decline factor.

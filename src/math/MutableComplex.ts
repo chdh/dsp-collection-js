@@ -99,10 +99,7 @@ export default class MutableComplex extends Complex {
    * Mutates this `MutableComplex` by multiplying a `Complex`.
    */
    public mulBy (x: Complex) {
-      const re = this.re * x.re - this.im * x.im;
-      const im = this.re * x.im + this.im * x.re;
-      this.re = re;
-      this.im = im; }
+      this.setMul(this.re, this.im, x.re, x.im); }
 
    /**
    * Mutates this `MutableComplex` by dividing by a real number.
@@ -115,10 +112,23 @@ export default class MutableComplex extends Complex {
    * Mutates this `MutableComplex` by dividing by a `Complex`.
    */
    public divBy (x: Complex) {
-      const m = x.re * x.re + x.im * x.im;
-      const re = (this.re * x.re + this.im * x.im) / m;
-      const im = (this.im * x.re - this.re * x.im) / m;
-      this.re = re;
-      this.im = im; }
+      this.setDiv(this.re, this.im, x.re, x.im); }
+
+   //--- Low-level optimization methods ----------------------------------------
+
+   /**
+   * Sets this `MutableComplex` to (re1, im1) * (re2, im2).
+   */
+   public setMul (re1: number, im1: number, re2: number, im2: number) {
+      this.re = re1 * re2 - im1 * im2;
+      this.im = re1 * im2 + im1 * re2; }
+
+   /**
+   * Sets this `MutableComplex` to (re1, im1) / (re2, im2).
+   */
+   public setDiv (re1: number, im1: number, re2: number, im2: number) {
+      const m = re1 * re1 + im1 * im1;
+      this.re = (re1 * re2 + im1 * im2) / m;
+      this.im = (im1 * re2 - re1 * im2) / m; }
 
    } // end class MutableComplex

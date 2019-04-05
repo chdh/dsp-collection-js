@@ -1,6 +1,7 @@
 // Window Functions Test - A test application for the Window functions in dsp-collection/transform/WindowFunctions
 
 import Complex from "dsp-collection/math/Complex";
+import ComplexArray from "dsp-collection/math/ComplexArray";
 import * as WindowFunctions from "dsp-collection/signal/WindowFunctions";
 import * as Fft from "dsp-collection/signal/Fft";
 import * as DspUtils from "dsp-collection/utils/DspUtils";
@@ -30,14 +31,14 @@ function loadWindowFunctionViewer() {
 function computeSpectrum (a1: Float64Array, amplScalingFactor: number) : Float64Array {
    // TODO: Optimize
    const n = a1.length;
-   const a2: Complex[] = Array(n);
+   const a2 = new ComplexArray(n);
    for (let p = 0; p < n; p++) {
-      a2[p] = new Complex(a1[p]); }
+      a2.set(p, new Complex(a1[p])); }
    const a3 = Fft.fft(a2, true);
    const a4 = Fft.fftShift(a3);
    const logAmpl = new Float64Array(n);
    for (let p = 0; p < n; p++) {
-      const a = a4[p].abs() / n * amplScalingFactor;
+      const a = a4.get(p).abs() / n * amplScalingFactor;
       logAmpl[p] = DspUtils.convertAmplitudeToDb(a); }
    return logAmpl; }
 

@@ -55,7 +55,7 @@ const formParmsHtml = strip`
     <label class="width1 gap1" for="harmonics" title="Number of harmonic frequencies to track">Harmonics:</label>
     <input class="width1" id="harmonics" type="number" min="1" value="10" required>
     <label class="width1 gap1" for="fCutoff" title="Upper frequency limit for the harmonics">Cutoff freq. [Hz]:</label>
-    <input class="width1" id="fCutoff" type="number" min="1" step="any" value="5000" required>
+    <input class="width1" id="fCutoff" type="number" min="1" step="any" value="5500" required>
     <label class="width1 gap1" for="exportFlag" title="Export result to text file">Export:</label>
     <input id="exportFlag" type="checkbox">
    </div>

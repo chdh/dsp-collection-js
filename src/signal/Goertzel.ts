@@ -4,6 +4,7 @@
 
 import Complex from "../math/Complex";
 import MutableComplex from "../math/MutableComplex";
+import ComplexArray from "../math/ComplexArray";
 
 /**
 * Computes the DFT on an array of real numbers for a single frequency.
@@ -44,40 +45,41 @@ export function goertzelSingle (x: Float64Array, relativeFrequency: number) : Mu
 *    An array of complex numbers. It has the same size as the input array.
 *    The upper half of the array contains complex conjugates of the lower half.
 */
-export function goertzel (x: Float64Array) : MutableComplex[] {
+export function goertzel (x: Float64Array) : ComplexArray {
    const n = x.length;
-   const r : MutableComplex[] = Array(n);
+   const a = new ComplexArray(n);
    for (let frequency = 0; frequency < n; frequency++) {
-      r[frequency] = goertzelSingle(x, frequency); }
-   return r; }
+      const c = goertzelSingle(x, frequency);
+      a.set(frequency, c); }
+   return a; }
 
 /**
 * Computes the complex spectrum of an array of real numbers.
 * The result is the normalized lower half of the DFT.
 *
-* If `x.length` is even, the value for the relative frequency `x.length / 2`
-* (Nyquist frequency, half the sampling frequency) is included in the output array.
-* This is done to allow an exact re-synthesis of the original signal from the spectrum.
-* But this value does not represent the phase and amplitude of that frequency.
-* The phase of this value is always 0.
-* It's not possible to compute the proper value for the Nyquist frequency.
-*
 * @param x
 *    The input values (samples).
+* @param inclNyquist
+*    If `true` and `x.length` is even, the value for the relative frequency `x.length / 2`
+*    (Nyquist frequency, half the sample rate) is included in the output array.
+*    This is done to allow an exact re-synthesis of the original signal from the spectrum.
+*    But the Nyquist frequency component is an artifact and does not represent the phase
+*    and amplitude of that frequency. The phase is always 0.
+*    It's not possible to compute a proper value for the Nyquist frequency.
 * @returns
-*    An array of complex numbers that represent spectrum of the input signal.
+*    An array of complex numbers that represent the spectrum of the input signal.
 */
-export function goertzelSpectrum (x: Float64Array) : Complex[] {
+export function goertzelSpectrum (x: Float64Array, inclNyquist = false) : ComplexArray {
    const n = x.length;
    if (n == 0) {
       throw new Error("Input array must not be empty."); }
-   const maxFrequency = Math.floor(n / 2);
-   const r : MutableComplex[] = Array(maxFrequency + 1);
-   for (let frequency = 0; frequency <= maxFrequency; frequency++) {
+   const m = (n % 2 == 0 && inclNyquist) ? n / 2 + 1 : Math.ceil(n / 2);
+   const a = new ComplexArray(m);
+   for (let frequency = 0; frequency < m; frequency++) {
       const c = goertzelSingle(x, frequency);
       if (frequency == 0 || frequency == n / 2) {
          c.divByReal(n); }
        else {
          c.mulByReal(2 / n); }
-      r[frequency] = c; }
-   return r; }
+      a.set(frequency, c); }
+   return a; }

@@ -177,3 +177,10 @@ export function buildSinSynComponentsString (f0: number, amplitudes: Float64Arra
 export function removeFileNameExtension (s: string) : string {
    const p = s.lastIndexOf(".");
    return (p > 0) ? s.substring(0, p) : s; }
+
+export function createAudioBufferFromSamples (samples: Float64Array, sampleRate: number, audioContext: AudioContext) : AudioBuffer {
+   const buffer = audioContext.createBuffer(1, samples.length, sampleRate);
+   const data = buffer.getChannelData(0);
+   for (let i = 0; i < samples.length; i++) {
+      data[i] = samples[i]; }
+   return buffer; }

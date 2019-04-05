@@ -1,3 +1,4 @@
+import * as Utils from "./Utils";
 import EventTargetPolyfill from "./EventTargetPolyfill";
 
 export default class InternalAudioPlayer {
@@ -25,10 +26,7 @@ export default class InternalAudioPlayer {
       this.fireEvent("stateChange"); }
 
    public async playSamples (samples: Float64Array, sampleRate: number) {
-      const buffer = this.audioContext.createBuffer(1, samples.length, sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < samples.length; i++) {
-         data[i] = samples[i]; }
+      const buffer = Utils.createAudioBufferFromSamples(samples, sampleRate, this.audioContext);
       await this.playAudioBuffer(buffer); }
 
    public isPlaying() : boolean {

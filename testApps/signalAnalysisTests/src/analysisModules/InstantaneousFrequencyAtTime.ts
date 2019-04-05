@@ -31,7 +31,7 @@ const formParmsHtml = strip`
     <label class="width1" for="minFrequency">Min. freq. [Hz]:</label>
     <input class="width1" id="minFrequency" type="number" step="any" required value="75">
     <label class="width1 gap1" id="maxFrequencyLabel" for="maxFrequency">Max. freq. [Hz]:</label>
-    <input class="width1" id="maxFrequency" type="number" step="any" required value="5000">
+    <input class="width1" id="maxFrequency" type="number" step="any" required value="5500">
     <label class="width1 gap1" for="shiftFactor" title="Shift factor, relative to the wavelength of the frequency. Used for measuring the phase delta.">Shift factor:</label>
     <input class="width1" id="shiftFactor" type="number" min="0" max="1" step="any" required value="0.25">
     <label class="width1 gap1" for="peakWidth" title="Width in Hz for the linear attenuation around each harmonic peak. Used to combine amplitude and frequency delta.">Peak width [Hz]:</label>
