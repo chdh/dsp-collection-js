@@ -60,6 +60,8 @@ export default class ComplexArray {
       a2.length = end - begin;
       return a2; }
 
+   //--- Set -------------------------------------------------------------------
+
    public set (i: number, c: Complex) {
       this.re[i] = c.re;
       this.im[i] = c.im; }

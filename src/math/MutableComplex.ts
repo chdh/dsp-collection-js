@@ -53,7 +53,7 @@ export default class MutableComplex extends Complex {
    public static fromPolar (abs: number, arg: number) : MutableComplex {
       return new MutableComplex(abs * Math.cos(arg), abs * Math.sin(arg)); }
 
-   //--- Mutating in-place operations ------------------------------------------
+   //--- Set -------------------------------------------------------------------
 
    /**
    * Sets this `MutableComplex` to the value of another `Complex`.
@@ -61,6 +61,22 @@ export default class MutableComplex extends Complex {
    public set (x: Complex) {
       this.re = x.re;
       this.im = x.im; }
+
+   /**
+   * Sets this `MutableComplex` to `(re, im)`.
+   */
+   public setReIm (re: number, im = 0) {
+      this.re = re;
+      this.im = im; }
+
+   /**
+   * Sets this `MutableComplex` to `e^(j * arg)` (length 1 and argument `arg`).
+   */
+   public setExpj (arg: number) {
+      this.re = Math.cos(arg);
+      this.im = Math.sin(arg); }
+
+   //--- Mutating in-place operations ------------------------------------------
 
    /**
    * Mutates this `MutableComplex` by adding a real number.

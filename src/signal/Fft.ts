@@ -89,7 +89,7 @@ function incrementBitReversed (i: number, n: number) : number {
 // Bluestein's FFT algorithm for arrays of arbitrary length.
 function fftBluestein (x: ComplexArray) : ComplexArray {
    const n = x.length;
-   const m = MathUtils.getNextPowerOf2(2 * n - 1);
+   const m = MathUtils.getNextPowerOf2(2 * n - 3);         // minimum space needed: [0 1 2 ... n-2 n-1 n-2 ... 2 1] = 2n - 2
    const sineTable = createSineOfSquareTable(n, 2 * n);
    const a1 = new ComplexArray(m);
    for (let i = 0; i < n; i++) {
@@ -146,6 +146,8 @@ function swapReIm (a: ComplexArray) : ComplexArray {
 /**
 * Computes the FFT of an array of real numbers and returns the complex result.
 *
+* This version is not optimized for real numbers.
+*
 * @param x
 *    The input values (samples).
 * @returns
@@ -197,6 +199,7 @@ export function fftRealHalf (x: Float64Array) : ComplexArray {
 * The result is the normalized lower half of the FFT.
 *
 * If `x.length` is even and `inclNyquist == false`, the computation is faster.
+* And if `x.length` is a power of 2, it's also faster.
 *
 * @param x
 *    The input values (samples).
