@@ -2,10 +2,6 @@
 * Simple operations on arrays.
 */
 
-import Complex from "../math/Complex";
-
-//--- generic ------------------------------------------------------------------
-
 /**
 * Returns the maximum value of an array.
 */
@@ -60,18 +56,4 @@ export function divide<T extends ArrayLike<number>> (a1: T, a2: T) : T {
    const a = new (<any>a1).constructor(n);
    for (let i = 0; i < n; i++) {
       a[i] = a1[i] / a2[i]; }
-   return a; }
-
-//--- Complex arrays -----------------------------------------------------------
-
-export function abs_ComplexArray (c: Complex[]) : Float64Array {
-   const a = new Float64Array(c.length);
-   for (let i = 0; i < c.length; i++) {
-      a[i] = c[i].abs(); }
-   return a; }
-
-export function arg_ComplexArray (c: Complex[]) : Float64Array {
-   const a = new Float64Array(c.length);
-   for (let i = 0; i < c.length; i++) {
-      a[i] = c[i].arg(); }
    return a; }
