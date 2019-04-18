@@ -32,6 +32,15 @@ export function getNextPowerOf2 (x: number) : number {
    return n; }
 
 /**
+* Returns the same as `Math.floor(Math.log2(i))` for values in the range 1 .. 2^31-1,
+* but without possibly occurring arithmetic problems with floating point numbers.
+*/
+export function floorLog2 (x: number) : number {
+   if (x > 0x7FFFFFFF || x < 1) {
+      throw new Error("Argument is not a valid integer."); }
+   return 31 - Math.clz32(x); }
+
+/**
 * Calculates a hyperbolic decline factor.
 * Harmonic and exponential decline are special cases of the hyperbolic decline.
 * Linear decline is also a special case, but requires clipping to suppress negative values.

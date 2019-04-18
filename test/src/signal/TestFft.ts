@@ -94,7 +94,7 @@ function testFftRealSpectrumRandom() {
 function checkFftRealSpectrum (a: Float64Array, inclNyquist: boolean) {
    const b1 = Fft.fftRealSpectrum(a, inclNyquist);
    const b2 = Dft.dftRealSpectrum(a, inclNyquist);
-   verifyEqualComplex(b1, b2, 1E-10); }
+   verifyEqualComplex(b1, b2, 1E-9); }
 
 function testFftRealHalf() {
    for (let i = 0; i < 500000; i++) {
@@ -108,7 +108,7 @@ function testFftRealHalf() {
 function checkFftRealHalf (a: Float64Array) {
    const b1 = Fft.fftRealHalf(a);
    const b2 = Dft.dftRealHalf(a);
-   verifyEqualComplex(b1, b2, 1E-10); }
+   verifyEqualComplex(b1, b2, 1E-9); }
 
 function genRandomComplexArray (n: number, maxValue: number) : ComplexArray {
    const a = new ComplexArray(n);

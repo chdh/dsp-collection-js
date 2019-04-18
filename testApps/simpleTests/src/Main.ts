@@ -1,6 +1,5 @@
 import * as TestWindowFunctions from "./TestWindowFunctions";
 
-
 function startup2() {
    const applId = document.body.dataset.applId;
    switch (applId) {

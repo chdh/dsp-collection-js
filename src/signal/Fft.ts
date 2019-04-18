@@ -12,6 +12,8 @@ import ComplexArray from "../math/ComplexArray";
 import MutableComplex from "../math/MutableComplex";
 import * as MathUtils from "../math/MathUtils";
 
+var cooleyTukeySineTableCache: Array<ComplexArray>;
+
 /**
 * Computes the FFT of an array of complex numbers.
 *
@@ -38,7 +40,7 @@ export function fft (x: ComplexArray, direction = true) : ComplexArray {
 // Cooley-Tukey algorithm for array lengths that are a power of 2.
 function fftCooleyTukey (x: ComplexArray) : ComplexArray {
    const n = x.length;                                     // n is a power of 2
-   const sineTable = createSineTable(n / 2, n, false);
+   const sineTable = getCachedCooleyTukeySineTable(n);
    const a = copyBitReversed(x);
    applyButterflies(a, sineTable);
    return a; }
@@ -116,6 +118,17 @@ function convolve (a1: ComplexArray, a2: ComplexArray) : ComplexArray {
    const a5 = fft(a3, false);
    a5.mulAllByReal(1 / n);                                 // scaling after iFFT
    return a5; }
+
+function getCachedCooleyTukeySineTable (n: number) : ComplexArray {
+   if (!cooleyTukeySineTableCache) {
+      cooleyTukeySineTableCache = new Array<ComplexArray>(16); } // (16 is not a limit, the array can grow dynamically)
+   const log2N = MathUtils.floorLog2(n);
+   if (!cooleyTukeySineTableCache[log2N]) {
+      cooleyTukeySineTableCache[log2N] = createCooleyTukeySineTable(n); }
+   return cooleyTukeySineTableCache[log2N]; }
+
+function createCooleyTukeySineTable (n: number) : ComplexArray {
+   return createSineTable(n / 2, n, false); }
 
 function createSineTable (tableLength: number, waveLength: number, rotationalDirection = true) : ComplexArray {
    const w = 2 * Math.PI / waveLength;
