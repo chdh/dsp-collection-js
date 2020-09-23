@@ -50,7 +50,7 @@ const formParmsHtml = strip`
     <input class="width1" id="maxFrequencyDerivative" type="number" step="any" required value="4">
    </div>
    <div class="parmLine" id="parmLine3">
-    <label class="width1" for="minTrackingAmplitudeDb" title="Minimum tracking amplitude in dB">Min. ampl. [dB]:</label>
+    <label class="width1" for="minTrackingAmplitudeDb" title="Minimum tracking amplitude in dB. Harmonics with a lower amplitude are ignored.">Min. ampl. [dB]:</label>
     <input class="width1" id="minTrackingAmplitudeDb" type="number" step="any" value="-55" required>
     <label class="width1 gap1" for="harmonics" title="Number of harmonic frequencies to track">Harmonics:</label>
     <input class="width1" id="harmonics" type="number" min="1" value="10" required>
@@ -513,7 +513,7 @@ function trackHarmonics (samples: Float64Array, startPosition: number, trackingI
       buf[p] = tInfo; }
    return buf; }
 
-function findTrackingStartFrequency(samples: Float64Array, sampleRate: number, segmentStart: number, segmentEnd: number) : number {
+function findTrackingStartFrequency (samples: Float64Array, sampleRate: number, segmentStart: number, segmentEnd: number) : number {
    const f0Min = 75;
    const f0Max = 900;
    const minPitchAmplitudeDb = -30;
@@ -559,12 +559,12 @@ function genHarmSynRecords (samples: Float64Array, trackingInfos: HarmonicTracki
 
 function createHarmSynFile (harmSynRecords: HarmSynRecord[], interval: number, minAmplitudeDb: number, sampleRate: number) : string {
    let out = "";
-   const f0Digits = (interval >= 0.001 && MathUtils.isFuzzyInteger(interval * 1000, 1E-10)) ? 3 : 6;
+   const timeDigits = (interval >= 0.001 && MathUtils.isFuzzyInteger(interval * 1000, 1E-10)) ? 3 : 6;
    for (let p = 0; p < harmSynRecords.length; p++) {
       const relTime = p * interval;
       const r = harmSynRecords[p];
       if (!r) {
          continue; }
       const f0 = Math.round(r.f0 * sampleRate * 10) / 10;
-      out += relTime.toFixed(f0Digits) + " " + Utils.buildSinSynComponentsString(f0, r.amplitudes, minAmplitudeDb) + eol; }
+      out += relTime.toFixed(timeDigits) + " " + Utils.buildSinSynComponentsString(f0, r.amplitudes, minAmplitudeDb) + eol; }
    return out; }

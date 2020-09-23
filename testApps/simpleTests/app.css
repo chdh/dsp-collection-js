@@ -43,4 +43,5 @@ canvas.functionCurveViewer {
    width: 800px;
    height: 500px;
    border: 1px solid #888;
-   outline: none; }
+   outline: none;
+   touch-action: none; }

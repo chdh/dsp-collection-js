@@ -1,8 +1,9 @@
 "use strict";
 
-const ChildProcess = require("child_process");
-const Fs           = require("fs");
-const rimrafSync   = require("rimraf").sync;
+import * as ChildProcess from "child_process";
+import * as Fs from "fs";
+import Rimraf from "rimraf";
+const rimrafSync = Rimraf.sync;
 
 class BuildError extends Error {};
 
@@ -12,7 +13,7 @@ function shell (cmdLine) {
    ChildProcess.execSync(cmdLine, {stdio: "inherit"}); }
 
 function copyToDist (fileNames) {
-   for (let fileName of fileNames) {
+   for (const fileName of fileNames) {
       Fs.copyFileSync(fileName, "dist/" + fileName); }}
 
 function main2() {
@@ -41,7 +42,7 @@ function main2() {
             throw new BuildError("*** NPM pack/publish must be run in the dist directory! ***"); }
          break; }
       default: {
-         throw new BuildError("Invalid command parameter \"" + cmd + "\"."); }}}
+         throw new BuildError(`Invalid command parameter "${cmd}".`); }}}
 
 function main() {
    try {

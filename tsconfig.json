@@ -1,7 +1,7 @@
 {
    "compilerOptions": {
+      "allowUnreachableCode": false,
       "alwaysStrict": true,
-      "baseUrl": "src",
       "declaration": true,
       "lib": ["ES6"],
       "module": "ES6",

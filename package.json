@@ -19,7 +19,8 @@
    "contributors": [
       {
          "name": "Christian d'Heureuse",
-         "email": "chdh@inventec.ch"
+         "email": "chdh@inventec.ch",
+         "url": "http://www.source-code.biz"
       }
    ],
    "scripts": {
@@ -30,9 +31,8 @@
       "doPublish": "cd dist && npm publish"
    },
    "devDependencies": {
-      "@types/node": "^11.13.4",
-      "rimraf": "^2.6.3",
-      "source-map-support": "^0.5.12"
+      "@types/node": "^12.0.10",
+      "rimraf": "^2.6.3"
    },
    "type": "module"
 }

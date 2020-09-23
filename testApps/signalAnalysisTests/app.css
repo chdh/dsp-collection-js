@@ -68,7 +68,8 @@ div.actionButtons button {
    display: block;
    width: 800px;
    height: 200px;
-   border: 1px solid #888; }
+   border: 1px solid #888;
+   touch-action: none; }
 
 #fileName {
    position: absolute;

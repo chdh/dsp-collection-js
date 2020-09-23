@@ -103,7 +103,7 @@ function loadLocalAudioFileButton_click() {
    Utils.openFileOpenDialog(loadLocalAudioFile); }
 
 async function loadFileByUrl (url: string) : Promise<ArrayBuffer> {
-   const response = await fetch(url, {mode: "cors"});   // (server must send "Access-Control-Allow-Origin" header field or have same origin)
+   const response = await fetch(url, {mode: "cors", credentials: "include"}); // (server must send "Access-Control-Allow-Origin" header field or have same origin)
    if (!response.ok) {
       throw new Error("Request failed for " + url); }
    return await response.arrayBuffer(); }
