@@ -1,5 +1,5 @@
 export function createMapBackedFunction<X,Y> (f: (x: X) => Y) : (x: X) => Y {
-   const map = new Map();
+   const map = new Map<X,Y>();
    return function (x: X) {
       let y = map.get(x);
       if (y !== undefined) {

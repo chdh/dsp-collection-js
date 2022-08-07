@@ -1,9 +1,9 @@
 import {ViewerFunction} from "function-curve-viewer";
-import * as WindowFunctions from "dsp-collection/signal/WindowFunctions";
-import * as Autocorrelation from "dsp-collection/signal/Autocorrelation";
-import * as DspUtils from "dsp-collection/utils/DspUtils";
+import * as WindowFunctions from "dsp-collection/signal/WindowFunctions.js";
+import * as Autocorrelation from "dsp-collection/signal/Autocorrelation.js";
+import * as DspUtils from "dsp-collection/utils/DspUtils.js";
 
-export function openFileOpenDialog (callback: (file: File) => void) {
+export function openFileOpenDialog (callback: (file: File) => unknown) {
    const element: HTMLInputElement = document.createElement("input");
    element.type = "file";
    element.addEventListener("change", () => {
@@ -13,12 +13,13 @@ export function openFileOpenDialog (callback: (file: File) => void) {
    element.dispatchEvent(clickEvent);
    (<any>document).dummyFileOpenElementHolder = element; } // to prevent garbage collection
 
+// TODO: Replace by File.arrayBuffer().
 export function loadFileData (file: File) : Promise<ArrayBuffer> {
    return new Promise<ArrayBuffer>(executor);
    function executor (resolve: Function, reject: Function) {
       const fileReader = new FileReader();
-      fileReader.addEventListener("loadend", () => resolve(fileReader.result));
-      fileReader.addEventListener("error", () => reject(fileReader.error));
+      fileReader.addEventListener("loadend", () => void resolve(fileReader.result));
+      fileReader.addEventListener("error", () => void reject(fileReader.error));
       fileReader.readAsArrayBuffer(file); }}
 
 export function getNumericUrlSearchParam (usp: URLSearchParams, paramName: string, defaultValue?: number) : number | undefined {
@@ -55,7 +56,7 @@ export function escapeHtml (s: string) : string {
 // This function is used to swap a viewer function between frequency input and wavelength input.
 export function createReciprocalViewerFunction (f: ViewerFunction) : ViewerFunction {
    if ((<any>f).cachedReciprocalFunction) {
-      return (<any>f).cachedReciprocalFunction; }
+      return <ViewerFunction>(<any>f).cachedReciprocalFunction; }
    const f2 = function (x: number, sampleWidth: number, channel: number) {
       if (!x || !sampleWidth) {
          return; }
@@ -95,7 +96,10 @@ export function genWindowFunctionOptionsHtml (defaultId: string) : string {
       html += `<option value="${descr.id}"${selected?" selected":""}>${escapeHtml(descr.name)}</option>`; }
    return html; }
 
-export async function catchError (f: Function, ...args: any[]) {
+export function catchError (f: Function, ...args: any[]) {
+   void catchErrorAsync(f, ...args); }
+
+async function catchErrorAsync (f: Function, ...args: any[]) {
    try {
       const r = f(...args);
       if (r instanceof Promise) {
@@ -142,7 +146,7 @@ export function repeatSignalCorrelatedSuperimposed (samples: Float64Array, outpu
    return a; }
 
 export function delay (delayTimeMs: number) {
-   return new Promise((resolve: any) => {
+   return new Promise((resolve: Function) => {
       setTimeout(resolve, delayTimeMs); }); }
 
 export function getWindowSubArrayTrunc (a: Float64Array, windowCenterPosition: number, windowWidth: number) : Float64Array {

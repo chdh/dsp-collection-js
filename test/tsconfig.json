@@ -1,14 +1,16 @@
 {
    "compilerOptions": {
+      "allowUnreachableCode": false,
       "alwaysStrict": true,
       "baseUrl": "src",
       "lib": ["ES6"],
-      "module": "ES6",
-      "moduleResolution": "node",
+      "module": "node16",
       "noFallthroughCasesInSwitch": true,
       "noImplicitAny": true,
+      "noImplicitOverride": true,
       "noImplicitReturns": true,
       "noImplicitThis": true,
+      // "noUnusedLocals": true,
       "noUnusedParameters": true,
       "outDir": "tempBuild",
       "paths": {
@@ -21,6 +23,6 @@
       "sourceMap": true,
       "strictFunctionTypes": true,
       "strictNullChecks": true,
-      "target": "ES2016"
+      "target": "ES2017"
    }
 }

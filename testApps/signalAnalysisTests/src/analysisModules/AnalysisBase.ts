@@ -1,12 +1,12 @@
 // Central base module for the signal analysis modules.
 
 import * as FunctionCurveViewer from "function-curve-viewer";
-import * as ShortTimeFourierTransform from "./ShortTimeFourierTransform";
-import * as ShortTimePitchDetectionAtTime from "./ShortTimePitchDetectionAtTime";
-import * as ShortTimePitchDetectionOverTime from "./ShortTimePitchDetectionOverTime";
-import * as InstantaneousFrequencyAtTime from "./InstantaneousFrequencyAtTime";
-import * as InstantaneousFrequencyOverTime from "./InstantaneousFrequencyOverTime";
-import * as SignalEnvelope from "./SignalEnvelope";
+import * as ShortTimeFourierTransform from "./ShortTimeFourierTransform.js";
+import * as ShortTimePitchDetectionAtTime from "./ShortTimePitchDetectionAtTime.js";
+import * as ShortTimePitchDetectionOverTime from "./ShortTimePitchDetectionOverTime.js";
+import * as InstantaneousFrequencyAtTime from "./InstantaneousFrequencyAtTime.js";
+import * as InstantaneousFrequencyOverTime from "./InstantaneousFrequencyOverTime.js";
+import * as SignalEnvelope from "./SignalEnvelope.js";
 
 export type AnalysisFunction = (parms: AnalysisParms) => AnalysisResult | Promise<AnalysisResult>;
 

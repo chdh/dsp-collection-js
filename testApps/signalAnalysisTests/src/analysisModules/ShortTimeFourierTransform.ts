@@ -1,15 +1,15 @@
 // Analysis module for short-time fourier transform.
 
 import {stripIndents as strip} from "common-tags";
-import * as AnalysisBase from "./AnalysisBase";
-import Complex from "dsp-collection/math/Complex";
-import * as Fft from "dsp-collection/signal/Fft";
-import * as AdaptiveStft from "dsp-collection/signal/AdaptiveStft";
-import * as WindowFunctions from "dsp-collection/signal/WindowFunctions";
-import * as DspUtils from "dsp-collection/utils/DspUtils";
+import * as AnalysisBase from "./AnalysisBase.js";
+import Complex from "dsp-collection/math/Complex.js";
+import * as Fft from "dsp-collection/signal/Fft.js";
+import * as AdaptiveStft from "dsp-collection/signal/AdaptiveStft.js";
+import * as WindowFunctions from "dsp-collection/signal/WindowFunctions.js";
+import * as DspUtils from "dsp-collection/utils/DspUtils.js";
 import * as FunctionCurveViewer from "function-curve-viewer";
-import * as Utils from "../Utils";
-import * as DomUtils from "../DomUtils";
+import * as Utils from "../Utils.js";
+import * as DomUtils from "../DomUtils.js";
 
 const formParmsHtml = strip`
    <div class="parmLine">

@@ -1,24 +1,26 @@
 // Test program for the Fft module.
 
-import Complex from "dsp-collection/math/Complex";
-import ComplexArray from "dsp-collection/math/ComplexArray";
-import * as MathUtils from "dsp-collection/math/MathUtils";
-import * as Fft from "dsp-collection/signal/Fft";
-import * as Dft from "dsp-collection/signal/Dft";
+import Complex from "dsp-collection/math/Complex.js";
+import ComplexArray from "dsp-collection/math/ComplexArray.js";
+import * as MathUtils from "dsp-collection/math/MathUtils.js";
+import * as Fft from "dsp-collection/signal/Fft.js";
+import * as Dft from "dsp-collection/signal/Dft.js";
 import {performance as Performance} from "perf_hooks";
 
-let fftTime = 0;
-let dftTime = 0;
+var fftTime: number;
+var dftTime: number;
 
 function main() {
+   console.log("TestFft started.");
    const startTime = Performance.now();
    testFftKnown();
    testFftAgainstDftRandom();
    testFftRealSpectrum();
    testFftRealSpectrumRandom();
    testFftRealHalf();
+   testIFftRealSpectrum();
    const elapsedMs = Math.round(Performance.now() - startTime);
-   console.log(`TestFft completed in ${elapsedMs} ms. fftTime=${Math.round(fftTime)} ms, dftTime=${Math.round(dftTime)} ms`); }
+   console.log(`TestFft completed in ${elapsedMs} ms.`); }
 
 // Test fft() with known results.
 function testFftKnown() {
@@ -53,18 +55,20 @@ function checkFftResult (a: ComplexArray, b: ComplexArray, eps: number) {
    verifyEqualComplex(a, d, 1E-15); }
 
 function testFftAgainstDftRandom() {
+   console.log("testFftAgainstDftRandom");
+   fftTime = 0;
+   dftTime = 0;
    for (let i = 0; i < 10000; i++) {
       if (i % 1000 == 0) {
          process.stdout.write("."); }
-//    const n = 2 ** Math.floor(Math.random() * 7);
-      const n = Math.floor(1 + Math.random() * 64);
+      const n = rndInt(1, 100);
       const a = genRandomComplexArray(n, 1E4);
       const direction = Math.random() < 0.5;
       checkFft(a, direction); }
-   console.log(); }
+   console.log();
+   console.log(`fftTime=${Math.round(fftTime)} ms, dftTime=${Math.round(dftTime)} ms`); }
 
 function checkFft (a: ComplexArray, direction: boolean) {
-   const n = a.length;
    const t1 = Performance.now();
    const b1 = Fft.fft(a, direction);
    const t2 = Performance.now();
@@ -82,6 +86,7 @@ function testFftRealSpectrum() {
    checkFftRealSpectrum(a2, true); }
 
 function testFftRealSpectrumRandom() {
+   console.log("testFftRealSpectrumRandom");
    for (let i = 0; i < 500000; i++) {
       if (i % 10000 == 0) {
          process.stdout.write("."); }
@@ -97,6 +102,7 @@ function checkFftRealSpectrum (a: Float64Array, inclNyquist: boolean) {
    verifyEqualComplex(b1, b2, 1E-9); }
 
 function testFftRealHalf() {
+   console.log("testFftRealHalf");
    for (let i = 0; i < 500000; i++) {
       if (i % 10000 == 0) {
          process.stdout.write("."); }
@@ -109,6 +115,29 @@ function checkFftRealHalf (a: Float64Array) {
    const b1 = Fft.fftRealHalf(a);
    const b2 = Dft.dftRealHalf(a);
    verifyEqualComplex(b1, b2, 1E-9); }
+
+// Tests inverse FFT for real signals against DFT version.
+function testIFftRealSpectrum() {
+   console.log("testIFftRealSpectrum");
+   for (let i = 0; i < 200000; i++) {
+      if (i % 10000 == 0) {
+         process.stdout.write("."); }
+      const n = rndInt(1, 20);
+      const a = genRandomComplexArray(n, 1E4);
+      checkIFftRealSpectrum(a); }
+   console.log(); }
+
+function checkIFftRealSpectrum (a: ComplexArray) {
+   const sup = rndInt(0, 2);
+   const len = a.length * 2 - sup;
+   const b1 = Fft.iFftRealHalfSimple(a, len, true);
+   const b2 = Dft.iDftRealSpectrum(a, len);
+   verifyEqualFloat64(b1, b2, 1E-9);
+   if (sup == 0 || sup == 2) {
+      const b3 = Fft.iFftRealHalfOpt(a, len, sup == 2);
+      verifyEqualFloat64(b3, b2, 1E-9); }}
+
+//------------------------------------------------------------------------------
 
 function genRandomComplexArray (n: number, maxValue: number) : ComplexArray {
    const a = new ComplexArray(n);
@@ -123,8 +152,20 @@ function genRandomFloat64Array (n: number, maxValue: number) : Float64Array {
       a[i] = rnd(maxValue); }
    return a; }
 
+// Returns a random float number between -maxValue and maxValue.
 function rnd (maxValue: number) : number {
    return (Math.random() - 0.5) * 2 * maxValue; }
+
+// Returns a random integer bwtween minValue and maxValue (inclusive).
+function rndInt (minValue: number, maxValue: number) : number {
+   return minValue + Math.floor(Math.random() * (maxValue - minValue + 1)); }
+
+function verifyEqualFloat64 (a1: Float64Array, a2: Float64Array, eps: number) {
+   if (a1.length != a2.length) {
+      throw new Error("Array sizes are not equal."); }
+   for (let i = 0; i < a1.length; i++) {
+      if (!MathUtils.fuzzyEquals(a1[i], a2[i], eps)) {
+         throw new Error("Difference detected in arrays at position " + i + ": " + a1[i] + " " + a2[i] + " diff=" + Math.abs(a1[i] - a2[i]) + " eps=" + eps + "."); }}}
 
 function verifyEqualComplex (a1: ComplexArray, a2: ComplexArray, eps: number) {
    if (a1.length != a2.length) {

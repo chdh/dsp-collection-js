@@ -1,5 +1,5 @@
-import * as Utils from "./Utils";
-import EventTargetPolyfill from "./EventTargetPolyfill";
+import * as Utils from "./Utils.js";
+import EventTargetPolyfill from "./EventTargetPolyfill.js";
 
 export default class InternalAudioPlayer {
 
@@ -36,7 +36,7 @@ export default class InternalAudioPlayer {
       this.disposeActiveAudioSource(); }
 
    private audioEndedEventHandler = () => {
-      this.disposeActiveAudioSource(); }
+      this.disposeActiveAudioSource(); };
 
    private disposeActiveAudioSource() {
       if (!this.activeAudioSourceNode) {

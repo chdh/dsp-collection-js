@@ -1,5 +1,5 @@
-import Complex from "./Complex";
-import MutableComplex from "./MutableComplex";
+import Complex from "./Complex.js";
+import MutableComplex from "./MutableComplex.js";
 
 const emptyFloat64Array = new Float64Array(0);
 

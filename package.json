@@ -30,9 +30,5 @@
       "doPack": "cd dist && npm pack",
       "doPublish": "cd dist && npm publish"
    },
-   "devDependencies": {
-      "@types/node": "^12.0.10",
-      "rimraf": "^2.6.3"
-   },
    "type": "module"
 }

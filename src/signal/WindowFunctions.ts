@@ -6,7 +6,7 @@
 * In this module, the normal parameter range for the window functions is 0 to 1.
 */
 
-import * as MiscUtils from "../utils/MiscUtils";
+import * as MiscUtils from "../utils/MiscUtils.js";
 
 export type WindowFunction = (x: number) => number;
 
@@ -91,7 +91,7 @@ export function applyWindowById (a: Float64Array, windowFunctionId: string) : Fl
 // The returned value is the arithmetic mean of the function values, which is the same as
 // the amplitude of the middle component (DC value) in the spectrum of the window function.
 // The value should be about the same as `WindowFunctionDescr.gain`.
-export function calculateCoherentGain (windowFunction: WindowFunction, n: number) : Number {
+export function calculateCoherentGain (windowFunction: WindowFunction, n: number) : number {
    let sum = 0;
    for (let i = 0; i < n; i++) {
       sum += windowFunction(i / n); }

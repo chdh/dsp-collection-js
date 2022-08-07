@@ -14,8 +14,8 @@
 *    ( bottom[0]  +  bottom[1] * x  +  bottom[2] * x^2  +  ...  bottom[m-1] * x^(m-1)  +  bottom[m] * x^m )
 */
 
-import Complex from "./Complex";
-import MutableComplex from "./MutableComplex";
+import Complex from "./Complex.js";
+import MutableComplex from "./MutableComplex.js";
 
 /**
 * Evaluates a real polynomial with a real argument.

@@ -1,9 +1,9 @@
-import * as Utils from "./Utils";
-import * as DomUtils from "./DomUtils";
-import InternalAudioPlayer from "./InternalAudioPlayer";
-import * as BackgroundTaskMgr from "./BackgroundTaskMgr";
-import * as AnalysisBase from "./analysisModules/AnalysisBase";
-import * as WindowFunctions from "dsp-collection/signal/WindowFunctions";
+import * as Utils from "./Utils.js";
+import * as DomUtils from "./DomUtils.js";
+import InternalAudioPlayer from "./InternalAudioPlayer.js";
+import * as BackgroundTaskMgr from "./BackgroundTaskMgr.js";
+import * as AnalysisBase from "./analysisModules/AnalysisBase.js";
+import * as WindowFunctions from "dsp-collection/signal/WindowFunctions.js";
 import * as FunctionCurveViewer from "function-curve-viewer";
 import * as DialogManager from "dialog-manager";
 import {stripIndents as strip} from "common-tags";
@@ -85,7 +85,7 @@ async function loadAudioFileData (fileData: ArrayBuffer, fileName: string, cente
    signalFileName = fileName;
    const signalDuration = signalSamples.length / signalSampleRate;
    const viewportWidth = (centerPositionParm == undefined && getModuleDescr().wideRange) ? signalDuration : 0.050;
-   const centerPosition = centerPositionParm || signalDuration / 2;
+   const centerPosition = centerPositionParm ?? signalDuration / 2;
    loadSignalViewer(centerPosition, viewportWidth);
    document.getElementById("fileName")!.textContent = fileName;
    DomUtils.showElement("zoomToFitButton");
@@ -117,7 +117,7 @@ async function loadInitialAudioFile() {
    try {
       const parmsString = window.location.hash.substring(1);
       const usp = new URLSearchParams(parmsString);
-      const audioFileUrl = usp.get("file") || defaultAudioFileUrl;
+      const audioFileUrl = usp.get("file") ?? defaultAudioFileUrl;
       const centerPosition = Utils.getNumericUrlSearchParam(usp, "pos");
       await loadAudioFileFromUrl(audioFileUrl, centerPosition); }
     catch (e) {
@@ -310,4 +310,4 @@ async function startup() {
 if (BackgroundTaskMgr.isWorkerThread()) {
    BackgroundTaskMgr.initWorkerThread(); }
  else {
-   document.addEventListener("DOMContentLoaded", startup); }
+   document.addEventListener("DOMContentLoaded", <any>startup); }

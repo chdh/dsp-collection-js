@@ -1,12 +1,12 @@
 // Analysis module for short time pitch detection measured over time.
 
 import {stripIndents as strip} from "common-tags";
-import * as WindowFunctions from "dsp-collection/signal/WindowFunctions";
-import * as PitchDetectionHarm from "dsp-collection/signal/PitchDetectionHarm";
-import * as AnalysisBase from "./AnalysisBase";
-import * as Utils from "../Utils";
-import * as DomUtils from "../DomUtils";
-import * as BackgroundTaskMgr from "../BackgroundTaskMgr";
+import * as WindowFunctions from "dsp-collection/signal/WindowFunctions.js";
+import * as PitchDetectionHarm from "dsp-collection/signal/PitchDetectionHarm.js";
+import * as AnalysisBase from "./AnalysisBase.js";
+import * as Utils from "../Utils.js";
+import * as DomUtils from "../DomUtils.js";
+import * as BackgroundTaskMgr from "../BackgroundTaskMgr.js";
 import * as FunctionCurveViewer from "function-curve-viewer";
 
 const defaultHarmSumParms = PitchDetectionHarm.getDefaultHarmonicInstSumParms();
@@ -78,7 +78,7 @@ async function main (parms: AnalysisBase.AnalysisParms) : Promise<AnalysisBase.A
       windowFunction:               undefined,             // undefined here, because it cannot be sent to the web worker thread
       shiftFactor:                  DomUtils.getValueNum("shiftFactor"),
       peakWidthFactor:              DomUtils.getValueNum("peakWidthFactor") };
-   const buf = await BackgroundTaskMgr.execTask("scanPitch", [parms.samples, parms.sampleRate, parms.viewportXMin, parms.viewportXMax, stepSize, f0Min, f0Max, harmSumParms, windowFunctionId, variantId]);
+   const buf = <Float64Array>await BackgroundTaskMgr.execTask("scanPitch", [parms.samples, parms.sampleRate, parms.viewportXMin, parms.viewportXMax, stepSize, f0Min, f0Max, harmSumParms, windowFunctionId, variantId]);
    const pitchFunction = (time: number) => buf[Math.round((time - parms.viewportXMin) / stepSize)];
    const pitchViewerState: FunctionCurveViewer.ViewerState = {
       viewerFunction:  pitchFunction,

@@ -46,7 +46,7 @@ export function multiply<T extends ArrayLike<number>> (a1: T, a2: T) : T {
    const a = new (<any>a1).constructor(n);
    for (let i = 0; i < n; i++) {
       a[i] = a1[i] * a2[i]; }
-   return a; }
+   return <T>a; }
 
 /**
 * Divides the values of two arrays and returns the result in a new array.
@@ -56,4 +56,4 @@ export function divide<T extends ArrayLike<number>> (a1: T, a2: T) : T {
    const a = new (<any>a1).constructor(n);
    for (let i = 0; i < n; i++) {
       a[i] = a1[i] / a2[i]; }
-   return a; }
+   return <T>a; }

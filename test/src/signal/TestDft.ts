@@ -1,12 +1,13 @@
 // Test program for the Dft and Goertzel modules.
 
-import Complex from "dsp-collection/math/Complex";
-import ComplexArray from "dsp-collection/math/ComplexArray";
-import * as MathUtils from "dsp-collection/math/MathUtils";
-import * as Dft from "dsp-collection/signal/Dft";
-import * as Goertzel from "dsp-collection/signal/Goertzel";
+import Complex from "dsp-collection/math/Complex.js";
+import ComplexArray from "dsp-collection/math/ComplexArray.js";
+import * as MathUtils from "dsp-collection/math/MathUtils.js";
+import * as Dft from "dsp-collection/signal/Dft.js";
+import * as Goertzel from "dsp-collection/signal/Goertzel.js";
 
 function main() {
+   console.log("TestDft started.");
    testDftRealKnown();
    testDftKnown();
    testDftRealSpectrum();

@@ -2,8 +2,8 @@
 * Autocorrelation functions.
 */
 
-import * as WindowFunctions from "./WindowFunctions";
-import * as ArrayUtils from "../utils/ArrayUtils";
+import * as WindowFunctions from "./WindowFunctions.js";
+import * as ArrayUtils from "../utils/ArrayUtils.js";
 
 function autocorrelationKernel (x: Float64Array, distance: number, n: number) : number {
    let sum = 0;

@@ -2,19 +2,20 @@
 
 import * as ChildProcess from "child_process";
 import * as Fs from "fs";
-import Rimraf from "rimraf";
-const rimrafSync = Rimraf.sync;
 
 class BuildError extends Error {};
 
 // Executes a shell command line.
-// An error is thrown when the exit code is not 0.
+// An error is thrown when the exit code of the command is not 0.
 function shell (cmdLine) {
    ChildProcess.execSync(cmdLine, {stdio: "inherit"}); }
 
 function copyToDist (fileNames) {
    for (const fileName of fileNames) {
       Fs.copyFileSync(fileName, "dist/" + fileName); }}
+
+function delDir (dirName) {
+   Fs.rmSync(dirName, {recursive: true, force: true}); }
 
 function main2() {
    const argv = process.argv;
@@ -23,12 +24,12 @@ function main2() {
    let cmd = (argv.length > 2) ? argv[2] : "build";
    switch (cmd) {
       case "clean": {
-         rimrafSync("dist");
+         delDir("dist");
          break; }
       case "build": {
-         rimrafSync("dist");
+         delDir("dist");
          shell("tsc");
-         shell("tslint");
+         shell("teslint");
          copyToDist([".npmignore", "LICENSE.md", "README.md", "package.json", "build.js"]);
          console.log("Build completed.");
          break; }

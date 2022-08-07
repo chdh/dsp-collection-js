@@ -8,9 +8,9 @@
 * This module is mostly a reference implementation. It's used in the test programs to verify the output of the faster algorithms.
 */
 
-import Complex from "../math/Complex";
-import MutableComplex from "../math/MutableComplex";
-import ComplexArray from "../math/ComplexArray";
+import Complex from "../math/Complex.js";
+import MutableComplex from "../math/MutableComplex.js";
+import ComplexArray from "../math/ComplexArray.js";
 
 /**
 * Computes the DFT on an array of real numbers for a single frequency.
@@ -149,8 +149,7 @@ export function dftRealSpectrum (x: Float64Array, inclNyquist = false) : Complex
    return a; }
 
 /**
-* Computes the inverse DFT of a complex spectrum
-* and returns the result as an array of real numbers.
+* Computes the inverse DFT of a complex spectrum and returns the result as an array of real numbers.
 *
 * This is the inverse function of `dftRealSpectrum()` with `inclNyquist == true`.
 *

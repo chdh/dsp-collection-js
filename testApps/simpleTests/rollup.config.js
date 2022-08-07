@@ -1,5 +1,5 @@
-import resolve from "rollup-plugin-node-resolve";
-import alias from "rollup-plugin-alias";
+import nodeResolve from "@rollup/plugin-node-resolve";
+import alias from "@rollup/plugin-alias";
 
 export default {
    input: "tempBuild/Main.js",
@@ -8,9 +8,11 @@ export default {
       format: "iife"
    },
    plugins: [
-      resolve(),
+      nodeResolve(),
       alias({
-         "dsp-collection": "./../../../dist"
+         entries: {
+            "dsp-collection": "./../../../dist"
+         }
       })
    ]
 };

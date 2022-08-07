@@ -1,19 +1,19 @@
 // Analysis module for instantaneous frequency measured over time.
 
 import {stripIndents as strip} from "common-tags";
-import Complex from "dsp-collection/math/Complex";
-import * as WindowFunctions from "dsp-collection/signal/WindowFunctions";
-import * as AdaptiveStft from "dsp-collection/signal/AdaptiveStft";
-import * as InstFreq from "dsp-collection/signal/InstFreq";
-import * as DspUtils from "dsp-collection/utils/DspUtils";
-import * as PitchDetectionHarm from "dsp-collection/signal/PitchDetectionHarm";
-import * as EnvelopeDetection from "dsp-collection/signal/EnvelopeDetection";
-import * as ArrayUtils from "dsp-collection/utils/ArrayUtils";
-import * as MathUtils from "dsp-collection/math/MathUtils";
+import Complex from "dsp-collection/math/Complex.js";
+import * as WindowFunctions from "dsp-collection/signal/WindowFunctions.js";
+import * as AdaptiveStft from "dsp-collection/signal/AdaptiveStft.js";
+import * as InstFreq from "dsp-collection/signal/InstFreq.js";
+import * as DspUtils from "dsp-collection/utils/DspUtils.js";
+import * as PitchDetectionHarm from "dsp-collection/signal/PitchDetectionHarm.js";
+import * as EnvelopeDetection from "dsp-collection/signal/EnvelopeDetection.js";
+import * as ArrayUtils from "dsp-collection/utils/ArrayUtils.js";
+import * as MathUtils from "dsp-collection/math/MathUtils.js";
 import * as FunctionCurveViewer from "function-curve-viewer";
-import * as AnalysisBase from "./AnalysisBase";
-import * as Utils from "../Utils";
-import * as DomUtils from "../DomUtils";
+import * as AnalysisBase from "./AnalysisBase.js";
+import * as Utils from "../Utils.js";
+import * as DomUtils from "../DomUtils.js";
 
 const defaultFrequency = 250;
 const eol = "\r\n";

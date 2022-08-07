@@ -1,4 +1,4 @@
-import * as MathUtils from "./MathUtils";
+import * as MathUtils from "./MathUtils.js";
 
 /**
 * An immutable complex number.
@@ -6,6 +6,8 @@ import * as MathUtils from "./MathUtils";
 export default class Complex {
 
    //--- Static constants ------------------------------------------------------
+
+   /* eslint-disable @typescript-eslint/naming-convention */
 
    /** The imaginary unit i. */
    public static readonly I = new Complex(0, 1);
@@ -24,6 +26,8 @@ export default class Complex {
 
    /** A `Complex` representing "+Infinity + Infinity i" */
    public static readonly INFINITY = new Complex(Infinity, Infinity);
+
+   /* eslint-enable */
 
    //--- Member fields ---------------------------------------------------------
 

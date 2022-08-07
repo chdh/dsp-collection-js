@@ -2,11 +2,11 @@
 * Pitch detection using weighted sum of harmonic amplitudes.
 */
 
-import * as MathUtils from "../math/MathUtils";
-import * as NumApprox from "../math/NumApprox";
-import * as WindowFunctions from "./WindowFunctions";
-import * as AdaptiveStft from "./AdaptiveStft";
-import * as InstFreq from "./InstFreq";
+import * as MathUtils from "../math/MathUtils.js";
+import * as NumApprox from "../math/NumApprox.js";
+import * as WindowFunctions from "./WindowFunctions.js";
+import * as AdaptiveStft from "./AdaptiveStft.js";
+import * as InstFreq from "./InstFreq.js";
 
 /**
 * Parameters for evaluating the amplitude of a harmonic.

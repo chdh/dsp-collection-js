@@ -1,16 +1,16 @@
 // Analysis module for short time pitch detection at a fixed point in time.
 
 import {stripIndents as strip} from "common-tags";
-import * as AnalysisBase from "./AnalysisBase";
-import * as PitchDetectionHarm from "dsp-collection/signal/PitchDetectionHarm";
-import * as WindowFunctions from "dsp-collection/signal/WindowFunctions";
-import * as AdaptiveStft from "dsp-collection/signal/AdaptiveStft";
-import * as InstFreq from "dsp-collection/signal/InstFreq";
-import * as Autocorrelation from "dsp-collection/signal/Autocorrelation";
-import * as ArrayUtils from "dsp-collection/utils/ArrayUtils";
+import * as AnalysisBase from "./AnalysisBase.js";
+import * as PitchDetectionHarm from "dsp-collection/signal/PitchDetectionHarm.js";
+import * as WindowFunctions from "dsp-collection/signal/WindowFunctions.js";
+import * as AdaptiveStft from "dsp-collection/signal/AdaptiveStft.js";
+import * as InstFreq from "dsp-collection/signal/InstFreq.js";
+import * as Autocorrelation from "dsp-collection/signal/Autocorrelation.js";
+import * as ArrayUtils from "dsp-collection/utils/ArrayUtils.js";
 import * as FunctionCurveViewer from "function-curve-viewer";
-import * as Utils from "../Utils";
-import * as DomUtils from "../DomUtils";
+import * as Utils from "../Utils.js";
+import * as DomUtils from "../DomUtils.js";
 
 const sinSynUrlBase = "http://www.source-code.biz/sinSyn/#components=";
 
@@ -94,7 +94,7 @@ function onFormParmsChange (event?: Event) {
    DomUtils.showElement("maxFreqDev",          variantId == "instIntV1");
    DomUtils.showElement("frequencyResolution", variantId == "instIntV1");
    DomUtils.showElement("peakWidthFactor",     variantId == "harmSumInst");
-   const changedFieldId = (event && event.target) ? (<any>event.target).id : undefined;
+   const changedFieldId = (<any>event?.target)?.id;
    if (changedFieldId == "stpdVariant" || !changedFieldId) {
       windowFunctionElement.value               = "hann";
       amplitudeCompressionExponentElement.valueAsNumber = defaultHarmSumParms.amplitudeCompressionExponent;
@@ -197,7 +197,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
       pitchFrequency = Math.round(PitchDetectionHarm.findPitchSalienceFunctionArgMax(salienceFunction, f0Min, f0Max)); }
    const pitchInfo = pitchFrequency + " Hz / " + (Math.round(1 / pitchFrequency * 1E5) / 1E2) + " ms";
    const harmonicAmplitudesOrUndef = AdaptiveStft.getHarmonicAmplitudes(parms.samples, centerPos * sampleRate, pitchFrequency / sampleRate, Math.floor(fCutoff / pitchFrequency));
-   const harmonicAmplitudes = harmonicAmplitudesOrUndef || new Float64Array(0);
+   const harmonicAmplitudes = harmonicAmplitudesOrUndef ?? new Float64Array(0);
    const harmonicsViewerFunction = Utils.createHarmonicSpectrumViewerFunction(pitchFrequency, harmonicAmplitudes);
    const sinSynComponents = Utils.buildSinSynComponentsString(pitchFrequency, harmonicAmplitudes, -70);
    const sinSynUrl = sinSynUrlBase + encodeURIComponent(sinSynComponents);

@@ -2,9 +2,9 @@
 * Discrete Fourier transform (DFT) with the Goertzel algorithm.
 */
 
-import Complex from "../math/Complex";
-import MutableComplex from "../math/MutableComplex";
-import ComplexArray from "../math/ComplexArray";
+import Complex from "../math/Complex.js";
+import MutableComplex from "../math/MutableComplex.js";
+import ComplexArray from "../math/ComplexArray.js";
 
 /**
 * Computes the DFT on an array of real numbers for a single frequency.

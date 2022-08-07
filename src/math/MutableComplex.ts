@@ -1,4 +1,4 @@
-import Complex from "./Complex";
+import Complex from "./Complex.js";
 
 /**
 * A mutable complex number.
@@ -13,10 +13,10 @@ export default class MutableComplex extends Complex {
    //--- Override member fields as mutable -------------------------------------
 
    /** Mutable real part of the complex number. */
-   public re: number;
+   public override re: number;
 
    /** Mutable imaginary part of the complex number. */
-   public im: number;
+   public override im: number;
 
    //--- Constructor -----------------------------------------------------------
 
@@ -43,14 +43,14 @@ export default class MutableComplex extends Complex {
    * Creates a `MutableComplex` of length 1 and argument `arg`.
    * @override
    */
-   public static expj (arg: number) : MutableComplex {
+   public static override expj (arg: number) : MutableComplex {
       return new MutableComplex(Math.cos(arg), Math.sin(arg)); }
 
    /**
    * Creates a `MutableComplex` from polar coordinates.
    * @override
    */
-   public static fromPolar (abs: number, arg: number) : MutableComplex {
+   public static override fromPolar (abs: number, arg: number) : MutableComplex {
       return new MutableComplex(abs * Math.cos(arg), abs * Math.sin(arg)); }
 
    //--- Set -------------------------------------------------------------------

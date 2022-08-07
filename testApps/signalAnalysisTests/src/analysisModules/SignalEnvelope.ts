@@ -1,11 +1,11 @@
 // Analysis module for signal envelope.
 
 import {stripIndents as strip} from "common-tags";
-import * as EnvelopeDetection from "dsp-collection/signal/EnvelopeDetection";
+import * as EnvelopeDetection from "dsp-collection/signal/EnvelopeDetection.js";
 import * as FunctionCurveViewer from "function-curve-viewer";
-import * as DspUtils from "dsp-collection/utils/DspUtils";
-import * as AnalysisBase from "./AnalysisBase";
-import * as DomUtils from "../DomUtils";
+import * as DspUtils from "dsp-collection/utils/DspUtils.js";
+import * as AnalysisBase from "./AnalysisBase.js";
+import * as DomUtils from "../DomUtils.js";
 
 const formParmsHtml = strip`
    <div class="parmLine">

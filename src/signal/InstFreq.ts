@@ -5,8 +5,8 @@
 * specified frequency (measuring frequency) at two closely spaced points in time.
 */
 
-import * as WindowFunctions from "./WindowFunctions";
-import * as AdaptiveStft from "./AdaptiveStft";
+import * as WindowFunctions from "./WindowFunctions.js";
+import * as AdaptiveStft from "./AdaptiveStft.js";
 
 export interface InstFreqSingleResult {
    instFrequency:            number;                       // instantaneous frequency (normalized)
