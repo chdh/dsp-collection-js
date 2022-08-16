@@ -72,7 +72,7 @@ function createWindowTable (windowFunction: WindowFunction, n: number) : Float64
    return a; }
 
 // Applies a window function to an array as a "pediodic" window (for DFT).
-export function applyWindow (a: Float64Array, windowFunction: WindowFunction) : Float64Array {
+export function applyWindow (a: ArrayLike<number>, windowFunction: WindowFunction) : Float64Array {
    const a2 = new Float64Array(a.length);
    if ((<any>windowFunction).windowTableCache) {
       const table = getWindowTable(windowFunction, a.length);
@@ -83,7 +83,7 @@ export function applyWindow (a: Float64Array, windowFunction: WindowFunction) : 
          a2[i] = a[i] * windowFunction(i / a.length); }}
    return a2; }
 
-export function applyWindowById (a: Float64Array, windowFunctionId: string) : Float64Array {
+export function applyWindowById (a: ArrayLike<number>, windowFunctionId: string) : Float64Array {
    const windowFunction = getFunctionbyId(windowFunctionId);
    return applyWindow(a, windowFunction); }
 

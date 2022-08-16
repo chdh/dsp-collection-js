@@ -74,7 +74,7 @@ export function hyperbolicDecline (t: number, a: number, b: number) : number {
 * Calculates a simple moving average over an array.
 * Each element of the output array contains the mean value of the window centered at that position in the input array.
 */
-export function movingAverage (a: Float64Array, windowWidth: number) : Float64Array {
+export function movingAverage (a: ArrayLike<number>, windowWidth: number) : Float64Array {
    if (windowWidth < 2 || !Number.isSafeInteger(windowWidth)) {
       throw new Error("Specified window width is not a valid integer value."); }
    const len = a.length;

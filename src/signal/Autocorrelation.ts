@@ -5,7 +5,7 @@
 import * as WindowFunctions from "./WindowFunctions.js";
 import * as ArrayUtils from "../utils/ArrayUtils.js";
 
-function autocorrelationKernel (x: Float64Array, distance: number, n: number) : number {
+function autocorrelationKernel (x: ArrayLike<number>, distance: number, n: number) : number {
    let sum = 0;
    for (let i = 0; i < n; i++) {
       sum += x[i] * x[i + distance]; }
@@ -23,7 +23,7 @@ function autocorrelationKernel (x: Float64Array, distance: number, n: number) : 
 * @returns
 *    The autocorrelation amount at the specified distance.
 */
-export function nonPeriodicAutocorrelationSingle (x: Float64Array, distance: number, compensate: boolean) : number {
+export function nonPeriodicAutocorrelationSingle (x: ArrayLike<number>, distance: number, compensate: boolean) : number {
    const n = x.length - distance;                          // number of overlapping values
    let sum = autocorrelationKernel(x, distance, n);
    if (compensate && n > 0) {
@@ -44,7 +44,7 @@ export function nonPeriodicAutocorrelationSingle (x: Float64Array, distance: num
 * @returns
 *    The distance with the highest autocorrelation within minDistance and maxDistance.
 */
-export function findNonPeriodicAutocorrelationMaximum (x: Float64Array, minDistance: number, maxDistance: number, fixedOverlapWidth: boolean) : number {
+export function findNonPeriodicAutocorrelationMaximum (x: ArrayLike<number>, minDistance: number, maxDistance: number, fixedOverlapWidth: boolean) : number {
    let maxVal = -Infinity;
    let maxPos = minDistance;
    for (let distance = minDistance; distance < maxDistance; distance++) {
@@ -70,7 +70,7 @@ export function findNonPeriodicAutocorrelationMaximum (x: Float64Array, minDista
 * @returns
 *    The non-periodic autocorrelation of the input signal.
 */
-export function nonPeriodicAutocorrelation (x: Float64Array, normalize: boolean) : Float64Array {
+export function nonPeriodicAutocorrelation (x: ArrayLike<number>, normalize: boolean) : Float64Array {
    const n = x.length;
    const r = new Float64Array(n);
    for (let distance = 0; distance < n; distance++) {
@@ -99,7 +99,7 @@ export function nonPeriodicAutocorrelation (x: Float64Array, normalize: boolean)
 * @returns
 *    The non-periodic autocorrelation of the input signal.
 */
-export function windowedNonPeriodicAutocorrelation (x: Float64Array, windowFunction: WindowFunctions.WindowFunction, normalize: boolean) : Float64Array {
+export function windowedNonPeriodicAutocorrelation (x: ArrayLike<number>, windowFunction: WindowFunctions.WindowFunction, normalize: boolean) : Float64Array {
    const windowed = WindowFunctions.applyWindow(x, windowFunction);
    const autoCorr = nonPeriodicAutocorrelation(windowed, normalize);
    const window = WindowFunctions.getWindowTable(windowFunction, x.length);

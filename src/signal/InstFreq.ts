@@ -38,7 +38,7 @@ export interface InstFreqSingleResult {
 * @returns
 *    The result structure, or `undefined` if the instantaneous frequency cannot be computed.
 */
-export function instFreqSingle_relWindow (samples: Float64Array, position: number, roughtMeasuringFrequency: number, shiftFactor: number,
+export function instFreqSingle_relWindow (samples: Float64Array | Float32Array, position: number, roughtMeasuringFrequency: number, shiftFactor: number,
       relWindowWidth: number, windowFunction: WindowFunctions.WindowFunction | undefined) : InstFreqSingleResult | undefined {
    const shiftDistance = Math.max(1, shiftFactor / roughtMeasuringFrequency);
    const pos1 = position - shiftDistance / 2;
@@ -82,7 +82,7 @@ export function instFreqSingle_relWindow (samples: Float64Array, position: numbe
 * @returns
 *    The result structure, or `undefined` if the instantaneous frequency cannot be computed.
 */
-export function instFreqSingle_maxWindow (samples: Float64Array, position: number, roughtMeasuringFrequency: number, shiftFactor: number,
+export function instFreqSingle_maxWindow (samples: Float64Array | Float32Array, position: number, roughtMeasuringFrequency: number, shiftFactor: number,
       maxWindowWidth: number, windowFunction: WindowFunctions.WindowFunction | undefined) : InstFreqSingleResult | undefined {
    const relWindowWidth = Math.floor(maxWindowWidth * roughtMeasuringFrequency);
    return instFreqSingle_relWindow(samples, position, roughtMeasuringFrequency, shiftFactor, relWindowWidth, windowFunction); }

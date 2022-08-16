@@ -102,14 +102,14 @@ async function loadLocalAudioFile (file: File) {
 function loadLocalAudioFileButton_click() {
    Utils.openFileOpenDialog(loadLocalAudioFile); }
 
-async function loadFileByUrl (url: string) : Promise<ArrayBuffer> {
+async function loadFileFromUrl (url: string) : Promise<ArrayBuffer> {
    const response = await fetch(url, {mode: "cors", credentials: "include"}); // (server must send "Access-Control-Allow-Origin" header field or have same origin)
    if (!response.ok) {
       throw new Error("Request failed for " + url); }
    return await response.arrayBuffer(); }
 
 async function loadAudioFileFromUrl (url: string, centerPosition: number|undefined) {
-   const fileData = await loadFileByUrl(url);
+   const fileData = await loadFileFromUrl(url);
    const fileName = url.substring(url.lastIndexOf("/") + 1);
    await loadAudioFileData(fileData, fileName, centerPosition); }
 

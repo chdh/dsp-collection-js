@@ -120,7 +120,7 @@ export function getDefaultHarmonicInstSumParms() : HarmonicInstSumParms {
 *    A measure for a pitch perception at the specified fundamental frequency.
 *    Or NaN if the pitch cannot be computed.
 */
-export function harmonicSum (samples: Float64Array, sampleRate: number, position: number, f0: number,
+export function harmonicSum (samples: Float64Array | Float32Array, sampleRate: number, position: number, f0: number,
       parms = getDefaultHarmonicSumParms()) : number {
    const n = Math.floor(parms.fCutoff / f0);
    const a = AdaptiveStft.getHarmonicAmplitudes(samples, position * sampleRate, f0 / sampleRate, n, parms.relWindowWidth, parms.windowFunction);
@@ -156,7 +156,7 @@ export function harmonicSum (samples: Float64Array, sampleRate: number, position
 *    A measure for a pitch perception at the specified fundamental frequency.
 *    Or NaN if the pitch cannot be computed.
 */
-export function harmonicInstSum (samples: Float64Array, sampleRate: number, position: number, f0: number,
+export function harmonicInstSum (samples: Float64Array | Float32Array, sampleRate: number, position: number, f0: number,
       parms = getDefaultHarmonicInstSumParms()) : number {
    const peakWidth = f0 * parms.peakWidthFactor / sampleRate;
    const n = Math.floor(parms.fCutoff / f0);
@@ -188,7 +188,7 @@ export function evaluateHarmonicAmplitude (amplitude: number, harmonic: number, 
    const attenuation = MathUtils.hyperbolicDecline(harmonic - 1, parms.harmonicsDeclineRate, parms.harmonicsDeclineExponent);
    return amplitude ** parms.amplitudeCompressionExponent * attenuation; }
 
-function evaluateHarmonicAmplitudes (amplitudes: Float64Array, parms: HarmonicAmplitudeEvaluationParms) : number {
+function evaluateHarmonicAmplitudes (amplitudes: ArrayLike<number>, parms: HarmonicAmplitudeEvaluationParms) : number {
    let sum = 0;
    for (let harmonic = 1; harmonic <= amplitudes.length; harmonic++) {
       sum += evaluateHarmonicAmplitude(amplitudes[harmonic - 1], harmonic, parms); }
@@ -240,7 +240,7 @@ export function findPitchSalienceFunctionArgMax (salienceFunction: (f0: number) 
 * @returns
 *    The estimated pitch frequency in Hz.
 */
-export function estimatePitch_harmonicSum (samples: Float64Array, sampleRate: number, position: number, f0Min: number = 75, f0Max: number = 900,
+export function estimatePitch_harmonicSum (samples: Float64Array | Float32Array, sampleRate: number, position: number, f0Min: number = 75, f0Max: number = 900,
       parms = getDefaultHarmonicSumParms()) : number {
    const salienceFunction = (f0: number) => harmonicSum(samples, sampleRate, position, f0, parms);
    return findPitchSalienceFunctionArgMax(salienceFunction, f0Min, f0Max); }

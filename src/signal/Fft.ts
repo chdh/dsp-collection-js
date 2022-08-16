@@ -167,7 +167,7 @@ function swapReIm (a: ComplexArray) : ComplexArray {
 *    An array of complex numbers. It has the same size as the input array.
 *    The upper half of the array contains complex conjugates of the lower half.
 */
-export function fftReal (x: Float64Array) : ComplexArray {
+export function fftReal (x: ArrayLike<number>) : ComplexArray {
    return fft(new ComplexArray(x)); }
 
 /**
@@ -187,7 +187,7 @@ export function fftReal (x: Float64Array) : ComplexArray {
 *    If `inclNyquist`is `false, the output array is half the size of the input array.
 *    Otherwise it is 1 element longer.
 */
-export function fftRealHalf (x: Float64Array, inclNyquist = false) : ComplexArray {
+export function fftRealHalf (x: ArrayLike<number>, inclNyquist = false) : ComplexArray {
    if (x.length <= 1) {
       return new ComplexArray(x); }
    const m = x.length;
@@ -235,7 +235,7 @@ export function fftRealHalf (x: Float64Array, inclNyquist = false) : ComplexArra
 * @returns
 *    An array of complex numbers that represent the spectrum of the input signal.
 */
-export function fftRealSpectrum (x: Float64Array, inclNyquist = false) : ComplexArray {
+export function fftRealSpectrum (x: ArrayLike<number>, inclNyquist = false) : ComplexArray {
    const n = x.length;
    if (n == 0) {
       throw new Error("Input array must not be empty."); }

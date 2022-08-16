@@ -30,7 +30,7 @@ import ComplexArray from "../math/ComplexArray.js";
 *    The amplitude can be normalized by mutliplying `1 / x.length` for DC and `2 / x.length`
 *    for frequencies `> 0` and `< x.length / 2`.
 */
-export function dftRealSingle (x: Float64Array, relativeFrequency: number) : MutableComplex  {
+export function dftRealSingle (x: ArrayLike<number>, relativeFrequency: number) : MutableComplex  {
    const n = x.length;
    if (n == 0) {
       throw new Error("Input array must not be empty."); }
@@ -77,7 +77,7 @@ export function dftSingle (x: ComplexArray, relativeFrequency: number, direction
 *    An array of complex numbers. It has the same size as the input array.
 *    The upper half of the array contains complex conjugates of the lower half.
 */
-export function dftReal (x: Float64Array) : ComplexArray {
+export function dftReal (x: ArrayLike<number>) : ComplexArray {
    const n = x.length;
    const a = new ComplexArray(n);
    for (let frequency = 0; frequency < n; frequency++) {
@@ -93,7 +93,7 @@ export function dftReal (x: Float64Array) : ComplexArray {
 * @returns
 *    An array of complex numbers. It's size is `Math.ceil(x.length / 2)`.
 */
-export function dftRealHalf (x: Float64Array) : ComplexArray {
+export function dftRealHalf (x: ArrayLike<number>) : ComplexArray {
    const n = Math.ceil(x.length / 2);
    const a = new ComplexArray(n);
    for (let frequency = 0; frequency < n; frequency++) {
@@ -135,7 +135,7 @@ export function dft (x: ComplexArray, direction: boolean) : ComplexArray {
 * @returns
 *    An array of complex numbers that represent the spectrum of the input signal.
 */
-export function dftRealSpectrum (x: Float64Array, inclNyquist = false) : ComplexArray {
+export function dftRealSpectrum (x: ArrayLike<number>, inclNyquist = false) : ComplexArray {
    const n = x.length;
    if (n == 0) {
       throw new Error("Input array must not be empty."); }

@@ -21,7 +21,7 @@ import ComplexArray from "../math/ComplexArray.js";
 *    The amplitude can be normalized by mutliplying `1 / x.length` for DC and `2 / x.length`
 *    for frequencies `> 0` and `< x.length / 2`.
 */
-export function goertzelSingle (x: Float64Array, relativeFrequency: number) : MutableComplex {
+export function goertzelSingle (x: ArrayLike<number>, relativeFrequency: number) : MutableComplex {
    const n = x.length;
    if (n == 0) {
       throw new Error("Input array must not be empty."); }
@@ -45,7 +45,7 @@ export function goertzelSingle (x: Float64Array, relativeFrequency: number) : Mu
 *    An array of complex numbers. It has the same size as the input array.
 *    The upper half of the array contains complex conjugates of the lower half.
 */
-export function goertzel (x: Float64Array) : ComplexArray {
+export function goertzel (x: ArrayLike<number>) : ComplexArray {
    const n = x.length;
    const a = new ComplexArray(n);
    for (let frequency = 0; frequency < n; frequency++) {
@@ -69,7 +69,7 @@ export function goertzel (x: Float64Array) : ComplexArray {
 * @returns
 *    An array of complex numbers that represent the spectrum of the input signal.
 */
-export function goertzelSpectrum (x: Float64Array, inclNyquist = false) : ComplexArray {
+export function goertzelSpectrum (x: ArrayLike<number>, inclNyquist = false) : ComplexArray {
    const n = x.length;
    if (n == 0) {
       throw new Error("Input array must not be empty."); }

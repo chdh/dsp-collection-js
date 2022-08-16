@@ -14,13 +14,13 @@ export default class ComplexArray {
    public  im:     Float64Array;
    public  length: number;
 
-   public constructor (x: number | Complex[] | Float64Array = 0) {
+   public constructor (x: number | Complex[] | ArrayLike<number> = 0) {
       if (typeof x == "number") {
          this.constructByLength(x); }
-       else if (x instanceof Float64Array) {
-         this.constructByFloat64Array(x); }
-       else if (x instanceof Array && x[0] instanceof Complex) {
+       else if (Array.isArray(x) && x[0] instanceof Complex) {
          this.constructByArrayOfComplex(x); }
+       else if (x instanceof Object && x.length !== undefined) {
+         this.constructByArrayOfNumber(<ArrayLike<number>>x); }
        else {
          throw new Error("Invalid constructor argument."); }}
 
@@ -33,11 +33,6 @@ export default class ComplexArray {
          this.re = emptyFloat64Array;
          this.im = emptyFloat64Array; }}
 
-   private constructByFloat64Array (a: Float64Array) {
-      this.length = a.length;
-      this.re = a.slice();
-      this.im = new Float64Array(a.length); }
-
    private constructByArrayOfComplex (a: Complex[]) {
       this.length = a.length;
       this.re = new Float64Array(a.length);
@@ -45,6 +40,11 @@ export default class ComplexArray {
       for (let i = 0; i < a.length; i++) {
          this.re[i] = a[i].re;
          this.im[i] = a[i].im; }}
+
+   private constructByArrayOfNumber (a: ArrayLike<number>) {
+      this.length = a.length;
+      this.re = new Float64Array(a);
+      this.im = new Float64Array(a.length); }
 
    public slice (begin?: number, end?: number) : ComplexArray {
       const a2 = new ComplexArray();
@@ -69,6 +69,10 @@ export default class ComplexArray {
    public setReIm (i: number, re: number, im: number) {
       this.re[i] = re;
       this.im[i] = im; }
+
+   public setPolar (i: number, abs: number, arg: number) {
+      this.re[i] = abs * Math.cos(arg);
+      this.im[i] = abs * Math.sin(arg); }
 
    public static copy1 (a1: ComplexArray, i1: number, a2: ComplexArray, i2: number) {
       a2.re[i2] = a1.re[i1];

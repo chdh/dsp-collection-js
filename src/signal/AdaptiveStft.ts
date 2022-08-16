@@ -40,7 +40,7 @@ export interface ComponentResult {
 * @returns
 *    The result structure, or `undefined` if the result cannot be computed.
 */
-export function getSingle_relWindow (samples: Float64Array, roughFrequency: number, roughWindowCenterPosition: number,
+export function getSingle_relWindow (samples: Float64Array | Float32Array, roughFrequency: number, roughWindowCenterPosition: number,
       relWindowWidth: number, windowFunction: WindowFunctions.WindowFunction | undefined) : ComponentResult | undefined {
    if (roughFrequency <= 0 || roughFrequency >= 0.5 || relWindowWidth < 1) {
       return; }
@@ -83,7 +83,7 @@ export function getSingle_relWindow (samples: Float64Array, roughFrequency: numb
 * @returns
 *    The result structure, or `undefined` if the result cannot be computed.
 */
-export function getSingle_maxWindow (samples: Float64Array, roughFrequency: number, roughWindowCenterPosition: number,
+export function getSingle_maxWindow (samples: Float64Array | Float32Array, roughFrequency: number, roughWindowCenterPosition: number,
       maxWindowWidth: number, windowFunction: WindowFunctions.WindowFunction | undefined) : ComponentResult | undefined {
    const relWindowWidth = Math.floor(maxWindowWidth * roughFrequency);
       // number of complete oscillations that fit within the maximum window width
@@ -104,7 +104,7 @@ export function getSingle_maxWindow (samples: Float64Array, roughFrequency: numb
 * @returns
 *    A complex value that represents the amplitude and phase of the sine wave component, or Complex.NaN.
 */
-export function getSingle (samples: Float64Array, roughFrequency: number, windowFunction: WindowFunctions.WindowFunction | undefined) : Complex {
+export function getSingle (samples: Float64Array | Float32Array, roughFrequency: number, windowFunction: WindowFunctions.WindowFunction | undefined) : Complex {
    const r = getSingle_maxWindow(samples, roughFrequency, samples.length / 2, samples.length, windowFunction);
    return r ? r.component : Complex.NaN; }
 
@@ -129,7 +129,7 @@ export function getSingle (samples: Float64Array, roughFrequency: number, window
 *    a[0] = amplitude of fundamental frequency, a[i] = amplitude of harmonic i+1 with the frequency `f0 * (i + 1)`.
 *    `undefined` is returned if the amplitudes cannot be computed.
 */
-export function getHarmonicAmplitudes (samples: Float64Array, windowCenterPosition: number, f0: number, harmonics: number, relWindowWidth = 7, windowFunction = WindowFunctions.flatTopWindowNorm) : Float64Array | undefined {
+export function getHarmonicAmplitudes (samples: Float64Array | Float32Array, windowCenterPosition: number, f0: number, harmonics: number, relWindowWidth = 7, windowFunction = WindowFunctions.flatTopWindowNorm) : Float64Array | undefined {
    if (!isFinite(f0) || f0 <= 0 || harmonics <= 0) {
       return; }
    if (!Number.isInteger(relWindowWidth)) {
