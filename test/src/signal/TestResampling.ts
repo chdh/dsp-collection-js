@@ -3,12 +3,57 @@
 import * as Resampling from "dsp-collection/signal/Resampling.js";
 import * as MathUtils from "dsp-collection/math/MathUtils.js";
 
+const maxN = 20;
+const randomRuns = 1000000;
+const stdEps = 1E-8;
+
 function main() {
+   testResampleNearestNeighbor();
+   testResampleNearestNeighborRandom();
    testResampleLinear();
    testResampleLinearRandom();
    testResampleAverage();
    testResampleAverageRandom();
    console.log("TestResampling completed."); }
+
+//--- Nearest neighbor ---------------------------------------------------------
+
+function testResampleNearestNeighbor() {
+   checkResampleNearestNeighbor([1, 2, 3, 4, 5], [1, 3, 5], false);
+   checkResampleNearestNeighbor([1, 2, 3, 4, 5], [1, 3, 4], true);
+   checkResampleNearestNeighbor([1, 2, 3], [1, 1, 2, 2, 3, 3]);
+   checkResampleNearestNeighbor([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], [3, 7, 11], false);
+   checkResampleNearestNeighbor([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], [1, 5,  9], true); }
+
+function testResampleNearestNeighborRandom() {
+   console.log("testResampleNearestNeighborRandom");
+   for (let i = 0; i < randomRuns; i++) {
+      if (i % 100000 == 0) {
+         process.stdout.write("."); }
+      const n1 = rndInt(2, maxN);
+      const n2 = rndInt(2, maxN);
+      const a = genRandomFloat64Array(n1, 1E4);
+      const preserveScale = rndBoolean();
+      checkResampleNearestNeighbor2(a, n2, preserveScale); }
+   console.log(); }
+
+function checkResampleNearestNeighbor (a1: ArrayLike<number>, a2: ArrayLike<number>, preserveScale = false) {
+   const a3 = new Float64Array(a2.length);
+   const a4 = new Float64Array(a2.length);
+   Resampling.resampleNearestNeighbor(a1, a3, preserveScale, -99);
+   Resampling.resampleNearestNeighborRef(a1, a4, preserveScale, -99);
+   verifyEqualArray(a3, a2, 0);
+   verifyEqualArray(a4, a2, 0);
+   checkResampleNearestNeighbor2(a1, a2.length, preserveScale); }
+
+function checkResampleNearestNeighbor2 (a1: ArrayLike<number>, n: number, preserveScale = false) {
+   const a2 = new Float64Array(n);
+   const a3 = new Float64Array(n);
+   Resampling.resampleNearestNeighbor(a1, a2, preserveScale, -99);
+   Resampling.resampleNearestNeighborRef(a1, a3, preserveScale, -99);
+   verifyEqualArray(a2, a3, 0); }
+
+//--- Linear interpolation -----------------------------------------------------
 
 function testResampleLinear() {
    checkResampleLinear([1, 2, 3, 4], [1, 2, 3, 4]);
@@ -31,30 +76,33 @@ function testResampleLinear() {
 
 function testResampleLinearRandom() {
    console.log("testResampleLinearRandom");
-   for (let i = 0; i < 1000000; i++) {
+   for (let i = 0; i < randomRuns; i++) {
       if (i % 100000 == 0) {
          process.stdout.write("."); }
-      const n1 = rndInt(2, 20);
-      const n2 = rndInt(2, 20);
+      const n1 = rndInt(2, maxN);
+      const n2 = rndInt(2, maxN);
       const a = genRandomFloat64Array(n1, 1E4);
-      checkResampleLinear2(a, n2); }
+      const preserveScale = rndBoolean();
+      checkResampleLinear2(a, n2, preserveScale); }
    console.log(); }
 
 function checkResampleLinear (a1: ArrayLike<number>, a2: ArrayLike<number>) {
    const a3 = new Float64Array(a2.length);
    const a4 = new Float64Array(a2.length);
    Resampling.resampleLinear(a1, a3);
-   Resampling.resampleLinearSlow(a1, a4);
-   verifyEqualArray(a3, a2, 1E-10);
-   verifyEqualArray(a3, a4, 1E-10);
-   checkResampleLinear2(a1, a2.length); }
+   Resampling.resampleLinearRef(a1, a4);
+   verifyEqualArray(a3, a2, stdEps);
+   verifyEqualArray(a3, a4, stdEps);
+   checkResampleLinear2(a1, a2.length, false); }
 
-function checkResampleLinear2 (a1: ArrayLike<number>, n: number) {
+function checkResampleLinear2 (a1: ArrayLike<number>, n: number, preserveScale: boolean) {
    const a2 = new Float64Array(n);
    const a3 = new Float64Array(n);
-   Resampling.resampleLinear(a1, a2);
-   Resampling.resampleLinearSlow(a1, a3);
-   verifyEqualArray(a2, a3, 1E-10); }
+   Resampling.resampleLinear(a1, a2, preserveScale, -99);
+   Resampling.resampleLinearRef(a1, a3, preserveScale, -99);
+   verifyEqualArray(a2, a3, stdEps); }
+
+//--- Averaging interpolation --------------------------------------------------
 
 function testResampleAverage() {
    checkResampleAverage([0, 2], [0, 0, 1, 2, 2]);
@@ -65,11 +113,11 @@ function testResampleAverage() {
 
 function testResampleAverageRandom() {
    console.log("testResampleAverageRandom");
-   for (let i = 0; i < 1000000; i++) {
+   for (let i = 0; i < randomRuns; i++) {
       if (i % 100000 == 0) {
          process.stdout.write("."); }
-      const n1 = rndInt(2, 20);
-      const n2 = rndInt(2, 20);
+      const n1 = rndInt(2, maxN);
+      const n2 = rndInt(2, maxN);
       const a = genRandomFloat64Array(n1, 1E4);
       checkResampleAverage2(a, n2); }
    console.log(); }
@@ -78,17 +126,17 @@ function checkResampleAverage (a1: ArrayLike<number>, a2: ArrayLike<number>) {
    const a3 = new Float64Array(a2.length);
    const a4 = new Float64Array(a2.length);
    Resampling.resampleAverage(a1, a3);
-   Resampling.resampleAverageSlow(a1, a4);
-   verifyEqualArray(a3, a2, 1E-10);
-   verifyEqualArray(a3, a4, 1E-10);
+   Resampling.resampleAverageRef(a1, a4);
+   verifyEqualArray(a3, a2, stdEps);
+   verifyEqualArray(a3, a4, stdEps);
    checkResampleAverage2(a1, a2.length); }
 
 function checkResampleAverage2 (a1: ArrayLike<number>, n: number) {
    const a2 = new Float64Array(n);
    const a3 = new Float64Array(n);
    Resampling.resampleAverage(a1, a2);
-   Resampling.resampleAverageSlow(a1, a3);
-   verifyEqualArray(a2, a3, 1E-10); }
+   Resampling.resampleAverageRef(a1, a3);
+   verifyEqualArray(a2, a3, stdEps); }
 
 //------------------------------------------------------------------------------
 
@@ -105,6 +153,9 @@ function rnd (maxValue: number) : number {
 // Returns a random integer bwtween minValue and maxValue (inclusive).
 function rndInt (minValue: number, maxValue: number) : number {
    return minValue + Math.floor(Math.random() * (maxValue - minValue + 1)); }
+
+function rndBoolean() : boolean {
+   return Math.random() < 0.5; }
 
 function verifyEqualArray (a1: ArrayLike<number>, a2: ArrayLike<number>, eps: number) {
    if (a1.length != a2.length) {
