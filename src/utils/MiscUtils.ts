@@ -1,3 +1,7 @@
+export function assert (cond: boolean) : asserts cond {
+   if (!cond) {
+      throw new Error("Assertion failed."); }}
+
 export interface MutableArrayLike<T> {
    readonly length: number;
    [index: number]: T; }

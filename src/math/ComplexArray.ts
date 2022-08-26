@@ -1,5 +1,6 @@
 import Complex from "./Complex.js";
 import MutableComplex from "./MutableComplex.js";
+import {assert} from "../utils/MiscUtils.js";
 
 const emptyFloat64Array = new Float64Array(0);
 
@@ -46,6 +47,14 @@ export default class ComplexArray {
       this.re = new Float64Array(a);
       this.im = new Float64Array(a.length); }
 
+   public static fromPolar (absArray: ArrayLike<number>, argArray: ArrayLike<number>) : ComplexArray {
+      const n = absArray.length;
+      assert(n == argArray.length);
+      const a = new ComplexArray(n);
+      for (let i = 0; i < n; i++) {
+         a.setPolar(i, absArray[i], argArray[i]); }
+      return a; }
+
    public slice (begin?: number, end?: number) : ComplexArray {
       const a2 = new ComplexArray();
       a2.re = this.re.slice(begin, end);
@@ -78,7 +87,18 @@ export default class ComplexArray {
       a2.re[i2] = a1.re[i1];
       a2.im[i2] = a1.im[i1]; }
 
-   //--- Value retrieval -------------------------------------------------------
+   //--- Single Value retrieval ------------------------------------------------
+
+   public get (i: number) : MutableComplex {
+      return new MutableComplex(this.re[i], this.im[i]); }
+
+   public getAbs (i: number) : number {
+      return Math.hypot(this.re[i], this.im[i]); }
+
+   public getArg (i: number) : number {
+      return Math.atan2(this.im[i], this.re[i]); }
+
+   //-- Array value retrieval --------------------------------------------------
 
    public toString() : string {
       let s = "[";
@@ -89,14 +109,19 @@ export default class ComplexArray {
       s += "]";
       return s; }
 
-   public get (i: number) : MutableComplex {
-      return new MutableComplex(this.re[i], this.im[i]); }
+   public getAbsArray() : Float64Array {
+      const n = this.length;
+      const a = new Float64Array(n);
+      for (let i = 0; i < n; i++) {
+         a[i] = this.getAbs(i); }
+      return a; }
 
-   public getAbs (i: number) : number {
-      return Math.hypot(this.re[i], this.im[i]); }
-
-   public getArg (i: number) : number {
-      return Math.atan2(this.im[i], this.re[i]); }
+   public getArgArray() : Float64Array {
+      const n = this.length;
+      const a = new Float64Array(n);
+      for (let i = 0; i < n; i++) {
+         a[i] = this.getArg(i); }
+      return a; }
 
    //--- Single value operations -----------------------------------------------
 
@@ -134,8 +159,7 @@ export default class ComplexArray {
 
    public mulByArray (a2: ComplexArray) {
       const n = this.length;
-      if (a2.length != n) {
-         throw new Error("Array sizes are not equal."); }
+      assert(a2.length == n);
       for (let i = 0; i < n; i++) {
          this.setMul(i, this.re[i], this.im[i], a2.re[i], a2.im[i]); }}
 

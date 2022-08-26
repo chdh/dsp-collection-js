@@ -5,7 +5,6 @@
 *  - Cooley-Tukey (Radix-2)
 *  - Bluestein
 * It is not extremely optimized, but should be reasonably fast for normal purposes.
-*
 */
 
 import ComplexArray from "../math/ComplexArray.js";

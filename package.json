@@ -1,6 +1,6 @@
 {
    "name": "dsp-collection",
-   "version": "0.2.4",
+   "version": "0.2.5",
    "description": "A collection of JavaScript modules for digital signal processing (written in TypeScript)",
    "keywords": [
       "DSP",
@@ -9,6 +9,8 @@
       "Goertzel",
       "FFT",
       "Fourier Transform",
+      "Filter",
+      "Spectral filtering",
       "Window functions",
       "Instantaneous frequency",
       "Pitch estimation"

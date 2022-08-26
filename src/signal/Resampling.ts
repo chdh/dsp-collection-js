@@ -1,6 +1,11 @@
 import * as ArrayUtils from "../utils/ArrayUtils.js";
 import {MutableArrayLike} from "../utils/MiscUtils.js";
 
+// The optimized routines for resampling with nearest-neighbor, linear and averaging interpolation
+// use an integer counting algorithm, similar to the Bresenham algorithm used for line drawing.
+// This is faster than using floating point numbers and avoids rounding problems and artefacts
+// that can occur with floating point arithmetic.
+
 function handleTrivialCases (ia: ArrayLike<number>, oa: MutableArrayLike<number>, preserveScale = false, neNe = false) : boolean {
    const iLen = ia.length;
    const oLen = oa.length;
@@ -52,7 +57,7 @@ export function resampleNearestNeighbor (ia: ArrayLike<number>, oa: MutableArray
    const oLen1 = preserveScale ? Math.trunc((iLen - 0.5) / iLen * oLen + 1 - 1E-9) : oLen;
    let ip = 0;                                                       // input array position
    let op = 0;                                                       // output array position
-   let d = preserveScale ? od / 2 : id / 2;                          // position delta using integer arithmetics
+   let d = preserveScale ? od / 2 : id / 2;                          // position delta using integer arithmetic
    while (op < oLen1) {
       if (d >= od) {
          if (od >= id) {                                             // speed optimization for upsampling
@@ -138,7 +143,7 @@ export function resampleLinear (ia: ArrayLike<number>, oa: MutableArrayLike<numb
    const oLen1 = preserveScale ? Math.trunc((iLen - 1) * oLen / iLen + 1 + 1E-9) : oLen;
    let ip = 0;
    let op = 0;
-   let d = 0;                                                        // position delta using integer arithmetics
+   let d = 0;                                                        // position delta using integer arithmetic
    while (op < oLen1) {
       if (d >= od) {
          if (od >= id) {                                             // speed optimization for upsampling
@@ -225,7 +230,7 @@ export function resampleAverage (ia: ArrayLike<number>, oa: MutableArrayLike<num
    const oLen = oa.length;
    let ip = 0;
    let op = 0;
-   let d = 0;                                                        // position delta (outPos - inPos) using integer arithmetics
+   let d = 0;                                                        // position delta (outPos - inPos) using integer arithmetic
    while (op < oLen) {
       d += iLen;
       let acc = 0;
