@@ -1,8 +1,10 @@
-# The source-code.biz JavaScript DSP Collection
+# The JavaScript DSP Collection
 
 A collection of JavaScript modules for digital signal processing (written in TypeScript).
 
 (This package is currently in development)
+
+NPM package: [dsp-collection](https://www.npmjs.com/package/dsp-collection)
 
 ## Online test applications
 

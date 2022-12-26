@@ -13,11 +13,6 @@
       // "noUnusedLocals": true,
       "noUnusedParameters": true,
       "outDir": "tempBuild",
-      "paths": {
-         "dsp-collection/*": [
-            "../../dist/*"
-         ]
-       },
       "removeComments": true,
       "rootDir": "src",
       "sourceMap": true,

@@ -1,7 +1,7 @@
 import * as SpecFilt from "dsp-collection/filter/SpecFilt.js";
 import * as Fs from "fs";
 import * as WavFileEncoder from "wav-file-encoder";
-import * as WavDecoder from "wav-decoder";
+import * as WavFileDecoder from "wav-file-decoder";
 
 var inputFileName:           string;
 var filterType:              string;
@@ -16,7 +16,7 @@ var sampleRate:              number;
 function readCommandLineArgs() {
    const args = process.argv.slice(2);
    if (args.length != 5) {
-      throw "Invalid number of command line arguments."; }
+      throw new Error("Invalid number of command line arguments."); }
    inputFileName = args[0];
    filterType = args[1];
    filterFreq1 = parseFloat(args[2]);
@@ -25,7 +25,7 @@ function readCommandLineArgs() {
 
 function loadInputFile() {
    const buf = Fs.readFileSync(inputFileName);
-   const audioData = WavDecoder.decode.sync(buf, {symetric: true});
+   const audioData = WavFileDecoder.decodeWavFile(buf);
    if (audioData.channelData.length > 1) {
       console.log("Warning: Only the first auto channel is used."); }
    inputSamples = audioData.channelData[0];
