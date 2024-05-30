@@ -18,7 +18,7 @@ export function isFuzzyInteger (i: number, eps: number) : boolean {
 export function isPowerOf2 (i: number) : boolean {
    if (!Number.isSafeInteger(i) || i < 1 || i > 0x40000000) {
       return false; }
-   return (i & (i - 1)) == 0; }                            // tslint:disable-line:no-bitwise
+   return (i & (i - 1)) == 0; }
 
 /**
 * Returns the lowest power of 2 that is higher than `x`.
@@ -71,26 +71,45 @@ export function hyperbolicDecline (t: number, a: number, b: number) : number {
          return 1 / (1 + b * a * t) ** (1 / b); }}}
 
 /**
-* Calculates a simple moving average over an array.
+* Calculates the simple moving average (SMA) over an array of numbers.
 * Each element of the output array contains the mean value of the window centered at that position in the input array.
+* When the window width is even, the `shift` parameter specifies whether the resulting position is 0.5 to the
+* left (`shift` = `false`) or to the right (`shift` = `true`) of the window center.
+* Edge cases are handled by cutting the rectangular moving window at the edge.
 */
-export function movingAverage (a: ArrayLike<number>, windowWidth: number) : Float64Array {
+export function simpleMovingAverage (a: ArrayLike<number>, windowWidth: number, shift = false) : Float64Array {
    if (windowWidth < 2 || !Number.isSafeInteger(windowWidth)) {
-      throw new Error("Specified window width is not a valid integer value."); }
+      throw new Error("Specified window width is not valid for SMA."); }
    const len = a.length;
    const a2 = new Float64Array(len);
    const halfWindowWidth = Math.floor(windowWidth / 2);
+   const posShift = (shift && windowWidth % 2 == 0) ? 1 : 0;
    const extendedLen = len + halfWindowWidth;
    let movingSum = 0;                                      // sum of the array values within the moving window
    let n = 0;                                              // number of array values in movingSum
-   for (let p = 0; p < extendedLen; p++) {
+   for (let p = 0; p < extendedLen; p++) {                 // p is the position of the last value at the end of the current moving window
       if (p >= windowWidth) {
          movingSum -= a[p - windowWidth];                  // remove oldest value from moving sum
          n--; }
       if (p < len) {
          movingSum += a[p];                                // add new value to moving sum
          n++; }
-      const p2 = p - halfWindowWidth;                      // center position of the window
+      const p2 = p - halfWindowWidth + posShift;           // center position of the window
       if (p2 >= 0) {
          a2[p2] = movingSum / n; }}                        // output value is average of moving sum
+   return a2; }
+
+/**
+* Calculates the triangular moving average (TMA) over an array of numbers.
+* Each element of the output array contains the triangular weighted value of the window centered at that position in the input array.
+* Note that the elements at the edge of the triangular window are not included.
+*/
+export function triangularMovingAverage (a: ArrayLike<number>, windowWidth: number) : Float64Array {
+   if (windowWidth < 4 || !Number.isSafeInteger(windowWidth)) {
+      throw new Error("Specified window width is not valid for TMA."); }
+   // The TMA is calculated by applying twice the SMA with half the window width.
+   const w1 = Math.floor(windowWidth / 2);
+   const w2 = windowWidth - w1;
+   const a1 = simpleMovingAverage(a, w1);
+   const a2 = simpleMovingAverage(a1, w2, true);
    return a2; }

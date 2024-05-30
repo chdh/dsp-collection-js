@@ -207,7 +207,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
       pitchGraphFunction = Utils.createArrayBackedFunction(pitchGraphFunction, 0, xMax, 1024, NaN); }
    if (yMax == -1) {
       yMax = salienceFunction(pitchFrequency) * 1.1; }
-   const pitchViewerState: FunctionCurveViewer.ViewerState = {
+   const pitchViewerState: Partial<FunctionCurveViewer.ViewerState> = {
       viewerFunction:  pitchGraphFunction,
       xMin:            0,
       xMax:            xMax,
@@ -215,7 +215,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
       yMax:            yMax,
       primaryZoomMode: FunctionCurveViewer.ZoomMode.x,
       xAxisUnit:       (xAxisMode == "frequency") ? "Hz" : "s"};
-   const harmonicsViewerState: FunctionCurveViewer.ViewerState = {
+   const harmonicsViewerState: Partial<FunctionCurveViewer.ViewerState> = {
       viewerFunction:  harmonicsViewerFunction,
       xMin:            0,
       xMax:            fCutoff,

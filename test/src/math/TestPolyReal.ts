@@ -21,7 +21,7 @@ function verifyNormalizedFractionsEqual (f1: ArrayLike<number>[], f2: ArrayLike<
 function verifyEvaluateComplex (a: ArrayLike<number>, x: Complex, expectedResult: Complex) {
    const r = PolyReal.evaluateComplex(a, x);
    if (!r.equals(expectedResult)) {
-      throw new Error(`Evaluate check failed, a=${a}, x=${x}, r=${r}, expected=${expectedResult}.`); }}
+      throw new Error(`Evaluate check failed, a=${a}, x=${x}, r=${r}, expected=${expectedResult}.`); }} // eslint-disable-line
 
 function testEvaluateComplex() {
    verifyEvaluateComplex([5, 3, 2], new Complex(2), new Complex(5 + 3 * 2 + 2 * 2 ** 2));

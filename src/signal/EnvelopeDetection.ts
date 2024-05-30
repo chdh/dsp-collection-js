@@ -23,8 +23,8 @@ import * as MathUtils from "../math/MathUtils.js";
 *    The envelope of the signal.
 */
 export function generateSignalEnvelope (signal: ArrayLike<number>, windowWidthDc: number, windowWidthEnvelope: number) : Float64Array {
-   const a1 = MathUtils.movingAverage(signal, windowWidthDc);      // calculate DC level
+   const a1 = MathUtils.simpleMovingAverage(signal, windowWidthDc);            // calculate DC level
    for (let i = 0; i < a1.length; i++) {
-      a1[i] = Math.abs(signal[i] - a1[i]); }                       // subtract DC from signal and rectify
-   const a2 = MathUtils.movingAverage(a1, windowWidthEnvelope);    // moving average to get envelope
+      a1[i] = Math.abs(signal[i] - a1[i]); }                                   // subtract DC from signal and rectify
+   const a2 = MathUtils.simpleMovingAverage(a1, windowWidthEnvelope);          // moving average to get envelope
    return a2; }

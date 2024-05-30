@@ -45,7 +45,7 @@ export interface AnalysisParms {
 export interface AnalysisResultBlock {
    title:                    string;
    cssClass:                 string;
-   viewerState:              FunctionCurveViewer.ViewerState;
+   viewerState:              Partial<FunctionCurveViewer.ViewerState>;
    syncXPosition?:           boolean; }                    // true to synchronize the X position with the other result viewers
 
 export interface AnalysisResult {

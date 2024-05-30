@@ -30,7 +30,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
    const linEnvelopeViewerFunction = FunctionCurveViewer.createViewerFunctionForFloat64Array(linBuf, sampleRate);
    const logBuf = linBuf.map(DspUtils.convertAmplitudeToDb);
    const logEnvelopeViewerFunction = FunctionCurveViewer.createViewerFunctionForFloat64Array(logBuf, sampleRate);
-   const linEnvelopeViewerState: FunctionCurveViewer.ViewerState = {
+   const linEnvelopeViewerState: Partial<FunctionCurveViewer.ViewerState> = {
       viewerFunction:  linEnvelopeViewerFunction,
       xMin:            parms.viewportXMin,
       xMax:            parms.viewportXMax,
@@ -38,7 +38,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
       yMax:            1,
       primaryZoomMode: FunctionCurveViewer.ZoomMode.x,
       xAxisUnit:       "s"};
-   const logEnvelopeViewerState: FunctionCurveViewer.ViewerState = {
+   const logEnvelopeViewerState: Partial<FunctionCurveViewer.ViewerState> = {
       viewerFunction:  logEnvelopeViewerFunction,
       xMin:            parms.viewportXMin,
       xMax:            parms.viewportXMax,

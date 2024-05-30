@@ -127,7 +127,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
          break; }
       default: {
          throw new Error("Unknown amplitude mode."); }}
-   const amplitudeViewerState: FunctionCurveViewer.ViewerState = {
+   const amplitudeViewerState: Partial<FunctionCurveViewer.ViewerState> = {
       viewerFunction:  amplitudeViewerFunction,
       xMin:            0,
       xMax:            xMax,
@@ -137,7 +137,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
       xAxisUnit:       (xAxisMode == "frequency") ? "Hz" : "s",
       yAxisUnit:       (amplitudeMode == "log") ? "dB" : "" };
    const phaseYRange = 1.05 * Math.PI;
-   const phaseViewerState: FunctionCurveViewer.ViewerState = {
+   const phaseViewerState: Partial<FunctionCurveViewer.ViewerState> = {
       viewerFunction:  phaseViewerFunction,
       xMin:            0,
       xMax:            xMax,

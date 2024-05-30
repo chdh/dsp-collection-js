@@ -18,7 +18,7 @@ var windowFunctionRaw:           WindowFunctions.WindowFunction;
 var windowFunctionNormalized:    WindowFunctions.WindowFunction;
 
 function loadWindowFunctionViewer() {
-   const viewerState : FunctionCurveViewer.ViewerState = {
+   const viewerState : Partial<FunctionCurveViewer.ViewerState> = {
       viewerFunction:  windowFunctionRaw,
       xMin:            -0.1,
       xMax:            1.1,
@@ -53,7 +53,7 @@ function loadSpectrumViewer() {
       fftSamples[p] = windowFunction(p / windowSize); }
    const spectrum = computeSpectrum(fftSamples, fftOversizeFactor);
    const viewerFunction = FunctionCurveViewer.createViewerFunctionForFloat64Array(spectrum, fftOversizeFactor, fftSize / 2);
-   const viewerState : FunctionCurveViewer.ViewerState = {
+   const viewerState : Partial<FunctionCurveViewer.ViewerState> = {
       viewerFunction:  viewerFunction,
       xMin:            -40,
       xMax:            40,

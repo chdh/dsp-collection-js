@@ -140,7 +140,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
          const amplitudeViewerFunction = (time: number) => {
             const r = bufferedInstFreqFunction(time);
             return r ? DspUtils.convertAmplitudeToDb(r.amplitude) : NaN; };
-         const instFrequencyViewerState: FunctionCurveViewer.ViewerState = {
+         const instFrequencyViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             viewerFunction:  instFrequencyViewerFunction,
             channels:        2,
             xMin:            xMin,
@@ -150,7 +150,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
             primaryZoomMode: FunctionCurveViewer.ZoomMode.x,
             xAxisUnit:       "s",
             yAxisUnit:       "Hz" };
-         const amplitudeViewerState: FunctionCurveViewer.ViewerState = {
+         const amplitudeViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             viewerFunction:  amplitudeViewerFunction,
             xMin:            xMin,
             xMax:            xMax,
@@ -177,7 +177,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
             return r ? r.component : Complex.NaN; };
          const amplitudeViewerFunction = (time: number) => DspUtils.convertAmplitudeToDb(waveComponentFunction(time).abs());
          const phaseViewerFunction = (time: number) => waveComponentFunction(time).arg();
-         const amplitudeViewerState: FunctionCurveViewer.ViewerState = {
+         const amplitudeViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             viewerFunction:  amplitudeViewerFunction,
             xMin:            xMin,
             xMax:            xMax,
@@ -187,7 +187,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
             xAxisUnit:       "s",
             yAxisUnit:       "dB" };
          const phaseYRange = 1.05 * Math.PI;
-         const phaseViewerState: FunctionCurveViewer.ViewerState = {
+         const phaseViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             viewerFunction:  phaseViewerFunction,
             xMin:            xMin,
             xMax:            xMax,
@@ -239,7 +239,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
          const amplitudeViewerFunction = (time: number) => {
             const r = getBufEntry(time);
             return r ? DspUtils.convertAmplitudeToDb(r.amplitude) : NaN; };
-         const instFrequencyViewerState: FunctionCurveViewer.ViewerState = {
+         const instFrequencyViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             viewerFunction:  instFrequencyViewerFunction,
             channels:        2,
             xMin:            xMin,
@@ -249,7 +249,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
             primaryZoomMode: FunctionCurveViewer.ZoomMode.x,
             xAxisUnit:       "s",
             yAxisUnit:       "Hz" };
-         const amplitudeViewerState: FunctionCurveViewer.ViewerState = {
+         const amplitudeViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             viewerFunction:  amplitudeViewerFunction,
             xMin:            xMin,
             xMax:            xMax,
@@ -295,7 +295,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
                   sum += r.amplitude; }}
             overallAmplitudes[i] = DspUtils.convertAmplitudeToDb(sum); }
          const overallAmplitudeViewerFunction = FunctionCurveViewer.createViewerFunctionForFloat64Array(overallAmplitudes, 1 / trackingInterval, -xMin / trackingInterval);
-         const frequenciesViewerState: FunctionCurveViewer.ViewerState = {
+         const frequenciesViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             viewerFunction:  frequenciesViewerFunction,
             channels:        harmonics,
             xMin:            xMin,
@@ -305,7 +305,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
             primaryZoomMode: FunctionCurveViewer.ZoomMode.x,
             xAxisUnit:       "s",
             yAxisUnit:       "Hz" };
-         const amplitudeViewerState: FunctionCurveViewer.ViewerState = {
+         const amplitudeViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             viewerFunction:  amplitudeViewerFunction,
             channels:        harmonics,
             xMin:            xMin,
@@ -315,7 +315,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
             primaryZoomMode: FunctionCurveViewer.ZoomMode.x,
             xAxisUnit:       "s",
             yAxisUnit:       "dB" };
-         const overallAmplitudeViewerState: FunctionCurveViewer.ViewerState = {
+         const overallAmplitudeViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             viewerFunction:  overallAmplitudeViewerFunction,
             xMin:            xMin,
             xMax:            xMax,
@@ -387,7 +387,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
          const overallAmplitudeViewerFunction = (time: number) => {
             const r = getBufEntry(time);
             return r ? DspUtils.convertAmplitudeToDb(r.overallAmplitude) : NaN; };
-         const f0ViewerState: FunctionCurveViewer.ViewerState = {
+         const f0ViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             viewerFunction:  f0ViewerFunction,
             channels:        2,
             xMin:            xMin,
@@ -397,7 +397,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
             primaryZoomMode: FunctionCurveViewer.ZoomMode.x,
             xAxisUnit:       "s",
             yAxisUnit:       "Hz" };
-         const amplitudeViewerState: FunctionCurveViewer.ViewerState = {
+         const amplitudeViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             viewerFunction:  amplitudeViewerFunction,
             channels:        harmonics,
             xMin:            xMin,
@@ -407,7 +407,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
             primaryZoomMode: FunctionCurveViewer.ZoomMode.x,
             xAxisUnit:       "s",
             yAxisUnit:       "dB" };
-         const amplitudeOverFrequencyViewerState: FunctionCurveViewer.ViewerState = {
+         const amplitudeOverFrequencyViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             xMin:            0,
             xMax:            startFrequency * harmonics * 1.1,
             yMin:            -80,
@@ -415,7 +415,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
             xAxisUnit:       "Hz",
             yAxisUnit:       "dB",
             customPaintFunction: amplitudeOverFrequencyPaintFunction };
-         const overallAmplitudeViewerState: FunctionCurveViewer.ViewerState = {
+         const overallAmplitudeViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             viewerFunction:  overallAmplitudeViewerFunction,
             xMin:            xMin,
             xMax:            xMax,

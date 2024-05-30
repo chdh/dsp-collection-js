@@ -20,7 +20,8 @@ NPM package: [dsp-collection](https://www.npmjs.com/package/dsp-collection)
 
 ## Associated JavaScript packages
 
-* [commons-math-interpolation - Interpolation and regression algorithms](https://github.com/chdh/commons-math-interpolation)
+* [commons-math-interpolation](https://github.com/chdh/commons-math-interpolation) - Interpolation and regression algorithms
 * [Function curve editor widget](https://www.source-code.biz/snippets/typescript/functionCurveEditor)
 * [Function curve viewer widget](https://www.source-code.biz/snippets/typescript/functionCurveViewer)
 * [WAV file encoder](https://github.com/chdh/wav-file-encoder)
+* [WAV file decoder](https://github.com/chdh/wav-file-decoder)

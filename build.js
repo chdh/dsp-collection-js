@@ -29,7 +29,7 @@ function main2() {
       case "build": {
          delDir("dist");
          shell("tsc");
-         shell("teslint");
+         shell("eslint");
          copyToDist([".npmignore", "LICENSE.md", "README.md", "package.json", "build.js"]);
          console.log("Build completed.");
          break; }

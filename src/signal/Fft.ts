@@ -77,7 +77,6 @@ function copyBitReversed (a1: ComplexArray) : ComplexArray {
 
 // Increments an integer bit-reversed.
 // `n` must be a power of 2.
-// tslint:disable:no-bitwise
 function incrementBitReversed (i: number, n: number) : number {
    let m = n >> 1;                                         // start with lowest bit (in reverse order)
    let a = i;
@@ -85,7 +84,6 @@ function incrementBitReversed (i: number, n: number) : number {
       a -= m;                                              // set bit `m` to 0
       m >>= 1; }                                           // move one bit to the right
    return a | m; }                                         // set bit `m` to 1
-   // tslint:enable:no-bitwise
 
 // Bluestein's FFT algorithm for arrays of arbitrary length.
 function fftBluestein (x: ComplexArray) : ComplexArray {

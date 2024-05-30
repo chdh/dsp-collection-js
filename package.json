@@ -13,7 +13,9 @@
       "Spectral filtering",
       "Window functions",
       "Instantaneous frequency",
-      "Pitch estimation"
+      "Pitch estimation",
+      "Simple moving average (SMA)",
+      "triangular moving average (TMA)"
    ],
    "license": "MIT",
    "homepage": "http://www.source-code.biz/dsp/js",
@@ -31,6 +33,9 @@
       "prepack": "node build.js verifyCurrentDirIsDist",
       "doPack": "cd dist && npm pack",
       "doPublish": "cd dist && npm publish"
+   },
+   "devDependencies": {
+      "@types/node": "^20.12.13"
    },
    "type": "module"
 }

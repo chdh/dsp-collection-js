@@ -53,7 +53,7 @@ export function getFunctionbyId (id: string, {normalize = true, valueCacheCostLi
 
 // Returns an array with the window function values for a "pediodic" window (for DFT).
 // If table caching is enabled for the window function, the generated tables are kept in
-// memory and re-used.
+// memory and are re-used.
 export function getWindowTable (windowFunction: WindowFunction, n: number) : Float64Array {
    const windowTableCache: Map<number,Float64Array> = (<any>windowFunction).windowTableCache;
    if (windowTableCache) {

@@ -94,7 +94,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
          const amplitudeViewerFunction = (measuringFrequency: number) => {
             const r = instFreqFunction(measuringFrequency);
             return r ? DspUtils.convertAmplitudeToDb(r.amplitude) : NaN; };
-         const instFrequencyViewerState: FunctionCurveViewer.ViewerState = {
+         const instFrequencyViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             viewerFunction:  instFrequencyViewerFunction,
             channels:        2,
             xMin:            0,
@@ -104,7 +104,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
             primaryZoomMode: FunctionCurveViewer.ZoomMode.x,
             xAxisUnit:       "Hz",
             yAxisUnit:       "Hz" };
-         const frequencyDeltaViewerState: FunctionCurveViewer.ViewerState = {
+         const frequencyDeltaViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             viewerFunction:  frequencyDeltaViewerFunction,
             xMin:            0,
             xMax:            maxFrequency,
@@ -113,7 +113,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
             primaryZoomMode: FunctionCurveViewer.ZoomMode.x,
             xAxisUnit:       "Hz",
             yAxisUnit:       "Hz" };
-         const amplitudeViewerState: FunctionCurveViewer.ViewerState = {
+         const amplitudeViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             viewerFunction:  amplitudeViewerFunction,
             xMin:            0,
             xMax:            maxFrequency,
@@ -154,7 +154,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
             if (dbPerHz) {
                logAmplitude -= absDelta * dbPerHz; }
             return logAmplitude; };
-         const amplitudeViewerState: FunctionCurveViewer.ViewerState = {
+         const amplitudeViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             viewerFunction:  amplitudeViewerFunction,
             xMin:            0,
             xMax:            maxFrequency,
@@ -196,7 +196,7 @@ function main (parms: AnalysisBase.AnalysisParms) : AnalysisBase.AnalysisResult 
             if (intOrMax) {
                amplitude /= maxVal * 2; }                            // normalize
             return DspUtils.convertAmplitudeToDb(amplitude); };
-         const amplitudeViewerState: FunctionCurveViewer.ViewerState = {
+         const amplitudeViewerState: Partial<FunctionCurveViewer.ViewerState> = {
             viewerFunction:  amplitudeViewerFunction,
             xMin:            0,
             xMax:            maxFrequency,

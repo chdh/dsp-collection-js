@@ -80,7 +80,7 @@ async function main (parms: AnalysisBase.AnalysisParms) : Promise<AnalysisBase.A
       peakWidthFactor:              DomUtils.getValueNum("peakWidthFactor") };
    const buf = <Float64Array>await BackgroundTaskMgr.execTask("scanPitch", [parms.samples, parms.sampleRate, parms.viewportXMin, parms.viewportXMax, stepSize, f0Min, f0Max, harmSumParms, windowFunctionId, variantId]);
    const pitchFunction = (time: number) => buf[Math.round((time - parms.viewportXMin) / stepSize)];
-   const pitchViewerState: FunctionCurveViewer.ViewerState = {
+   const pitchViewerState: Partial<FunctionCurveViewer.ViewerState> = {
       viewerFunction:  pitchFunction,
       xMin:            parms.viewportXMin,
       xMax:            parms.viewportXMax,

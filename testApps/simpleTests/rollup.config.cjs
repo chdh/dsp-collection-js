@@ -1,11 +1,11 @@
-import * as Path from "path";
-import nodeResolve from "@rollup/plugin-node-resolve";
-import alias from "@rollup/plugin-alias";
+const Path = require('node:path');
+const nodeResolve = require("@rollup/plugin-node-resolve");
+const alias = require("@rollup/plugin-alias");
 
-export default {
+module.exports = {
    input: "tempBuild/Main.js",
    output: {
-      file: "app.js",
+      file: "dist/app.js",
       format: "iife"
    },
    plugins: [
@@ -14,6 +14,6 @@ export default {
          entries: {
             "dsp-collection": Path.resolve("../../dist")
          }
-      }),
+      })
    ]
 };

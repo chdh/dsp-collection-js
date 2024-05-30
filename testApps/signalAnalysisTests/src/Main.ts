@@ -34,7 +34,7 @@ var signalFileName:                    string;
 function loadSignalViewer (centerPosition: number, viewportWidth: number) {
    const viewerFunction = FunctionCurveViewer.createViewerFunctionForFloat64Array(signalSamples, signalSampleRate);
    const yRange = 1.2;
-   const viewerState : FunctionCurveViewer.ViewerState = {
+   const viewerState : Partial<FunctionCurveViewer.ViewerState> = {
       viewerFunction:  viewerFunction,
       xMin:            Math.max(0, centerPosition - viewportWidth / 2),
       xMax:            Math.min(signalSamples.length / signalSampleRate, centerPosition + viewportWidth / 2),

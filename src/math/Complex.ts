@@ -22,7 +22,7 @@ export default class Complex {
    public static readonly TWO = new Complex(2);
 
    /** A `Complex` representing "NaN + NaN i" */
-   public static readonly NaN = new Complex(NaN, NaN);     // tslint:disable-line:variable-name
+   public static readonly NaN = new Complex(NaN, NaN);
 
    /** A `Complex` representing "+Infinity + Infinity i" */
    public static readonly INFINITY = new Complex(Infinity, Infinity);
