@@ -4,8 +4,8 @@
 * Refer to the browser-based SpecFilt application for a test bed for spectral filtering.
 */
 
-import ComplexArray from "../math/ComplexArray.js";
-import * as Fft from "../signal/Fft.js";
+import ComplexArray from "../math/ComplexArray.ts";
+import * as Fft from "../signal/Fft.ts";
 
 export const enum FilterType {
    lowPass  = "LP",

@@ -7,9 +7,9 @@
 * It is not extremely optimized, but should be reasonably fast for normal purposes.
 */
 
-import ComplexArray from "../math/ComplexArray.js";
-import MutableComplex from "../math/MutableComplex.js";
-import * as MathUtils from "../math/MathUtils.js";
+import ComplexArray from "../math/ComplexArray.ts";
+import MutableComplex from "../math/MutableComplex.ts";
+import * as MathUtils from "../math/MathUtils.ts";
 
 var cooleyTukeySineTableCache: Array<ComplexArray>;
 

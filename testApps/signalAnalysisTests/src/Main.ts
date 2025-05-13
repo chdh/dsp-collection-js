@@ -1,8 +1,8 @@
-import * as Utils from "./Utils.js";
-import * as DomUtils from "./DomUtils.js";
-import InternalAudioPlayer from "./InternalAudioPlayer.js";
-import * as BackgroundTaskMgr from "./BackgroundTaskMgr.js";
-import * as AnalysisBase from "./analysisModules/AnalysisBase.js";
+import * as Utils from "./Utils.ts";
+import * as DomUtils from "./DomUtils.ts";
+import InternalAudioPlayer from "./InternalAudioPlayer.ts";
+import * as BackgroundTaskMgr from "./BackgroundTaskMgr.ts";
+import * as AnalysisBase from "./analysisModules/AnalysisBase.ts";
 import * as WindowFunctions from "dsp-collection/signal/WindowFunctions.js";
 import * as FunctionCurveViewer from "function-curve-viewer";
 import * as DialogManager from "dialog-manager";
@@ -274,7 +274,7 @@ function moduleSpecificParmsForm_change (event: Event) {
       moduleDescr.onFormParmsChange(event); }}
 
 async function startup2() {
-   audioContext = new ((<any>window).AudioContext || (<any>window).webkitAudioContext)();
+   audioContext = new ((<any>window).AudioContext ?? (<any>window).webkitAudioContext)();
    audioPlayer = new InternalAudioPlayer(audioContext);
    audioPlayer.addEventListener("stateChange", refreshButtons);
    signalViewerElement = <HTMLCanvasElement>document.getElementById("signalViewer");

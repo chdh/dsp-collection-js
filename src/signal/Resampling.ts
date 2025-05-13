@@ -1,5 +1,5 @@
-import * as ArrayUtils from "../utils/ArrayUtils.js";
-import {MutableArrayLike} from "../utils/MiscUtils.js";
+import * as ArrayUtils from "../utils/ArrayUtils.ts";
+import {MutableArrayLike} from "../utils/MiscUtils.ts";
 
 // The optimized routines for resampling with nearest-neighbor, linear and averaging interpolation
 // use an integer counting algorithm, similar to the Bresenham algorithm used for line drawing.

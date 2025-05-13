@@ -1,5 +1,5 @@
-import * as Utils from "./Utils.js";
-import EventTargetPolyfill from "./EventTargetPolyfill.js";
+import * as Utils from "./Utils.ts";
+import EventTargetPolyfill from "./EventTargetPolyfill.ts";
 
 export default class InternalAudioPlayer {
 

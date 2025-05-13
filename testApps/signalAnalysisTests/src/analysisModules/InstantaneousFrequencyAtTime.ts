@@ -6,9 +6,9 @@ import * as InstFreq from "dsp-collection/signal/InstFreq.js";
 import * as ArrayUtils from "dsp-collection/utils/ArrayUtils.js";
 import * as DspUtils from "dsp-collection/utils/DspUtils.js";
 import * as FunctionCurveViewer from "function-curve-viewer";
-import * as AnalysisBase from "./AnalysisBase.js";
-import * as Utils from "../Utils.js";
-import * as DomUtils from "../DomUtils.js";
+import * as AnalysisBase from "./AnalysisBase.ts";
+import * as Utils from "../Utils.ts";
+import * as DomUtils from "../DomUtils.ts";
 
 const formParmsHtml = strip`
    <div class="parmLine">

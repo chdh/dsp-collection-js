@@ -4,8 +4,8 @@ import {stripIndents as strip} from "common-tags";
 import * as EnvelopeDetection from "dsp-collection/signal/EnvelopeDetection.js";
 import * as FunctionCurveViewer from "function-curve-viewer";
 import * as DspUtils from "dsp-collection/utils/DspUtils.js";
-import * as AnalysisBase from "./AnalysisBase.js";
-import * as DomUtils from "../DomUtils.js";
+import * as AnalysisBase from "./AnalysisBase.ts";
+import * as DomUtils from "../DomUtils.ts";
 
 const formParmsHtml = strip`
    <div class="parmLine">

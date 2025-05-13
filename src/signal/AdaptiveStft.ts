@@ -7,9 +7,9 @@
 * of finer intermediate frequency components than with the classical method.
 */
 
-import Complex from "../math/Complex.js";
-import * as Goertzel from "./Goertzel.js";
-import * as WindowFunctions from "./WindowFunctions.js";
+import Complex from "../math/Complex.ts";
+import * as Goertzel from "./Goertzel.ts";
+import * as WindowFunctions from "./WindowFunctions.ts";
 
 export interface ComponentResult {
    component:                Complex;                      // amplitude+phase of the sine wave component

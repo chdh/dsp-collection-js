@@ -35,7 +35,7 @@
       "doPublish": "cd dist && npm publish"
    },
    "devDependencies": {
-      "@types/node": "^20.12.13"
+      "@types/node": "^22"
    },
    "type": "module"
 }

@@ -2,8 +2,8 @@
 * Autocorrelation functions.
 */
 
-import * as WindowFunctions from "./WindowFunctions.js";
-import * as ArrayUtils from "../utils/ArrayUtils.js";
+import * as WindowFunctions from "./WindowFunctions.ts";
+import * as ArrayUtils from "../utils/ArrayUtils.ts";
 
 function autocorrelationKernel (x: ArrayLike<number>, distance: number, n: number) : number {
    let sum = 0;

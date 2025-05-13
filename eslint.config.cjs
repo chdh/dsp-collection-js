@@ -1,7 +1,8 @@
-const eslint     = require("@eslint/js");
-const tseslint   = require("typescript-eslint");
-const globals    = require("globals");
-const checkFile  = require("eslint-plugin-check-file");
+const eslint      = require("@eslint/js");
+const tseslint    = require("typescript-eslint");
+const stylisticTs = require("@stylistic/eslint-plugin-ts")
+const globals     = require("globals");
+const checkFile   = require("eslint-plugin-check-file");
 
 const namingOptions = [
    "error",
@@ -58,7 +59,7 @@ const rules = {
 
    // Additional Typescript plugin rules:
    "@typescript-eslint/explicit-member-accessibility": "error",
-   "@typescript-eslint/member-delimiter-style": "error",
+   "@stylistic/ts/member-delimiter-style": "error",
    "@typescript-eslint/naming-convention": namingOptions,
    "@typescript-eslint/no-base-to-string": ["error", {ignoredTypeNames: ["Error"]}],
    "@typescript-eslint/no-invalid-this": "error",                                    "no-invalid-this": "off",
@@ -66,7 +67,7 @@ const rules = {
    "@typescript-eslint/no-loss-of-precision": "error",                               "no-loss-of-precision": "off",
    "@typescript-eslint/no-redeclare": "error",                                       "no-redeclare": "off",
    "@typescript-eslint/no-shadow": "error",                                          "no-shadow": "off",
-   "@typescript-eslint/no-throw-literal": "error",
+   "@typescript-eslint/only-throw-error": "error",
    "@typescript-eslint/no-unused-expressions": "error",                              "no-unused-expressions": "off",
    "@typescript-eslint/no-unused-vars": ["error", {"argsIgnorePattern": "^_"}],      "no-unused-vars": "off",
    "@typescript-eslint/no-use-before-define": ["error", {functions: false, classes: false}], "no-use-before-define": "off",
@@ -74,12 +75,11 @@ const rules = {
    "@typescript-eslint/prefer-nullish-coalescing": "warn",
    "@typescript-eslint/prefer-optional-chain": "warn",
    "@typescript-eslint/require-await": "error",                                      "require-await": "off",
-   "@typescript-eslint/semi": "error",                                               "semi": "off",
-   "@typescript-eslint/switch-exhaustiveness-check": "error",
+   "@stylistic/ts/semi": "error",
+   "@typescript-eslint/switch-exhaustiveness-check": ["error", {considerDefaultExhaustiveForUnions: true}],
 
    // Modifications of preset Typescript rules:
    "@typescript-eslint/array-type": "off",
-   "@typescript-eslint/ban-types": ["error", {extendDefaults: true, types: {Function: false, Object: false}}],
    "@typescript-eslint/consistent-generic-constructors": "off",
    "@typescript-eslint/consistent-type-assertions": "off",
    "@typescript-eslint/explicit-module-boundary-types": "off",
@@ -94,6 +94,7 @@ const rules = {
    "@typescript-eslint/no-unsafe-call": "off",
    "@typescript-eslint/no-unsafe-member-access": "off",
    "@typescript-eslint/no-unsafe-return": "off",
+   "@typescript-eslint/no-unsafe-function-type": "off",
    "@typescript-eslint/prefer-for-of": "off",
    "@typescript-eslint/restrict-plus-operands": "off",
    "@typescript-eslint/restrict-template-expressions": "off",
@@ -106,7 +107,8 @@ const rules = {
 module.exports = tseslint.config({
    files: ["src/**/*.ts"],
    plugins: {
-      "check-file": checkFile },
+      "check-file": checkFile,
+      "@stylistic/ts": stylisticTs },
    languageOptions: {
       parserOptions: {
          project: "./tsconfig.json",

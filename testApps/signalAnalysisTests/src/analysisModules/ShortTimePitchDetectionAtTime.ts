@@ -1,7 +1,7 @@
 // Analysis module for short time pitch detection at a fixed point in time.
 
 import {stripIndents as strip} from "common-tags";
-import * as AnalysisBase from "./AnalysisBase.js";
+import * as AnalysisBase from "./AnalysisBase.ts";
 import * as PitchDetectionHarm from "dsp-collection/signal/PitchDetectionHarm.js";
 import * as WindowFunctions from "dsp-collection/signal/WindowFunctions.js";
 import * as AdaptiveStft from "dsp-collection/signal/AdaptiveStft.js";
@@ -9,8 +9,8 @@ import * as InstFreq from "dsp-collection/signal/InstFreq.js";
 import * as Autocorrelation from "dsp-collection/signal/Autocorrelation.js";
 import * as ArrayUtils from "dsp-collection/utils/ArrayUtils.js";
 import * as FunctionCurveViewer from "function-curve-viewer";
-import * as Utils from "../Utils.js";
-import * as DomUtils from "../DomUtils.js";
+import * as Utils from "../Utils.ts";
+import * as DomUtils from "../DomUtils.ts";
 
 const sinSynUrlBase = "http://www.source-code.biz/sinSyn/#components=";
 

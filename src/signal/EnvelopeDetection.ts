@@ -2,7 +2,7 @@
 * Envelope detection.
 */
 
-import * as MathUtils from "../math/MathUtils.js";
+import * as MathUtils from "../math/MathUtils.ts";
 
 /**
 * A simple signal envelope generator using moving averages.

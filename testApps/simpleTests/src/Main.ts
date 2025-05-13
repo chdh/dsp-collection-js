@@ -1,4 +1,4 @@
-import * as TestWindowFunctions from "./TestWindowFunctions.js";
+import * as TestWindowFunctions from "./TestWindowFunctions.ts";
 
 function startup2() {
    const applId = document.body.dataset.applId;

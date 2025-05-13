@@ -11,9 +11,9 @@ import * as EnvelopeDetection from "dsp-collection/signal/EnvelopeDetection.js";
 import * as ArrayUtils from "dsp-collection/utils/ArrayUtils.js";
 import * as MathUtils from "dsp-collection/math/MathUtils.js";
 import * as FunctionCurveViewer from "function-curve-viewer";
-import * as AnalysisBase from "./AnalysisBase.js";
-import * as Utils from "../Utils.js";
-import * as DomUtils from "../DomUtils.js";
+import * as AnalysisBase from "./AnalysisBase.ts";
+import * as Utils from "../Utils.ts";
+import * as DomUtils from "../DomUtils.ts";
 
 const defaultFrequency = 250;
 const eol = "\r\n";

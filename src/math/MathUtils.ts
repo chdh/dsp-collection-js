@@ -95,14 +95,17 @@ export function simpleMovingAverage (a: ArrayLike<number>, windowWidth: number, 
          movingSum += a[p];                                // add new value to moving sum
          n++; }
       const p2 = p - halfWindowWidth + posShift;           // center position of the window
-      if (p2 >= 0) {
+      if (p2 >= 0 && p2 < len) {
          a2[p2] = movingSum / n; }}                        // output value is average of moving sum
    return a2; }
 
 /**
 * Calculates the triangular moving average (TMA) over an array of numbers.
-* Each element of the output array contains the triangular weighted value of the window centered at that position in the input array.
-* Note that the elements at the edge of the triangular window are not included.
+* Each element of the output array contains the triangular weighted value of the window
+* centered at that position in the input array.
+* Note that the elements at the border of the triangular window are not included.
+* Due to the optimization and the cutting at the edges of the input array, the values at the edges of
+* the output array are not the same as when calculated with triangularMovingAverageRef().
 */
 export function triangularMovingAverage (a: ArrayLike<number>, windowWidth: number) : Float64Array {
    if (windowWidth < 4 || !Number.isSafeInteger(windowWidth)) {
@@ -113,3 +116,31 @@ export function triangularMovingAverage (a: ArrayLike<number>, windowWidth: numb
    const a1 = simpleMovingAverage(a, w1);
    const a2 = simpleMovingAverage(a1, w2, true);
    return a2; }
+
+/**
+* Reference implementation of the triangular moving average (TMA).
+*
+* This a very slow reference implementation. It is used in the test module to verify the result of the
+* optimized implementation.
+*/
+export function triangularMovingAverageRef (a: ArrayLike<number>, windowWidth: number) : Float64Array {
+   if (windowWidth < 4 || !Number.isSafeInteger(windowWidth)) {
+      throw new Error("Specified window width is not valid for TMA."); }
+   const len = a.length;
+   const a2 = new Float64Array(len);
+   for (let p = 0; p < len; p++) {
+      a2[p] = computeTriangularAverageAt(a, p, windowWidth); }
+   return a2; }
+
+// Computes the triangular average at a specified position in an array of numbers.
+function computeTriangularAverageAt (a: ArrayLike<number>, p: number, windowWidth: number) : number {
+   const len = a.length;
+   const p1 = Math.max(0, Math.ceil(p - windowWidth / 2 + 0.1));
+   const p2 = Math.min(len - 1, Math.floor(p + windowWidth / 2 - 0.1));
+   let sum = 0;
+   let weightSum = 0;
+   for (let i = p1; i <= p2; i++) {
+      const weight = 1 - Math.abs(i - p) / (windowWidth / 2);
+      sum += a[i] * weight;
+      weightSum += weight; }
+   return sum / weightSum; }

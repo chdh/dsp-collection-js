@@ -2,7 +2,7 @@
 * Simple operations on arrays.
 */
 
-import {MutableArrayLike} from "../utils/MiscUtils.js";
+import {MutableArrayLike} from "../utils/MiscUtils.ts";
 
 /**
 * Returns the maximum value of an array.

@@ -14,6 +14,7 @@
       "noUnusedParameters": true,
       "outDir": "dist",
       "removeComments": true,
+      "rewriteRelativeImportExtensions": true,
       "rootDir": "src",
       "sourceMap": true,
       "strictFunctionTypes": true,

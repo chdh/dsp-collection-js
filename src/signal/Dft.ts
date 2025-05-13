@@ -8,9 +8,9 @@
 * This module is mostly a reference implementation. It's used in the test programs to verify the output of the faster algorithms.
 */
 
-import Complex from "../math/Complex.js";
-import MutableComplex from "../math/MutableComplex.js";
-import ComplexArray from "../math/ComplexArray.js";
+import Complex from "../math/Complex.ts";
+import MutableComplex from "../math/MutableComplex.ts";
+import ComplexArray from "../math/ComplexArray.ts";
 
 /**
 * Computes the DFT on an array of real numbers for a single frequency.

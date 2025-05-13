@@ -3,10 +3,10 @@
 import {stripIndents as strip} from "common-tags";
 import * as WindowFunctions from "dsp-collection/signal/WindowFunctions.js";
 import * as PitchDetectionHarm from "dsp-collection/signal/PitchDetectionHarm.js";
-import * as AnalysisBase from "./AnalysisBase.js";
-import * as Utils from "../Utils.js";
-import * as DomUtils from "../DomUtils.js";
-import * as BackgroundTaskMgr from "../BackgroundTaskMgr.js";
+import * as AnalysisBase from "./AnalysisBase.ts";
+import * as Utils from "../Utils.ts";
+import * as DomUtils from "../DomUtils.ts";
+import * as BackgroundTaskMgr from "../BackgroundTaskMgr.ts";
 import * as FunctionCurveViewer from "function-curve-viewer";
 
 const defaultHarmSumParms = PitchDetectionHarm.getDefaultHarmonicInstSumParms();

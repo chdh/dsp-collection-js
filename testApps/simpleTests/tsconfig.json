@@ -17,6 +17,7 @@
          "dsp-collection/*": ["../../../dist/*"]
       },
       "removeComments": true,
+      "rewriteRelativeImportExtensions": true,
       "sourceMap": true,
       "strictFunctionTypes": true,
       "strictNullChecks": true,

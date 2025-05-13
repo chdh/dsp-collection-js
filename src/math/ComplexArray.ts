@@ -1,6 +1,6 @@
-import Complex from "./Complex.js";
-import MutableComplex from "./MutableComplex.js";
-import {assert} from "../utils/MiscUtils.js";
+import Complex from "./Complex.ts";
+import MutableComplex from "./MutableComplex.ts";
+import {assert} from "../utils/MiscUtils.ts";
 
 const emptyFloat64Array = new Float64Array(0);
 

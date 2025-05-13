@@ -6,7 +6,7 @@
 * In this module, the normal parameter range for the window functions is 0 to 1.
 */
 
-import * as MiscUtils from "../utils/MiscUtils.js";
+import * as MiscUtils from "../utils/MiscUtils.ts";
 
 export type WindowFunction = (x: number) => number;
 

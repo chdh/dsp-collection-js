@@ -6,7 +6,7 @@
       "wav-file-encoder": "^1.0.3"
    },
    "devDependencies": {
-      "@types/node": "^20.12.13"
+      "@types/node": "^22"
    },
    "type": "module"
 }
