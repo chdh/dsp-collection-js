@@ -64,7 +64,7 @@ export function expand (zeros: ArrayLike<number>) : Float64Array {
    const n = zeros.length;
    if (n == 0) {
       return Float64Array.of(1); }
-   let a = Float64Array.of(-zeros[0], 1);                  // start with (x - zeros[0])
+   let a: Float64Array = Float64Array.of(-zeros[0], 1);    // start with (x - zeros[0])
    for (let i = 1; i < n; i++) {
       const a2 = Float64Array.of(-zeros[i], 1);
       a = multiply(a, a2); }                               // multiply factor (x - zeros[i]) into coefficients
