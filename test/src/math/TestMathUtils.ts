@@ -15,10 +15,21 @@ function verifyEqualWithoutEdges (a1: ArrayLike<number>, a2: ArrayLike<number>, 
    verifyEqual(a1Sub, a2Sub, eps); }
 
 function test_simpleMovingAverage() {
+
+   {
    const a1 = [2,    7,    3,    4,    1,    0,    3  ];
    const a2 = [4.5,  4,    14/3, 8/3,  5/3,  4/3,  1.5];
    const a3 = MathUtils.simpleMovingAverage(a1, 3);
-   verifyEqual(a2, a3, 1E-3);
+   verifyEqual(a2, a3);
+   }
+
+   {
+   const a1 = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5];
+   for (let windowWidth = 2; windowWidth < a1.length * 2; windowWidth++) {
+      const a2 = MathUtils.simpleMovingAverage(a1, windowWidth);
+      verifyEqual(a1, a2); }
+   }
+
    console.log("test_simpleMovingAverage completed"); }
 
 function test_triangularMovingAverage() {
@@ -56,6 +67,15 @@ function test_triangularMovingAverage() {
    const a3 = MathUtils.triangularMovingAverage(a1, 8);
    const a4 = MathUtils.triangularMovingAverageRef(a1, 8);
    verifyEqualWithoutEdges(a3, a4, 3);
+   }
+
+   {
+   const a1 = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5];
+   for (let windowWidth = 4; windowWidth < a1.length * 2; windowWidth++) {
+      const a3 = MathUtils.triangularMovingAverage(a1, windowWidth);
+      const a4 = MathUtils.triangularMovingAverageRef(a1, windowWidth);
+      verifyEqual(a1, a3);
+      verifyEqual(a1, a4); }
    }
 
    console.log("test_triangularMovingAverage completed"); }

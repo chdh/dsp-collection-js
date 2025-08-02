@@ -16,7 +16,6 @@
       "removeComments": true,
       "rewriteRelativeImportExtensions": true,
       "rootDir": "src",
-      "sourceMap": true,
       "strictFunctionTypes": true,
       "strictNullChecks": true,
       "target": "ES2017"

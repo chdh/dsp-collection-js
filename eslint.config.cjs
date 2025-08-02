@@ -1,6 +1,6 @@
 const eslint      = require("@eslint/js");
 const tseslint    = require("typescript-eslint");
-const stylisticTs = require("@stylistic/eslint-plugin-ts")
+const stylistic   = require("@stylistic/eslint-plugin")
 const globals     = require("globals");
 const checkFile   = require("eslint-plugin-check-file");
 
@@ -59,7 +59,7 @@ const rules = {
 
    // Additional Typescript plugin rules:
    "@typescript-eslint/explicit-member-accessibility": "error",
-   "@stylistic/ts/member-delimiter-style": "error",
+   "@stylistic/member-delimiter-style": "error",
    "@typescript-eslint/naming-convention": namingOptions,
    "@typescript-eslint/no-base-to-string": ["error", {ignoredTypeNames: ["Error"]}],
    "@typescript-eslint/no-invalid-this": "error",                                    "no-invalid-this": "off",
@@ -75,7 +75,7 @@ const rules = {
    "@typescript-eslint/prefer-nullish-coalescing": "warn",
    "@typescript-eslint/prefer-optional-chain": "warn",
    "@typescript-eslint/require-await": "error",                                      "require-await": "off",
-   "@stylistic/ts/semi": "error",
+   "@stylistic/semi": "error",
    "@typescript-eslint/switch-exhaustiveness-check": ["error", {considerDefaultExhaustiveForUnions: true}],
 
    // Modifications of preset Typescript rules:
@@ -108,7 +108,7 @@ module.exports = tseslint.config({
    files: ["src/**/*.ts"],
    plugins: {
       "check-file": checkFile,
-      "@stylistic/ts": stylisticTs },
+      "@stylistic": stylistic },
    languageOptions: {
       parserOptions: {
          project: "./tsconfig.json",

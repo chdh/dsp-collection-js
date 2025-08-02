@@ -18,7 +18,6 @@
       },
       "removeComments": true,
       "rewriteRelativeImportExtensions": true,
-      "sourceMap": true,
       "strictFunctionTypes": true,
       "strictNullChecks": true,
       "target": "ES2017",

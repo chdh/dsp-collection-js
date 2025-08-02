@@ -3,6 +3,7 @@
       "allowUnreachableCode": false,
       "alwaysStrict": true,
       "declaration": true,
+      "forceConsistentCasingInFileNames": true,
       "lib": ["ES2017"],
       "module": "node16",
       "noFallthroughCasesInSwitch": true,
@@ -16,7 +17,6 @@
       "removeComments": true,
       "rewriteRelativeImportExtensions": true,
       "rootDir": "src",
-      "sourceMap": true,
       "strictFunctionTypes": true,
       "strictNullChecks": true,
       "target": "ES2017"
