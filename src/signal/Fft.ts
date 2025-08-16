@@ -370,7 +370,7 @@ export function iFftRealHalfOpt (x: ComplexArray, len: number, inclNyquist = fal
 *    If this array is longer than required, the extra values are ignored. If it is shorter, the missing values
 *    are assumed to be zero.
 * @param len
-*    Output signal length. Must be even.
+*    Output signal length.
 * @param inclNyquist
 *    If `true`, the value at `x[len / 2]` is included in the inverse FFT.
 * @returns
