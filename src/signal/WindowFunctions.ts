@@ -3,11 +3,12 @@
 *
 * See https://en.wikipedia.org/wiki/Window_function
 *
-* In this module, the normal parameter range for the window functions is 0 to 1.
+* In this module, the normal input argument range for the window functions is 0 to 1.
 */
 
 import * as MiscUtils from "../utils/MiscUtils.ts";
 
+// The input argument range of a window function is 0 to 1.
 export type WindowFunction = (x: number) => number;
 
 export interface WindowFunctionDescr {                     // window function descriptor
@@ -15,20 +16,27 @@ export interface WindowFunctionDescr {                     // window function de
    id:             string;                                 // internal ID
    f:              WindowFunction;                         // non-normalized window function
    fNorm:          WindowFunction;                         // gain-normalized window function
+   firstMinPos:    number;                                 // relative frequency position of the first minimum
+      // For most window functions the first minimum is a null in the spectrum or a zero in the filter transfer function.
+      // But for the parabolic window, it's only a local minimum and not a null/zero.
+      // In the sprectrum, the frequency is relative to the window size (DFT bin, normalized frequency).
+      // When used as a filter, the frequency is relative to the FIR kernel size.
+      // Formula for FIR filters:
+      //    firstMinFrequency = firstMinPos * sampleRate / firKernelWidth
    cpuCost:        number; }                               // relative complexity of computation
 
 export const windowFunctionIndex: WindowFunctionDescr[] = [
-   { name: "Blackman",             id: "blackman",        f: blackmanWindow,        fNorm: blackmanWindowNorm,        cpuCost: 2 },
-   { name: "Blackman-Harris",      id: "blackmanHarris",  f: blackmanHarrisWindow,  fNorm: blackmanHarrisWindowNorm,  cpuCost: 3 },
-   { name: "Blackman-Nuttall",     id: "blackmanNuttall", f: blackmanNuttallWindow, fNorm: blackmanNuttallWindowNorm, cpuCost: 3 },
-   { name: "Flat top",             id: "flatTop",         f: flatTopWindow,         fNorm: flatTopWindowNorm,         cpuCost: 4 },
-   { name: "Hamming",              id: "hamming",         f: hammingWindow,         fNorm: hammingWindowNorm,         cpuCost: 1 },
-   { name: "Hann",                 id: "hann",            f: hannWindow,            fNorm: hannWindowNorm,            cpuCost: 1 },
-   { name: "Nuttall",              id: "nuttall",         f: nuttallWindow,         fNorm: nuttallWindowNorm,         cpuCost: 3 },
-   { name: "Parabolic",            id: "parabolic",       f: parabolicWindow,       fNorm: parabolicWindowNorm,       cpuCost: 0 },
-   { name: "Rectangular",          id: "rect",            f: rectangularWindow,     fNorm: rectangularWindow,         cpuCost: 0 },
-   { name: "Triangular",           id: "triangular",      f: triangularWindow,      fNorm: triangularWindowNorm,      cpuCost: 0 },
-// { name: "chdh1 (experimental)", id: "chdh1",           f: chdh1Window,           fNorm: chdh1WindowNorm,           cpuCost: 1 },
+   { name: "Blackman",             id: "blackman",        f: blackmanWindow,        fNorm: blackmanWindowNorm,        firstMinPos: 3,    cpuCost: 2 },
+   { name: "Blackman-Harris",      id: "blackmanHarris",  f: blackmanHarrisWindow,  fNorm: blackmanHarrisWindowNorm,  firstMinPos: 4,    cpuCost: 3 },
+   { name: "Blackman-Nuttall",     id: "blackmanNuttall", f: blackmanNuttallWindow, fNorm: blackmanNuttallWindowNorm, firstMinPos: 4,    cpuCost: 3 },
+   { name: "Flat top",             id: "flatTop",         f: flatTopWindow,         fNorm: flatTopWindowNorm,         firstMinPos: 5,    cpuCost: 4 },
+   { name: "Hamming",              id: "hamming",         f: hammingWindow,         fNorm: hammingWindowNorm,         firstMinPos: 2,    cpuCost: 1 },
+   { name: "Hann",                 id: "hann",            f: hannWindow,            fNorm: hannWindowNorm,            firstMinPos: 2,    cpuCost: 1 },
+   { name: "Nuttall",              id: "nuttall",         f: nuttallWindow,         fNorm: nuttallWindowNorm,         firstMinPos: 4,    cpuCost: 3 },
+   { name: "Parabolic",            id: "parabolic",       f: parabolicWindow,       fNorm: parabolicWindowNorm,       firstMinPos: 1.43, cpuCost: 0 },
+   { name: "Rectangular",          id: "rect",            f: rectangularWindow,     fNorm: rectangularWindow,         firstMinPos: 1,    cpuCost: 0 },
+   { name: "Triangular",           id: "triangular",      f: triangularWindow,      fNorm: triangularWindowNorm,      firstMinPos: 2,    cpuCost: 0 },
+// { name: "chdh1 (experimental)", id: "chdh1",           f: chdh1Window,           fNorm: chdh1WindowNorm,           firstMinPos: 2,    cpuCost: 1 },
    ];
 
 export function getFunctionDescrById (id: string) : WindowFunctionDescr {

@@ -15,6 +15,7 @@ NPM package: [dsp-collection](https://www.npmjs.com/package/dsp-collection)
 
 * [HarmSyn - Harmonic synthesizer](https://www.source-code.biz/harmSyn)
 * [KlattSyn - Klatt formant synthesizer](https://www.source-code.biz/klattSyn)
+* [NoiseSyn - Spectral noise synthesizer](https://www.source-code.biz/noiseSyn)
 * [SinSyn - Sinusoidal synthesizer](https://www.source-code.biz/sinSyn)
 * [SpecFilt - Spectral filter tool](https://www.source-code.biz/specFilt)
 

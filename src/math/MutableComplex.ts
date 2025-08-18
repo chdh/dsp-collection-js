@@ -76,6 +76,13 @@ export default class MutableComplex extends Complex {
       this.re = Math.cos(arg);
       this.im = Math.sin(arg); }
 
+   /**
+   * Sets this `MutableComplex` using polar coordinates.
+   */
+   public setPolar (abs: number, arg: number) {
+      this.re = abs * Math.cos(arg);
+      this.im = abs * Math.sin(arg); }
+
    //--- Mutating in-place operations ------------------------------------------
 
    /**

@@ -1,10 +1,10 @@
 .parmsBlock {
    display: flex; }
 
-.windowFunctionParm {
+#parmBlock1 {
    width: 525px; }
 
-.normalizeParm {
+#parmBlock2 {
    width: 500px; }
 
 .parmsBlock label + select {

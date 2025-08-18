@@ -1,21 +1,21 @@
 // Window Functions Test - A test application for the Window functions in dsp-collection/transform/WindowFunctions
 
-import Complex from "dsp-collection/math/Complex.js";
 import ComplexArray from "dsp-collection/math/ComplexArray.js";
 import * as WindowFunctions from "dsp-collection/signal/WindowFunctions.js";
+import {WindowFunction} from "dsp-collection/signal/WindowFunctions.js";
 import * as Fft from "dsp-collection/signal/Fft.js";
 import * as DspUtils from "dsp-collection/utils/DspUtils.js";
 import * as FunctionCurveViewer from "function-curve-viewer";
 
 var windowFunctionSelectElement: HTMLSelectElement;
-var normalizeElement:            HTMLInputElement;
+var normalizeCheckboxElement:    HTMLInputElement;
 var windowFunctionViewerElement: HTMLCanvasElement;
 var windowSpectrumViewerElement: HTMLCanvasElement;
 
 var windowFunctionViewerWidget:  FunctionCurveViewer.Widget;
 var windowSpectrumViewerWidget:  FunctionCurveViewer.Widget;
-var windowFunctionRaw:           WindowFunctions.WindowFunction;
-var windowFunctionNormalized:    WindowFunctions.WindowFunction;
+var windowFunctionRaw:           WindowFunction;
+var windowFunctionNormalized:    WindowFunction;
 
 function loadWindowFunctionViewer() {
    const viewerState : Partial<FunctionCurveViewer.ViewerState> = {
@@ -29,11 +29,8 @@ function loadWindowFunctionViewer() {
    windowFunctionViewerWidget.setViewerState(viewerState); }
 
 function computeSpectrum (a1: Float64Array, amplScalingFactor: number) : Float64Array {
-   // TODO: Optimize
    const n = a1.length;
-   const a2 = new ComplexArray(n);
-   for (let p = 0; p < n; p++) {
-      a2.set(p, new Complex(a1[p])); }
+   const a2 = new ComplexArray(a1);
    const a3 = Fft.fft(a2, true);
    const a4 = Fft.fftShift(a3);
    const logAmpl = new Float64Array(n);
@@ -47,7 +44,7 @@ function loadSpectrumViewer() {
    const fftOversizeFactor = 256;                          // how much larger the FFT size is compared to the window size
    const windowSize = fftSize / fftOversizeFactor;         // number of samples for the window function
    const fftSamples = new Float64Array(fftSize);
-   const normalize = normalizeElement.checked;
+   const normalize = normalizeCheckboxElement.checked;
    const windowFunction = normalize ? windowFunctionNormalized : windowFunctionRaw;
    for (let p = 0; p < fftSize; p++) {
       fftSamples[p] = windowFunction(p / windowSize); }
@@ -82,7 +79,7 @@ export function startup() {
 
    // Get DOM elements:
    windowFunctionSelectElement = <HTMLSelectElement>document.getElementById("windowFunctionSelect")!;
-   normalizeElement            = <HTMLInputElement>document.getElementById("normalize")!;
+   normalizeCheckboxElement    = <HTMLInputElement>document.getElementById("normalizeCheckbox")!;
    windowFunctionViewerElement = <HTMLCanvasElement>document.getElementById("windowFunctionViewer")!;
    windowSpectrumViewerElement = <HTMLCanvasElement>document.getElementById("windowSpectrumViewer")!;
 
@@ -91,7 +88,7 @@ export function startup() {
       const sel = d.id == "hann";
       windowFunctionSelectElement.add(new Option(d.name, d.id, sel, sel)); }
    windowFunctionSelectElement.addEventListener("change", refresh);
-   normalizeElement.addEventListener("change", refresh);
+   normalizeCheckboxElement.addEventListener("change", refresh);
 
    // Set up function viewer widgets:
    windowFunctionViewerWidget = new FunctionCurveViewer.Widget(windowFunctionViewerElement);
