@@ -15,13 +15,23 @@ export function createWindowKernel (f: WindowFunction, width: number, symetric: 
    const a2 = a1.map(x => x / sum);
    return a2; }
 
+// Parameters for creating an FIR filter kernel.
+// The current implementation only supports LP filters yet.
+export interface FilterSpec {
+   windowFunctionId:         string;
+   width?:                   number;
+      // Filter width in samples.
+      // Either `width` or `normFirstMinFreq` must be specified.
+   normFirstMinFreq?:        number; }
+      // `normFirstMinFreq` is the normalized frequency of the first minimum of the filter transfer curve.
+      // Formula: normFirstMinFreq = firstMinFrequency / sampleRate = 1 / waveLengthOfFirstMinimumInSamples
+
 // Creates an IIR kernel for a low pass filter.
-// `normFirstMinFreq` is the normalized frequency of the first minimum of the filter transfer curve.
-// Formula: normFirstMinFreq = firstMinFrequency / sampleRate
-export function createLpFilterKernel (windowFunctionId: string, normFirstMinFreq: number) : Float64Array {
-   const descr = WindowFunctions.getFunctionDescrById(windowFunctionId);
-   const width = Math.round(descr.firstMinPos / normFirstMinFreq);
-   if (width < 3) {
+// The current implementation only supports LP filters yet.
+export function createFilterKernel (filterSpec: FilterSpec) : Float64Array {
+   const descr = WindowFunctions.getFunctionDescrById(filterSpec.windowFunctionId);
+   const width = filterSpec.width ?? Math.round(descr.firstMinPos / filterSpec.normFirstMinFreq!);
+   if (!Number.isFinite(width) || width < 3) {
       throw new Error("Filter parameters out of range."); }
    return createWindowKernel(descr.f, width); }
 
@@ -54,8 +64,14 @@ export function applyFirKernelAt (signal: ArrayLike<number>, pos: number, kernel
    return acc; }
 
 // Applies an FIR filter kernel to an array.
+// Returns the convolution of a signal and a filter kernel.
 export function applyFirKernel (signal: ArrayLike<number>, kernel: Float64Array) : Float64Array {
    const out = new Float64Array(signal.length);
    for (let i = 0; i < signal.length; i++) {
       out[i] = applyFirKernelAt(signal, i, kernel); }
    return out; }
+
+// Filters a signal in an array.
+export function filterArray (signal: ArrayLike<number>, filterSpec: FilterSpec) : Float64Array {
+   const kernel = createFilterKernel(filterSpec);
+   return applyFirKernel(signal, kernel); }

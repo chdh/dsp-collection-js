@@ -37,9 +37,7 @@ function main() {
    readCommandLineArgs();
    loadInputFile();
    const normFirstMinFreq = firstMinFreq / sampleRate;
-   const kernel = FirFilterWin.createLpFilterKernel(windowFunctionId, normFirstMinFreq);
-   console.log("Kernel width: " + kernel.length);
-   outputSamples = FirFilterWin.applyFirKernel(inputSamples, kernel);
+   outputSamples = FirFilterWin.filterArray(inputSamples, {windowFunctionId, normFirstMinFreq});
    writeOutputFile(); }
 
 main();
