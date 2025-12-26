@@ -21,6 +21,7 @@ function smoothingFunction (x: number) : number {
 
 /**
 * Returns a filter curve function for a specified filter type.
+* The band pass filter function can also be used for fading a signal.
 *
 * @param filterType
 *    filter type (low-pass, high-pass, etc.).
@@ -30,6 +31,7 @@ function smoothingFunction (x: number) : number {
 *    Upper filter frequecy for band-pass or band-stop. Ignored for low-pass or high-pass.
 * @param smoothingWidth
 *    Distance between the start of the smoothing and the -6dB point.
+*    The whole smoothing region width is 2 * smoothingWidth.
 * @returns
 *    A filter curve function, which returns values between 0 (=silence) and 1 (=pass unfiltered).
 */
@@ -80,8 +82,9 @@ export function getFilterCurveFunction (filterType: FilterType, filterFreq1: num
 
 /**
 * Applies a filter curve function to an array of spectral amplitudes.
+* It can also be used for fading a signal.
 */
-export function applyFilterCurveFunction (inAmplitudes: ArrayLike<number>, scalingFactor: number, filterCurveFunction: FilterCurveFunction) {
+export function applyFilterCurveFunction (inAmplitudes: ArrayLike<number>, scalingFactor: number, filterCurveFunction: FilterCurveFunction) : Float64Array {
    const n = inAmplitudes.length;
    const outAmplitudes = new Float64Array(n);
    for (let p = 0; p < n; p++) {
@@ -93,32 +96,33 @@ export function applyFilterCurveFunction (inAmplitudes: ArrayLike<number>, scali
 /**
 * Filters a signal using FFT and iFFT.
 *
+* All frequency parameters are normalized frequencies according to the following formula:
+*   `nomalizedFrequency = frequencyInHz / sampleRate = 1 / waveLengthInSamples`
+*
 * The input signal should ideally be windoweded to prevent artifacts. But this would distort the amplitude curve of the output signal.
 * In practice, the input signal should at least have a fade-in/fade-out.
 *
 * @param inSamples
 *    The input signal samples.
 *    If the length of the input array is even, the computation is faster. If it's a power of 2, it's even faster.
-* @param sampleRate
-*    The sample rate of the input signal.
 * @param filterType
 *    The filter type (low-pass, high-pass, etc.).
 * @param filterFreq1
-*    Filter frequency for low-pass or high-pass. Lower filter frequecy for band-pass or band-stop.
+*    Normalized filter frequency for low-pass or high-pass. Lower filter frequecy for band-pass or band-stop.
 * @param filterFreq2
-*    Upper filter frequecy for band-pass or band-stop. Ignored for low-pass or high-pass.
+*    Normalized upper filter frequecy for band-pass or band-stop. Ignored for low-pass or high-pass.
 * @param smoothingWidth
-*    Distance between the start of the smoothing and the -6dB point.
+*    Normalized frequency distance between the start of the smoothing and the -6dB point.
 * @returns
 *    The filtered output signal samples.
 */
-export function filterSignal (inSamples: ArrayLike<number>, sampleRate: number, filterType: FilterType, filterFreq1: number, filterFreq2: number, smoothingWidth: number) : Float64Array {
+export function filterSignal (inSamples: ArrayLike<number>, filterType: FilterType, filterFreq1: number, filterFreq2: number, smoothingWidth: number) : Float64Array {
    const n = inSamples.length;
    const inSpectrum = Fft.fftRealSpectrum(inSamples);
    const inAmplitudes = inSpectrum.getAbsArray();
    const inPhases = inSpectrum.getArgArray();
    const filterCurveFunction = getFilterCurveFunction(filterType, filterFreq1, filterFreq2, smoothingWidth);
-   const outAmplitudes = applyFilterCurveFunction(inAmplitudes, n / sampleRate, filterCurveFunction);
+   const outAmplitudes = applyFilterCurveFunction(inAmplitudes, n, filterCurveFunction);
    const outPhases = inPhases;
    const outSpectrum = ComplexArray.fromPolar(outAmplitudes, outPhases);
    const outSignal = Fft.iFftRealHalf(outSpectrum, n);

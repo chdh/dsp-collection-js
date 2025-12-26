@@ -18,6 +18,7 @@ NPM package: [dsp-collection](https://www.npmjs.com/package/dsp-collection)
 * [NoiseSyn - Spectral noise synthesizer](https://www.source-code.biz/noiseSyn)
 * [SinSyn - Sinusoidal synthesizer](https://www.source-code.biz/sinSyn)
 * [SpecFilt - Spectral filter tool](https://www.source-code.biz/specFilt)
+* [SpecSyn - Spectral Harmonic Synthesizer](https://www.source-code.biz/specSyn)
 
 ## Associated JavaScript packages
 

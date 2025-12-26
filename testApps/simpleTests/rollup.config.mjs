@@ -1,8 +1,8 @@
-const Path = require('node:path');
-const nodeResolve = require("@rollup/plugin-node-resolve");
-const alias = require("@rollup/plugin-alias");
+import Path from "node:path";
+import alias from '@rollup/plugin-alias';
+import {nodeResolve} from '@rollup/plugin-node-resolve';
 
-module.exports = {
+export default {
    input: "tempBuild/Main.js",
    output: {
       file: "dist/app.js",

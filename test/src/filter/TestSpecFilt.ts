@@ -38,7 +38,10 @@ function writeOutputFile() {
 function main() {
    readCommandLineArgs();
    loadInputFile();
-   outputSamples = SpecFilt.filterSignal(inputSamples, sampleRate, <SpecFilt.FilterType>filterType, filterFreq1, filterFreq2, 100);
+   const filterFreq1Norm = filterFreq1 / sampleRate;
+   const filterFreq2Norm = filterFreq2 / sampleRate;
+   const smoothingWidthNorm = 100 / sampleRate;
+   outputSamples = SpecFilt.filterSignal(inputSamples, <SpecFilt.FilterType>filterType, filterFreq1Norm, filterFreq2Norm, smoothingWidthNorm);
    writeOutputFile(); }
 
 main();

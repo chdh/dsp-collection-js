@@ -33,9 +33,10 @@ export const windowFunctionIndex: WindowFunctionDescr[] = [
    { name: "Hamming",              id: "hamming",         f: hammingWindow,         fNorm: hammingWindowNorm,         firstMinPos: 2,    cpuCost: 1 },
    { name: "Hann",                 id: "hann",            f: hannWindow,            fNorm: hannWindowNorm,            firstMinPos: 2,    cpuCost: 1 },
    { name: "Nuttall",              id: "nuttall",         f: nuttallWindow,         fNorm: nuttallWindowNorm,         firstMinPos: 4,    cpuCost: 3 },
-   { name: "Parabolic",            id: "parabolic",       f: parabolicWindow,       fNorm: parabolicWindowNorm,       firstMinPos: 1.43, cpuCost: 0 },
+   { name: "Parabolic",            id: "parabolic",       f: parabolicWindow,       fNorm: parabolicWindowNorm,       firstMinPos: 1.43, cpuCost: 0 },  // aka Welch window
    { name: "Rectangular",          id: "rect",            f: rectangularWindow,     fNorm: rectangularWindow,         firstMinPos: 1,    cpuCost: 0 },
-   { name: "Triangular",           id: "triangular",      f: triangularWindow,      fNorm: triangularWindowNorm,      firstMinPos: 2,    cpuCost: 0 },
+   { name: "Sine",                 id: "sine",            f: sineWindow,            fNorm: sineWindowNorm,            firstMinPos: 1.5,  cpuCost: 0 },
+   { name: "Triangular",           id: "triangular",      f: triangularWindow,      fNorm: triangularWindowNorm,      firstMinPos: 2,    cpuCost: 0 },  // aka Bartlett window
 // { name: "chdh1 (experimental)", id: "chdh1",           f: chdh1Window,           fNorm: chdh1WindowNorm,           firstMinPos: 2,    cpuCost: 1 },
    ];
 
@@ -116,6 +117,7 @@ export function hammingWindowNorm         (x: number) { return hammingWindow(x) 
 export function hannWindowNorm            (x: number) { return hannWindow(x)            / 0.5        ; }
 export function nuttallWindowNorm         (x: number) { return nuttallWindow(x)         / 0.355768   ; }
 export function parabolicWindowNorm       (x: number) { return parabolicWindow(x)       / (2/3)      ; }
+export function sineWindowNorm            (x: number) { return sineWindow(x)            / (2/Math.PI); }
 export function triangularWindowNorm      (x: number) { return triangularWindow(x)      / 0.5        ; }
 export function chdh1WindowNorm           (x: number) { return chdh1Window(x)           / 0.497595   ; }
 
@@ -138,6 +140,12 @@ export function parabolicWindow (x: number) : number {
    if (x < 0 || x >= 1) {
       return 0; }
    return 1 - (2 * x - 1) ** 2; }
+
+export function sineWindow (x: number) : number {
+   if (x < 0 || x >= 1) {
+      return 0; }
+   const w = Math.PI * x;
+   return Math.sin(w); }
 
 export function hammingWindow (x: number) : number {
    if (x < 0 || x >= 1) {

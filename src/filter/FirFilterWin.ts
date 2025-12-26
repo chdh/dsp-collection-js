@@ -1,4 +1,5 @@
 // FIR filter with window functions.
+// The current implementation only supports low-pass filters yet.
 
 import MutableComplex from "../math/MutableComplex.ts";
 import * as WindowFunctions from "../signal/WindowFunctions.ts";
