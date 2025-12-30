@@ -1,10 +1,10 @@
 // Window Functions Test - A test application for the Window functions in dsp-collection/transform/WindowFunctions
 
-import ComplexArray from "dsp-collection/math/ComplexArray.js";
-import * as WindowFunctions from "dsp-collection/signal/WindowFunctions.js";
-import {WindowFunction} from "dsp-collection/signal/WindowFunctions.js";
-import * as Fft from "dsp-collection/signal/Fft.js";
-import * as DspUtils from "dsp-collection/utils/DspUtils.js";
+import ComplexArray from "dsp-collection/math/ComplexArray";
+import * as WindowFunctions from "dsp-collection/signal/WindowFunctions";
+import {WindowFunction} from "dsp-collection/signal/WindowFunctions";
+import * as Fft from "dsp-collection/signal/Fft";
+import * as DspUtils from "dsp-collection/utils/DspUtils";
 import * as FunctionCurveViewer from "function-curve-viewer";
 
 var windowFunctionSelectElement: HTMLSelectElement;

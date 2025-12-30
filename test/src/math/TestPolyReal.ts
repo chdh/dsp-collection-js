@@ -1,6 +1,6 @@
-import * as PolyReal from "dsp-collection/math/PolyReal.js";
-import {expand} from "dsp-collection/math/PolyReal.js";
-import Complex from "dsp-collection/math/Complex.js";
+import * as PolyReal from "dsp-collection/math/PolyReal";
+import {expand} from "dsp-collection/math/PolyReal";
+import Complex from "dsp-collection/math/Complex";
 
 function verifyEqual (a1: ArrayLike<number>, a2: ArrayLike<number>, eps=1E-14) {
    if (a1.length != a2.length) {

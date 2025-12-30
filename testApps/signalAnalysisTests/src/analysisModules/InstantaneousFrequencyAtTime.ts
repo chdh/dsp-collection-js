@@ -1,11 +1,12 @@
 // Analysis module for instantaneous frequency measured at a fixed point in time.
 
 import {stripIndents as strip} from "common-tags";
-import * as WindowFunctions from "dsp-collection/signal/WindowFunctions.js";
-import * as InstFreq from "dsp-collection/signal/InstFreq.js";
-import * as ArrayUtils from "dsp-collection/utils/ArrayUtils.js";
-import * as DspUtils from "dsp-collection/utils/DspUtils.js";
+import * as WindowFunctions from "dsp-collection/signal/WindowFunctions";
+import * as InstFreq from "dsp-collection/signal/InstFreq";
+import * as ArrayUtils from "dsp-collection/utils/ArrayUtils";
+import * as DspUtils from "dsp-collection/utils/DspUtils";
 import * as FunctionCurveViewer from "function-curve-viewer";
+
 import * as AnalysisBase from "./AnalysisBase.ts";
 import * as Utils from "../Utils.ts";
 import * as DomUtils from "../DomUtils.ts";

@@ -1,7 +1,7 @@
 // Test program for the Resampling module.
 
-import * as Resampling from "dsp-collection/signal/Resampling.js";
-import * as MathUtils from "dsp-collection/math/MathUtils.js";
+import * as Resampling from "dsp-collection/signal/Resampling";
+import * as MathUtils from "dsp-collection/math/MathUtils";
 
 const maxN = 20;
 const randomRuns = 1000000;

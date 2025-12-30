@@ -1,5 +1,5 @@
-import Complex from "dsp-collection/math/Complex.js";
-import MutableComplex from "dsp-collection/math/MutableComplex.js";
+import Complex from "dsp-collection/math/Complex";
+import MutableComplex from "dsp-collection/math/MutableComplex";
 
 function test1() {
    const c1 = new Complex(1, 2);

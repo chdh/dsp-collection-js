@@ -1,6 +1,7 @@
 // Central base module for the signal analysis modules.
 
 import * as FunctionCurveViewer from "function-curve-viewer";
+
 import * as ShortTimeFourierTransform from "./ShortTimeFourierTransform.ts";
 import * as ShortTimePitchDetectionAtTime from "./ShortTimePitchDetectionAtTime.ts";
 import * as ShortTimePitchDetectionOverTime from "./ShortTimePitchDetectionOverTime.ts";

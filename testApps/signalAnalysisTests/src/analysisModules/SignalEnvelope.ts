@@ -1,9 +1,10 @@
 // Analysis module for signal envelope.
 
 import {stripIndents as strip} from "common-tags";
-import * as EnvelopeDetection from "dsp-collection/signal/EnvelopeDetection.js";
+import * as EnvelopeDetection from "dsp-collection/signal/EnvelopeDetection";
+import * as DspUtils from "dsp-collection/utils/DspUtils";
 import * as FunctionCurveViewer from "function-curve-viewer";
-import * as DspUtils from "dsp-collection/utils/DspUtils.js";
+
 import * as AnalysisBase from "./AnalysisBase.ts";
 import * as DomUtils from "../DomUtils.ts";
 

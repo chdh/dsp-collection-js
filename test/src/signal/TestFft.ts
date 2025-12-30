@@ -1,11 +1,11 @@
 // Test program for the Fft module.
 
-import Complex from "dsp-collection/math/Complex.js";
-import ComplexArray from "dsp-collection/math/ComplexArray.js";
-import * as MathUtils from "dsp-collection/math/MathUtils.js";
-import * as Fft from "dsp-collection/signal/Fft.js";
-import * as Dft from "dsp-collection/signal/Dft.js";
-import {performance as Performance} from "perf_hooks";
+import Complex from "dsp-collection/math/Complex";
+import ComplexArray from "dsp-collection/math/ComplexArray";
+import * as MathUtils from "dsp-collection/math/MathUtils";
+import * as Fft from "dsp-collection/signal/Fft";
+import * as Dft from "dsp-collection/signal/Dft";
+import {performance as Performance} from "node:perf_hooks";
 
 var fftTime: number;
 var dftTime: number;

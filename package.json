@@ -1,6 +1,6 @@
 {
    "name": "dsp-collection",
-   "version": "0.2.7",
+   "version": "0.2.8",
    "description": "A collection of JavaScript modules for digital signal processing (written in TypeScript)",
    "keywords": [
       "DSP",
@@ -33,12 +33,16 @@
    "scripts": {
       "clean": "node build.js clean",
       "build": "node build.js build",
-      "prepack": "node build.js verifyCurrentDirIsDist",
-      "doPack": "cd dist && npm pack",
-      "doPublish": "cd dist && npm publish"
+      "lint": "eslint src/**"
    },
-   "devDependencies": {
-      "@types/node": "^22"
+   "type": "module",
+   "exports": {
+      "./*": {
+         "types": "./dist/*.d.ts",
+         "default": "./dist/*.js"
+      }
    },
-   "type": "module"
+   "files": [
+      "dist/"
+   ]
 }

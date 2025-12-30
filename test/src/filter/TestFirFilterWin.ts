@@ -1,4 +1,4 @@
-import * as FirFilterWin from "dsp-collection/filter/FirFilterWin.js";
+import * as FirFilterWin from "dsp-collection/filter/FirFilterWin";
 import * as Fs from "fs";
 import * as WavFileEncoder from "wav-file-encoder";
 import * as WavFileDecoder from "wav-file-decoder";

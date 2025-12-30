@@ -1,4 +1,4 @@
-import * as SpecFilt from "dsp-collection/filter/SpecFilt.js";
+import * as SpecFilt from "dsp-collection/filter/SpecFilt";
 import * as Fs from "fs";
 import * as WavFileEncoder from "wav-file-encoder";
 import * as WavFileDecoder from "wav-file-decoder";

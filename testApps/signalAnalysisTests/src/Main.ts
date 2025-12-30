@@ -1,12 +1,13 @@
+import * as WindowFunctions from "dsp-collection/signal/WindowFunctions";
+import * as FunctionCurveViewer from "function-curve-viewer";
+import * as DialogManager from "dialog-manager";
+import {stripIndents as strip} from "common-tags";
+
 import * as Utils from "./Utils.ts";
 import * as DomUtils from "./DomUtils.ts";
 import InternalAudioPlayer from "./InternalAudioPlayer.ts";
 import * as BackgroundTaskMgr from "./BackgroundTaskMgr.ts";
 import * as AnalysisBase from "./analysisModules/AnalysisBase.ts";
-import * as WindowFunctions from "dsp-collection/signal/WindowFunctions.js";
-import * as FunctionCurveViewer from "function-curve-viewer";
-import * as DialogManager from "dialog-manager";
-import {stripIndents as strip} from "common-tags";
 
 const defaultAudioFileUrl = "testSound1.mp3";
 

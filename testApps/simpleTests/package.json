@@ -1,10 +1,11 @@
 {
    "private": true,
+   "type": "module",
    "dependencies": {
+      "dsp-collection": "file:../..",
       "function-curve-viewer": "^1.0.14"
    },
    "scripts": {
       "build": "tsc && rollup -c"
-   },
-   "type": "module"
+   }
 }

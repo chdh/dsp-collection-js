@@ -10,9 +10,11 @@ class BuildError extends Error {};
 function shell (cmdLine) {
    ChildProcess.execSync(cmdLine, {stdio: "inherit"}); }
 
+/*
 function copyToDist (fileNames) {
    for (const fileName of fileNames) {
       Fs.copyFileSync(fileName, "dist/" + fileName); }}
+*/
 
 function delDir (dirName) {
    Fs.rmSync(dirName, {recursive: true, force: true}); }
@@ -30,18 +32,18 @@ function main2() {
          delDir("dist");
          shell("tsc");
          shell("eslint");
-         copyToDist([".npmignore", "LICENSE.md", "README.md", "package.json", "build.js"]);
+//       copyToDist([".npmignore", "LICENSE.md", "README.md", "package.json", "build.js"]);
          console.log("Build completed.");
          break; }
       case "doc": {
-         rimrafSync("apiDoc");
+         deldir("apiDoc");
          shell("typedoc --options typedoc.config.js");
          break; }
-      case "verifyCurrentDirIsDist": {
-         if (!process.cwd().endsWith("dist")) {
-            console.log("Current directory is: " + process.cwd());
-            throw new BuildError("*** NPM pack/publish must be run in the dist directory! ***"); }
-         break; }
+//    case "verifyCurrentDirIsDist": {
+//       if (!process.cwd().endsWith("dist")) {
+//          console.log("Current directory is: " + process.cwd());
+//          throw new BuildError("*** NPM pack/publish must be run in the dist directory! ***"); }
+//       break; }
       default: {
          throw new BuildError(`Invalid command parameter "${cmd}".`); }}}
 

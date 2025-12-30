@@ -1,4 +1,4 @@
-import * as MathUtils from "dsp-collection/math/MathUtils.js";
+import * as MathUtils from "dsp-collection/math/MathUtils";
 
 function verifyEqual (a1: ArrayLike<number>, a2: ArrayLike<number>, eps=1E-14) {
    if (a1.length != a2.length) {

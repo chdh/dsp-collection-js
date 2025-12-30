@@ -1,13 +1,14 @@
 // Analysis module for short time pitch detection measured over time.
 
 import {stripIndents as strip} from "common-tags";
-import * as WindowFunctions from "dsp-collection/signal/WindowFunctions.js";
-import * as PitchDetectionHarm from "dsp-collection/signal/PitchDetectionHarm.js";
+import * as WindowFunctions from "dsp-collection/signal/WindowFunctions";
+import * as PitchDetectionHarm from "dsp-collection/signal/PitchDetectionHarm";
+import * as FunctionCurveViewer from "function-curve-viewer";
+
 import * as AnalysisBase from "./AnalysisBase.ts";
 import * as Utils from "../Utils.ts";
 import * as DomUtils from "../DomUtils.ts";
 import * as BackgroundTaskMgr from "../BackgroundTaskMgr.ts";
-import * as FunctionCurveViewer from "function-curve-viewer";
 
 const defaultHarmSumParms = PitchDetectionHarm.getDefaultHarmonicInstSumParms();
 

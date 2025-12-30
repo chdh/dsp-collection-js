@@ -1,6 +1,8 @@
 {
    "private": true,
+   "type": "module",
    "dependencies": {
+      "dsp-collection": "file:../..",
       "common-tags": "^1.8.0",
       "dialog-manager": "^1.0.1",
       "function-curve-viewer": "^1.0.17"
@@ -10,6 +12,5 @@
    },
    "scripts": {
       "build": "tsc && rollup -c"
-   },
-   "type": "module"
+   }
 }

@@ -1,13 +1,13 @@
 import {ViewerFunction} from "function-curve-viewer";
-import * as WindowFunctions from "dsp-collection/signal/WindowFunctions.js";
-import * as Autocorrelation from "dsp-collection/signal/Autocorrelation.js";
-import * as DspUtils from "dsp-collection/utils/DspUtils.js";
+import * as WindowFunctions from "dsp-collection/signal/WindowFunctions";
+import * as Autocorrelation from "dsp-collection/signal/Autocorrelation";
+import * as DspUtils from "dsp-collection/utils/DspUtils";
 
 export function openFileOpenDialog (callback: (file: File) => unknown) {
    const element: HTMLInputElement = document.createElement("input");
    element.type = "file";
    element.addEventListener("change", () => {
-      if (element.files && element.files.length == 1) {
+      if (element.files?.length == 1) {
          callback(element.files[0]); }});
    const clickEvent = new MouseEvent("click");
    element.dispatchEvent(clickEvent);
