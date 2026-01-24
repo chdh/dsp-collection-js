@@ -83,3 +83,20 @@ export function sum (a: ArrayLike<number>) : number {
    for (let i = 0; i < a.length; i++) {
       acc += a[i]; }
    return acc; }
+
+/**
+* Returns a quantile value from a sorted array.
+* Uses the nearest-rank / nearest-neighbor method to select an array entry.
+*
+* @param a
+*    A sorted array.
+* @param q
+*    Quantile position in the range [0..1].
+*/
+export function getQuantileNearestFromSortedArray<T> (a: readonly T[], q: number) : T|undefined {
+   const n = a.length;
+   if (n == 0 || !Number.isFinite(q)) {
+      return undefined; }
+   const p0 = Math.ceil(q * n) - 1;
+   const p = Math.max(0, Math.min(n - 1, p0));
+   return a[p]; }

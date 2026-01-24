@@ -91,7 +91,7 @@ export default class Complex {
    * Returns `true` if this complex number is exactly equal to another.
    */
    public equals (x: Complex) : boolean {
-      return x && this.re == x.re && this.im == x.im; }
+      return x && this.re == x.re && this.im == x.im; }                        // eslint-disable-line @typescript-eslint/prefer-optional-chain
 
    /**
    * Returns `true` if the real and imaginary parts of the two numbers
