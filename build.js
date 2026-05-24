@@ -25,7 +25,7 @@ function main2() {
       case "build": {
          delDir("dist");
          shell("tsc");
-         shell("eslint");
+         shell("eslint \"src/**/*.ts\"");
          console.log("Build completed.");
          break; }
       case "doc": {

@@ -2,6 +2,7 @@ $$BackupControl.txt
 app.js
 apiDoc
 build.bat
+CLAUDE.md
 dist
 node_modules
 notes.txt

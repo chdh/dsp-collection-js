@@ -111,7 +111,7 @@ module.exports = tseslint.config({
       "@stylistic": stylistic },
    languageOptions: {
       parserOptions: {
-         project: "./tsconfig.json",
+         projectService: true,
          warnOnUnsupportedTypeScriptVersion: false,
          },
       globals: {

@@ -1,3 +1,8 @@
+/**
+* An univariate numeric function.
+*/
+export type UniFunction = (x: number) => number;
+
 export function fuzzyEquals (a: number, b: number, eps: number) : boolean {
    if (!isFinite(a) || !isFinite(b)) {
       return false; }

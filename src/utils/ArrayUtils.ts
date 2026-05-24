@@ -2,10 +2,10 @@
 * Simple operations on arrays.
 */
 
-import {MutableArrayLike} from "../utils/MiscUtils.ts";
+import {MutableArrayLike} from "./MiscUtils.ts";
 
 /**
-* Returns the maximum value of an array.
+* Returns the maximum value of an array of numbers.
 */
 export function max (a: ArrayLike<number>) : number {
    if (a.length == 0) {
@@ -17,7 +17,20 @@ export function max (a: ArrayLike<number>) : number {
    return maxVal; }
 
 /**
-* Returns the index of the maximum value of an array.
+* Returns the maximum absolute value of an array of numbers.
+*/
+export function maxAbs (a: ArrayLike<number>) : number {
+   if (a.length == 0) {
+      return NaN; }
+   let maxAbsVal = a[0];
+   for (let p = 1; p < a.length; p++) {
+      const v = Math.abs(a[p]);
+      if (v > maxAbsVal) {
+         maxAbsVal = v; }}
+   return maxAbsVal; }
+
+/**
+* Returns the index of the maximum value of an array of numbers.
 */
 export function argMax (a: ArrayLike<number>) : number {
    if (a.length == 0) {
@@ -83,6 +96,18 @@ export function sum (a: ArrayLike<number>) : number {
    for (let i = 0; i < a.length; i++) {
       acc += a[i]; }
    return acc; }
+
+/**
+* Returns the RMS (root mean square) value of an array of numbers.
+*/
+export function rms (a: ArrayLike<number>) : number {
+   const n = a.length;
+   if (n == 0) {
+      return NaN; }
+   let acc = 0;
+   for (let i = 0; i < n; i++) {
+      acc += a[i] ** 2; }
+   return Math.sqrt(acc / n); }
 
 /**
 * Returns a quantile value from a sorted array.
