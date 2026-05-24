@@ -1,6 +1,6 @@
 {
    "name": "dsp-collection",
-   "version": "0.2.8",
+   "version": "0.2.9",
    "description": "A collection of JavaScript modules for digital signal processing (written in TypeScript)",
    "keywords": [
       "DSP",

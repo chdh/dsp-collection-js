@@ -2,7 +2,6 @@
    "compilerOptions": {
       "allowUnreachableCode": false,
       "alwaysStrict": true,
-      "baseUrl": "src",
       "lib": ["ES2020"],
       "module": "node18",
       "noFallthroughCasesInSwitch": true,
@@ -18,6 +17,7 @@
       "rootDir": "src",
       "strictFunctionTypes": true,
       "strictNullChecks": true,
-      "target": "ES2017"
+      "target": "ES2017",
+      "types": ["node"]
    }
 }

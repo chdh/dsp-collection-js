@@ -2,7 +2,6 @@
    "compilerOptions": {
       "allowUnreachableCode": false,
       "alwaysStrict": true,
-      "baseUrl": "src",
       "lib": ["ES2017", "DOM", "DOM.Iterable"],
       "module": "nodenext",
       "noFallthroughCasesInSwitch": true,
@@ -18,10 +17,10 @@
       },
       "removeComments": true,
       "rewriteRelativeImportExtensions": true,
+      "rootDir": "src",
       "strictFunctionTypes": true,
       "strictNullChecks": true,
       "target": "ES2017",
-      "typeRoots" : ["./node_modules/@types"],  // to prevent usage of type definitions in node_modules of parent directories
    },
    "include": [
       "src/**/*"

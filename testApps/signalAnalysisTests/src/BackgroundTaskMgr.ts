@@ -63,7 +63,7 @@ function processRequest2 (request: RequestMessage) : ResponseMessage {
 function processRequest (request: RequestMessage) : ResponseMessage {
    try {
       return processRequest2(request); }
-    catch (e) {
+    catch (e: any) {
       return {
          ok: false,
          errorMsg: e.toString()}; }}
