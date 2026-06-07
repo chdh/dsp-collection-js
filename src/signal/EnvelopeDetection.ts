@@ -1,5 +1,7 @@
 /**
 * Envelope detection.
+*
+* @module
 */
 
 import * as MathUtils from "../math/MathUtils.ts";

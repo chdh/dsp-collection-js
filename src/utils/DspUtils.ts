@@ -1,8 +1,15 @@
+/**
+* DSP utility functions.
+*
+* @module
+*/
+
 import * as ArrayUtils from "./ArrayUtils.ts";
 import {MutableArrayLike} from "./MiscUtils.ts";
 
 /**
 * Converts a linear amplitude value to decibels.
+*
 * Returns -Infinity for 0.
 */
 export function convertAmplitudeToDb (x: number) : number {
@@ -10,6 +17,7 @@ export function convertAmplitudeToDb (x: number) : number {
 
 /**
 * Converts a linear power value to decibels.
+*
 * Returns -Infinity for 0.
 */
 export function convertPowerToDb (x: number) : number {
@@ -22,7 +30,9 @@ export function convertDbToAmplitude (x: number) : number {
    return Math.pow(10, x / 20); }
 
 /**
-* Same as `convertDbToAmplitude()`, but converts the following values to 0:
+* Same as {@link convertDbToAmplitude} but with exceptions to generate 0 values.
+*
+* The following values are converted to 0:
 *  - dB values below or equal to -99.
 *  - Invalid numbers (NaN, 1/- Infinity).
 */
@@ -35,6 +45,9 @@ export function convertDbToAmplitudeOr0 (x: number) : number {
 export function convertDbToPower (x: number) : number {
    return Math.pow(10, x / 10); }
 
+/**
+* Options for {@link adjustSignalLevel}.
+*/
 export interface AdjustSignalLevelOptions {
 
    /**

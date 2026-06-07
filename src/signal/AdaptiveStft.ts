@@ -5,6 +5,8 @@
 * classic STFT by using a variable width window. While the frequency resolution
 * does not get sharper by varying the window width, it allows the computation
 * of finer intermediate frequency components than with the classical method.
+*
+* @module
 */
 
 import Complex from "../math/Complex.ts";
@@ -91,6 +93,7 @@ export function getSingle_maxWindow (samples: Float64Array | Float32Array, rough
 
 /**
 * A simplified version of `getSingle_maxWindow()`.
+*
 * The maximum window width covers the entire input signal.
 *
 * @param samples

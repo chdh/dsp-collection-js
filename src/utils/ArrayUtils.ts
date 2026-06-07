@@ -1,5 +1,7 @@
 /**
 * Simple operations on arrays.
+*
+* @module
 */
 
 import {MutableArrayLike} from "./MiscUtils.ts";
@@ -111,6 +113,7 @@ export function rms (a: ArrayLike<number>) : number {
 
 /**
 * Returns a quantile value from a sorted array.
+*
 * Uses the nearest-rank / nearest-neighbor method to select an array entry.
 *
 * @param a

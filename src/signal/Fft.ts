@@ -5,6 +5,8 @@
 *  - Cooley-Tukey (Radix-2)
 *  - Bluestein
 * It is not extremely optimized, but should be reasonably fast for normal purposes.
+*
+* @module
 */
 
 import ComplexArray from "../math/ComplexArray.ts";
@@ -249,6 +251,7 @@ export function fftRealSpectrum (x: ArrayLike<number>, inclNyquist = false) : Co
 
 /**
 * Shifts the zero-frequency component to the center of the spectrum.
+*
 * The input array it rotated by `x.length / 2` to the right.
 */
 export function fftShift (x: ComplexArray) : ComplexArray {

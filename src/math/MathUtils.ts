@@ -1,4 +1,10 @@
 /**
+* Math utilities.
+*
+* @module
+*/
+
+/**
 * An univariate numeric function.
 */
 export type UniFunction = (x: number) => number;
@@ -47,6 +53,7 @@ export function floorLog2 (x: number) : number {
 
 /**
 * Calculates a hyperbolic decline factor.
+*
 * Harmonic and exponential decline are special cases of the hyperbolic decline.
 * Linear decline is also a special case, but requires clipping to suppress negative values.
 *
@@ -77,6 +84,7 @@ export function hyperbolicDecline (t: number, a: number, b: number) : number {
 
 /**
 * Calculates the simple moving average (SMA) over an array of numbers.
+*
 * Each element of the output array contains the mean value of the window centered at that position in the input array.
 * When the window width is even, the `shift` parameter specifies whether the resulting position is 0.5 to the
 * left (`shift` = `false`) or to the right (`shift` = `true`) of the window center.
@@ -106,6 +114,7 @@ export function simpleMovingAverage (a: ArrayLike<number>, windowWidth: number, 
 
 /**
 * Calculates the triangular moving average (TMA) over an array of numbers.
+*
 * Each element of the output array contains the triangular weighted value of the window
 * centered at that position in the input array.
 * Note that the elements at the border of the triangular window are not included.

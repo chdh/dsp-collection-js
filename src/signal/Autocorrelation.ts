@@ -1,5 +1,7 @@
 /**
 * Autocorrelation functions.
+*
+* @module
 */
 
 import * as WindowFunctions from "./WindowFunctions.ts";

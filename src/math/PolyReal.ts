@@ -1,17 +1,28 @@
 /**
 * Utility routines for real polynomials and fractions of real polynomials.
 *
-* Polynomial coefficients are stored in arrays ordered in ascending powers.
-* The associated polynomial has the form:
+* Polynomial coefficients are stored in arrays ordered in ascending powers.<br>
+* The associated polynomial has the form:<br>
+* ```
 *    a[0]  +  a[1] * x  +  a[2] * x^2  +  ...  + a[n-1] * x^(n-1)  +  a[n] * x^n
+* ```
 *
-* An empty array is not allowed. The real number zero ist represented by [0].
+* An empty array is not allowed. The real number zero ist represented by `[0]`.
 *
 * For rational algebraic fractions, the coefficients are stored in nested arrays:
-*    [top, bottom]
+*
+* ```
+* [top, bottom]
+* ```
+*
 * The associated rational fraction has the form:
-*    ( top[0]     +  top[1]    * x  +  top[2]    * x^2  +  ...  top[n-1]    * x^(n-1)  +  top[n]    * x^n ) /
-*    ( bottom[0]  +  bottom[1] * x  +  bottom[2] * x^2  +  ...  bottom[m-1] * x^(m-1)  +  bottom[m] * x^m )
+*
+* ```
+* ( top[0]     +  top[1]    * x  +  top[2]    * x^2  +  ...  top[n-1]    * x^(n-1)  +  top[n]    * x^n ) /
+* ( bottom[0]  +  bottom[1] * x  +  bottom[2] * x^2  +  ...  bottom[m-1] * x^(m-1)  +  bottom[m] * x^m )
+* ```
+*
+* @module
 */
 
 import Complex from "./Complex.ts";

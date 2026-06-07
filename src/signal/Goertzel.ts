@@ -1,5 +1,7 @@
 /**
 * Discrete Fourier transform (DFT) with the Goertzel algorithm.
+*
+* @module
 */
 
 import Complex from "../math/Complex.ts";

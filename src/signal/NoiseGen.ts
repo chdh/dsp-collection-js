@@ -1,5 +1,7 @@
 /**
 * Noise generation functions.
+*
+* @module
 */
 
 import ComplexArray from "../math/ComplexArray.ts";
@@ -13,7 +15,7 @@ import * as DspUtils from "../utils/DspUtils.ts";
 * @param spectrumCurveFunction
 *    A function that maps a frequency [Hz] to a spectrum amplitude (linear scale).
 * @param amplitudeCurveFunction
-*    An optional envelope function that maps a time [s] to a gain factor (linear scale)
+*    An optional envelope function that maps a time [s] to a gain factor (linear scale).
 * @param duration
 *    The duration [s] of the output signal.
 * @param sampleRate

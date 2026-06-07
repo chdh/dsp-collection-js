@@ -1,10 +1,16 @@
+/**
+* Array of complex numbers.
+*
+* @module
+*/
+
 import Complex from "./Complex.ts";
 import MutableComplex from "./MutableComplex.ts";
 import {assert} from "../utils/MiscUtils.ts";
 
 const emptyFloat64Array = new Float64Array(0);
 
-/*
+/**
 * An array of complex numbers.
 *
 * The design objective of this class is to enable speed-optimized use.

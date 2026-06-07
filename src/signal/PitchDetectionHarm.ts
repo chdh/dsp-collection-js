@@ -1,5 +1,7 @@
 /**
 * Pitch detection using weighted sum of harmonic amplitudes.
+*
+* @module
 */
 
 import * as MathUtils from "../math/MathUtils.ts";
@@ -26,10 +28,10 @@ export interface HarmonicAmplitudeEvaluationParms {
 
    /**
    * Hyperbolic decline exponent constant for the decline rate of the harmonic.
-   *    1 for harmonic decline.
-   *    0 for exponential decline.
-   *    -1 for linear decline (with clipping to 0).
-   *    Between 0 and 1 for hyperbolic decline.
+   * -  1 for harmonic decline.
+   * -  0 for exponential decline.
+   * -  -1 for linear decline (with clipping to 0).
+   * -  Between 0 and 1 for hyperbolic decline.
    */
    harmonicsDeclineExponent:           number; }
 
@@ -196,6 +198,7 @@ function evaluateHarmonicAmplitudes (amplitudes: ArrayLike<number>, parms: Harmo
 
 /**
 * Searches the argument for the maximum of a given pitch salience function.
+*
 * First it scans over the F0 range to find the approximate position of the maximum.
 * Then it uses golden-section search to improve the result.
 *

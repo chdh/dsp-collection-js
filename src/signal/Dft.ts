@@ -6,6 +6,8 @@
 * The `Goertzel` and `Fft` modules contain faster versions of some of the functions in this module.
 *
 * This module is mostly a reference implementation. It's used in the test programs to verify the output of the faster algorithms.
+*
+* @module
 */
 
 import Complex from "../math/Complex.ts";

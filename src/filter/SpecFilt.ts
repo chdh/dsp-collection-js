@@ -2,6 +2,8 @@
 * Spectral filtering.
 *
 * Refer to the browser-based SpecFilt application for a test bed for spectral filtering.
+*
+* @module
 */
 
 import ComplexArray from "../math/ComplexArray.ts";
@@ -21,6 +23,7 @@ function smoothingFunction (x: number) : number {
 
 /**
 * Returns a filter curve function for a specified filter type.
+*
 * The band pass filter function can also be used for fading a signal.
 *
 * @param filterType
@@ -82,6 +85,7 @@ export function getFilterCurveFunction (filterType: FilterType, filterFreq1: num
 
 /**
 * Applies a filter curve function to an array of spectral amplitudes.
+*
 * It can also be used for fading a signal.
 */
 export function applyFilterCurveFunction (inAmplitudes: ArrayLike<number>, scalingFactor: number, filterCurveFunction: FilterCurveFunction) : Float64Array {

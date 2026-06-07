@@ -1,7 +1,7 @@
 {
    "name": "dsp-collection",
-   "version": "0.2.9",
-   "description": "A collection of JavaScript modules for digital signal processing (written in TypeScript)",
+   "version": "1.0.0",
+   "description": "A collection of JavaScript modules for digital signal processing.",
    "keywords": [
       "DSP",
       "Digital Signal Processing",
@@ -15,7 +15,8 @@
       "Instantaneous frequency",
       "Pitch estimation",
       "Simple moving average (SMA)",
-      "triangular moving average (TMA)"
+      "triangular moving average (TMA)",
+      "Noise generator"
    ],
    "license": "MIT",
    "homepage": "http://www.source-code.biz/dsp/js",

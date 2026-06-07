@@ -3,6 +3,8 @@
 *
 * The instantaneous frequency is calculated by comparing the phases of a
 * specified frequency (measuring frequency) at two closely spaced points in time.
+*
+* @module
 */
 
 import * as WindowFunctions from "./WindowFunctions.ts";

@@ -1,7 +1,12 @@
-// Routines for numerical approximation and optimization.
+/**
+* Routines for numerical approximation and optimization.
+*
+* @module
+*/
 
 /**
 * Searches for the argument of a function maximum by using an arithmetic progression for the arguments.
+*
 * It uses additive growth of the argument.
 *
 * @param f
@@ -31,6 +36,7 @@ export function argMax_scanArith (f: (x: number) => number, argLo: number, argHi
 
 /**
 * Searches for the argument of a function maximum by using a geometric progression for the arguments.
+*
 * It uses multiplicative growth of the argument.
 *
 * @param f
@@ -60,6 +66,7 @@ export function argMax_scanGeom (f: (x: number) => number, argLo: number, argHi:
 
 /**
 * Searches for the argument of a function maximum by using golden-section search.
+*
 * The passed function should be strictly unimodal within the specified argument range.
 *
 * @param f

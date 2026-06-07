@@ -1,3 +1,9 @@
+/**
+* Complex number class.
+*
+* @module
+*/
+
 import * as MathUtils from "./MathUtils.ts";
 
 /**

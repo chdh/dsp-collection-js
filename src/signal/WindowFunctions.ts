@@ -1,30 +1,81 @@
 /**
 * Window functions for signal processing.
 *
-* See https://en.wikipedia.org/wiki/Window_function
-*
 * In this module, the normal input argument range for the window functions is 0 to 1.
+*
+* @see [Online visualization](https://www.source-code.biz/dsp/js/simpleTests/testWindowFunctions.html)
+* @see [Window function - Wikipedia](https://en.wikipedia.org/wiki/Window_function)
+*
+* @module
 */
 
 import * as MiscUtils from "../utils/MiscUtils.ts";
 
-// The input argument range of a window function is 0 to 1.
+/**
+* The input argument range of a window function is 0 to 1.
+*/
 export type WindowFunction = (x: number) => number;
 
-export interface WindowFunctionDescr {                     // window function descriptor
-   name:           string;                                 // descriptive name
-   id:             string;                                 // internal ID
-   f:              WindowFunction;                         // non-normalized window function
-   fNorm:          WindowFunction;                         // gain-normalized window function
-   firstMinPos:    number;                                 // relative frequency position of the first minimum
-      // For most window functions the first minimum is a null in the spectrum or a zero in the filter transfer function.
-      // But for the parabolic window, it's only a local minimum and not a null/zero.
-      // In the sprectrum, the frequency is relative to the window size (DFT bin, normalized frequency).
-      // When used as a filter, the frequency is relative to the FIR kernel size.
-      // Formula for FIR filters:
-      //    firstMinFrequency = firstMinPos * sampleRate / firKernelWidth
-   cpuCost:        number; }                               // relative complexity of computation
+/**
+* Window function descriptor.
+*/
+export interface WindowFunctionDescr {
 
+   /**
+   * Descriptive name.
+   */
+   name:           string;
+
+   /**
+   * Internal ID of the window function.
+   */
+   id:             string;
+
+   /**
+   * Non-normalized window function.
+   */
+   f:              WindowFunction;
+
+   /**
+   * Gain-normalized window function.
+   */
+   fNorm:          WindowFunction;
+
+   /**
+   * Relative frequency position of the first minimum.
+   *
+   * For most window functions the first minimum is a null in the spectrum or a zero in the filter transfer function.
+   * But for the parabolic window, it's only a local minimum and not a null/zero.
+   * In the sprectrum, the frequency is relative to the window size (DFT bin, normalized frequency).
+   * When used as a filter, the frequency is relative to the FIR kernel size.
+   * Formula for FIR filters:<br>
+   * ```
+   * firstMinFrequency = firstMinPos * sampleRate / firKernelWidth
+   * ```
+   */
+   firstMinPos:    number;
+
+   /**
+   * Relative complexity of computation.
+   */
+   cpuCost:        number; }
+
+/**
+* Index table of the window functions provided by this module.
+*
+* The following ID strings are used:
+* - "blackman": Blackman window
+* - "blackmanHarris": Blackman-Harris window
+* - "blackmanNuttall": Blackman-Nuttall window
+* - "flatTop": Flat top window
+* - "hamming": Hamming window
+* - "hann": Hann window
+* - "nuttall": Nuttall window
+* - "parabolic": Parabolic window
+* - "rect": Rectangular window
+* - "sine": Sine window
+* - "triangular": Triangular window
+*/
 export const windowFunctionIndex: WindowFunctionDescr[] = [
    { name: "Blackman",             id: "blackman",        f: blackmanWindow,        fNorm: blackmanWindowNorm,        firstMinPos: 3,    cpuCost: 2 },
    { name: "Blackman-Harris",      id: "blackmanHarris",  f: blackmanHarrisWindow,  fNorm: blackmanHarrisWindowNorm,  firstMinPos: 4,    cpuCost: 3 },
@@ -60,9 +111,12 @@ export function getFunctionbyId (id: string, {normalize = true, valueCacheCostLi
       (<any>f).windowTableCache = new Map(); }
    return f; }
 
-// Returns an array with the window function values for a "pediodic" window (for DFT).
-// If table caching is enabled for the window function, the generated tables are kept in
-// memory and are re-used.
+/**
+* Returns an array with the window function values for a "pediodic" window (for DFT).
+*
+* If table caching is enabled for the window function, the generated tables are kept in
+* memory and are re-used.
+*/
 export function getWindowTable (windowFunction: WindowFunction, n: number) : Float64Array {
    const windowTableCache: Map<number,Float64Array> = (<any>windowFunction).windowTableCache;
    if (windowTableCache) {
@@ -80,7 +134,9 @@ function createWindowTable (windowFunction: WindowFunction, n: number) : Float64
       a[i] = windowFunction(i / n); }
    return a; }
 
-// Applies a window function to an array as a "pediodic" window (for DFT).
+/**
+* Applies a window function to an array as a "pediodic" window (for DFT).
+*/
 export function applyWindow (a: ArrayLike<number>, windowFunction: WindowFunction) : Float64Array {
    const a2 = new Float64Array(a.length);
    if ((<any>windowFunction).windowTableCache) {
@@ -96,10 +152,13 @@ export function applyWindowById (a: ArrayLike<number>, windowFunctionId: string)
    const windowFunction = getFunctionbyId(windowFunctionId);
    return applyWindow(a, windowFunction); }
 
-// Calculates the coherent gain of a window function ("pediodic" window, used for DFT).
-// The returned value is the arithmetic mean of the function values, which is the same as
-// the amplitude of the middle component (DC value) in the spectrum of the window function.
-// The value should be about the same as `WindowFunctionDescr.gain`.
+/**
+* Calculates the coherent gain of a window function ("pediodic" window, used for DFT).
+*
+* The returned value is the arithmetic mean of the function values, which is the same as
+* the amplitude of the middle component (DC value) in the spectrum of the window function.
+* The value should be about the same as `WindowFunctionDescr.gain`.
+*/
 export function calculateCoherentGain (windowFunction: WindowFunction, n: number) : number {
    let sum = 0;
    for (let i = 0; i < n; i++) {
@@ -210,7 +269,9 @@ export function flatTopWindow (x: number) : number {
    const w  = 2 * Math.PI * x;
    return a0 - a1 * Math.cos(w) + a2 * Math.cos(2 * w) - a3 * Math.cos(3 * w) + a4 * Math.cos(4 * w); }
 
-// Experimental window. Similar to Hann.
+/**
+* Experimental window. Similar to Hann.
+*/
 export function chdh1Window (x: number) : number {
    if (x < 0 || x >= 1) {
       return 0; }

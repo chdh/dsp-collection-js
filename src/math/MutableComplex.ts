@@ -1,3 +1,9 @@
+/**
+* Mutable complex number class.
+*
+* @module
+*/
+
 import Complex from "./Complex.ts";
 
 /**

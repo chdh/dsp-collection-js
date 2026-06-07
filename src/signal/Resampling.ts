@@ -1,10 +1,18 @@
+/**
+* Resampling functions.
+*
+* There are optimized and reference implementations of resampling functions in this module.
+*
+* The optimized functions for resampling with nearest-neighbor, linear and averaging interpolation
+* use an integer counting algorithm, similar to the Bresenham algorithm used for line drawing.
+* This is faster than using floating point numbers and avoids rounding problems and artefacts
+* that can occur with floating point arithmetic.
+*
+* @module
+*/
+
 import * as ArrayUtils from "../utils/ArrayUtils.ts";
 import {MutableArrayLike} from "../utils/MiscUtils.ts";
-
-// The optimized routines for resampling with nearest-neighbor, linear and averaging interpolation
-// use an integer counting algorithm, similar to the Bresenham algorithm used for line drawing.
-// This is faster than using floating point numbers and avoids rounding problems and artefacts
-// that can occur with floating point arithmetic.
 
 function handleTrivialCases (ia: ArrayLike<number>, oa: MutableArrayLike<number>, preserveScale = false, neNe = false) : boolean {
    const iLen = ia.length;
