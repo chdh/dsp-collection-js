@@ -1,22 +1,37 @@
 {
    "name": "dsp-collection",
    "version": "1.0.0",
-   "description": "A collection of JavaScript modules for digital signal processing.",
+   "description": "TypeScript library for digital signal processing and audio analysis.",
    "keywords": [
-      "DSP",
-      "Digital Signal Processing",
-      "DFT",
-      "Goertzel",
-      "FFT",
-      "Fourier Transform",
-      "Filter",
-      "Spectral filtering",
-      "Window functions",
-      "Instantaneous frequency",
-      "Pitch estimation",
-      "Simple moving average (SMA)",
-      "triangular moving average (TMA)",
-      "Noise generator"
+      "dsp",
+      "digital-signal-processing",
+      "signal-processing",
+      "audio",
+      "audio-processing",
+      "typescript",
+      "fft",
+      "fast-fourier-transform",
+      "dft",
+      "fourier-transform",
+      "bluestein",
+      "goertzel",
+      "stft",
+      "spectrum",
+      "spectral-analysis",
+      "spectral-filtering",
+      "fir-filter",
+      "filter",
+      "window-function",
+      "resampling",
+      "autocorrelation",
+      "envelope-detection",
+      "instantaneous-frequency",
+      "pitch-detection",
+      "pitch-estimation",
+      "moving-average",
+      "noise-generator",
+      "complex-numbers",
+      "polynomial"
    ],
    "license": "MIT",
    "homepage": "http://www.source-code.biz/dsp/js",
@@ -34,7 +49,8 @@
    "scripts": {
       "clean": "node build.js clean",
       "build": "node build.js build",
-      "lint": "eslint src/**"
+      "lint": "eslint src/**/*.ts",
+      "doc": "node build.js doc"
    },
    "type": "module",
    "exports": {
@@ -43,6 +59,7 @@
          "default": "./dist/*.js"
       }
    },
+   "sideEffects": false,
    "files": [
       "dist/"
    ]

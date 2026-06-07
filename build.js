@@ -35,7 +35,7 @@ function shell (cmdLine) {
    ChildProcess.execSync(cmdLine, {stdio: "inherit"}); }
 
 function delDir (dirName) {
-   Fs.rmdirSync(dirName, {recursive: true, force: true}); }
+   Fs.rmSync(dirName, {recursive: true, force: true}); }
 
 function delFiles (globPattern) {
    for (const fileName of Fs.globSync(globPattern)) {

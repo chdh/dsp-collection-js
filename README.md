@@ -1,6 +1,6 @@
 # The JavaScript DSP Collection
 
-A collection of JavaScript modules for digital signal processing, written in TypeScript.
+A TypeScript library for digital signal processing and audio analysis.
 
 NPM package: [dsp-collection](https://www.npmjs.com/package/dsp-collection)
 
@@ -35,11 +35,6 @@ NPM package: [dsp-collection](https://www.npmjs.com/package/dsp-collection)
 
 <!-- API-MODULES:END -->
 
-## Online test applications
-
-* [Window functions test](https://www.source-code.biz/dsp/js/simpleTests/testWindowFunctions.html)
-* [Signal analysis tests](https://www.source-code.biz/dsp/js/signalAnalysisTests)
-
 ## Associated online tools
 
 * [HarmSyn - Harmonic synthesizer](https://www.source-code.biz/harmSyn)
@@ -48,6 +43,11 @@ NPM package: [dsp-collection](https://www.npmjs.com/package/dsp-collection)
 * [SinSyn - Sinusoidal synthesizer](https://www.source-code.biz/sinSyn)
 * [SpecFilt - Spectral filter tool](https://www.source-code.biz/specFilt)
 * [SpecSyn - Spectral Harmonic Synthesizer](https://www.source-code.biz/specSyn)
+
+## Online test applications
+
+* [Window functions test](https://www.source-code.biz/dsp/js/simpleTests/testWindowFunctions.html)
+* [Signal analysis tests](https://www.source-code.biz/dsp/js/signalAnalysisTests)
 
 ## Associated JavaScript packages
 
