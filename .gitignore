@@ -1,5 +1,6 @@
 $$BackupControl.txt
 *.bat
+AGENTS.md
 apiDoc/
 app.js
 CLAUDE.md

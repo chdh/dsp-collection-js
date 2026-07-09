@@ -17,7 +17,7 @@ export const enum FilterType {
 
 export type FilterCurveFunction = (frequency: number) => number;
 
-// A symetric Hann-like function is used for the smoothing, so that overlapping band filtered regions can be added without loss of total power.
+// A symmetric Hann-like function is used for the smoothing, so that overlapping band filtered regions can be added without loss of total power.
 function smoothingFunction (x: number) : number {
    return (Math.sin(x * Math.PI / 2) + 1) / 2; }
 

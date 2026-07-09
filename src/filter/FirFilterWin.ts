@@ -15,10 +15,10 @@ import * as ArrayUtils from "../utils/ArrayUtils.ts";
 /**
 * Creates the FIR filter kernel (moving average kernel) for a given window function.
 *
-* `symetric` = true and an odd value for `width` can be used to avoid displacement of the FIR filter output.
+* `symmetric` = true and an odd value for `width` can be used to avoid displacement of the FIR filter output.
 */
-export function createWindowKernel (f: WindowFunction, width: number, symetric: boolean = true) : Float64Array {
-   const nudge = symetric ? 1 : 0;
+export function createWindowKernel (f: WindowFunction, width: number, symmetric: boolean = true) : Float64Array {
+   const nudge = symmetric ? 1 : 0;
    const a1 = Float64Array.from({length: width}, (_x, i) => f(i / (width - nudge)));
    const sum = ArrayUtils.sum(a1);
    const a2 = a1.map(x => x / sum);

@@ -5,6 +5,7 @@
 */
 
 import ComplexArray from "../math/ComplexArray.ts";
+import * as MathUtils from "../math/MathUtils.ts";
 import {UniFunction} from "../math/MathUtils.ts";
 import * as Fft from "./Fft.ts";
 import * as DspUtils from "../utils/DspUtils.ts";
@@ -30,7 +31,7 @@ import * as DspUtils from "../utils/DspUtils.ts";
 */
 export function synthesizeSpectralNoise (spectrumCurveFunction: UniFunction, amplitudeCurveFunction: UniFunction | undefined, duration: number, sampleRate: number, noiseRms: number | undefined) : Float64Array {
    const n0 = Math.round(duration * sampleRate);
-   const n = (n0 % 2 == 0 || n0 < 4096) ? n0 : n0 + 1;                         // round up to even length to enable the optimized FFT path (skipped for small n)
+   const n = MathUtils.getNextPowerOf2(n0);                                    // round up to power of two for faster FFT path
    const n2 = Math.floor(n / 2);
    const specAmplitudes = Float64Array.from({length: n2}, (_x, i) => spectrumCurveFunction(i * sampleRate / n));
    specAmplitudes[0] = 0;                                                      // ensure that the DC value is 0

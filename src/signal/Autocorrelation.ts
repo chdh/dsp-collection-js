@@ -61,7 +61,7 @@ export function findNonPeriodicAutocorrelationMaximum (x: ArrayLike<number>, min
 /**
 * Computes the non-periodic autocorrelation of a sampled signal.
 *
-* Only the right half side of the symetric autocorrelation result is computed.
+* Only the right half side of the symmetric autocorrelation result is computed.
 *
 * This is a simple reference implementation without any optimization.
 *
@@ -86,7 +86,7 @@ export function nonPeriodicAutocorrelation (x: ArrayLike<number>, normalize: boo
 /**
 * Computes a windowed non-periodic autocorrelation of a sampled signal.
 *
-* Only the right half side of the symetric autocorrelation result is computed.
+* Only the right half side of the symmetric autocorrelation result is computed.
 * The effect of windowing is compensated by dividing the result of the
 * autocorrelation by the autocorrelation of the window function.
 *
