@@ -4,6 +4,7 @@
 * This module implements the following classic FFT algorithms:
 *  - Cooley-Tukey (Radix-2)
 *  - Bluestein
+*
 * It is not extremely optimized, but should be reasonably fast for normal purposes.
 *
 * @module
@@ -18,7 +19,7 @@ var cooleyTukeySineTableCache: Array<ComplexArray>;
 /**
 * Computes the FFT of an array of complex numbers.
 *
-* Depending on the application, the output values must be normalized.
+* Depending on the application, the output values must be normalized afterwards.
 *
 * @param x
 *    The input values.

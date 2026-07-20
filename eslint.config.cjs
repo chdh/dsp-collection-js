@@ -21,7 +21,8 @@ const namingOptions = [
       format: null },
    {
       selector: "typeLike",
-      format: ["PascalCase"] },
+      format: ["PascalCase"],
+      leadingUnderscore: "allow" },
    {
       selector: "import",
       format: ["camelCase", "PascalCase"] },
@@ -96,6 +97,7 @@ const rules = {
    "@typescript-eslint/no-unsafe-return": "off",
    "@typescript-eslint/no-unsafe-function-type": "off",
    "@typescript-eslint/prefer-for-of": "off",
+   "@typescript-eslint/prefer-function-type": "off",
    "@typescript-eslint/restrict-plus-operands": "off",
    "@typescript-eslint/restrict-template-expressions": "off",
    "no-var": "off",                                     // @typescript-eslint/recommended switches this on
