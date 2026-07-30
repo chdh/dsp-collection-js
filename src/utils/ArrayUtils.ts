@@ -58,7 +58,7 @@ export function argGte (a: ArrayLike<number>, v: number) : number {
 /**
 * Multiplies the values of two arrays and returns the result in a new array.
 */
-export function multiply<T extends ArrayLike<number>> (a1: T, a2: T) : T {
+export function multiply <T extends ArrayLike<number>> (a1: T, a2: T) : T {
    const n = a1.length;
    const a = new (<any>a1).constructor(n);
    for (let i = 0; i < n; i++) {
@@ -68,7 +68,7 @@ export function multiply<T extends ArrayLike<number>> (a1: T, a2: T) : T {
 /**
 * Divides the values of two arrays and returns the result in a new array.
 */
-export function divide<T extends ArrayLike<number>> (a1: T, a2: T) : T {
+export function divide <T extends ArrayLike<number>> (a1: T, a2: T) : T {
    const n = a1.length;
    const a = new (<any>a1).constructor(n);
    for (let i = 0; i < n; i++) {
@@ -76,12 +76,19 @@ export function divide<T extends ArrayLike<number>> (a1: T, a2: T) : T {
    return <T>a; }
 
 /**
-* Copies a1 to a2.
+* Copies `a1` to `a2`.
 */
-export function copy (a1: ArrayLike<number>, a2: MutableArrayLike<number>) {
+export function copy <T> (a1: ArrayLike<T>, a2: MutableArrayLike<T>) {
    const n = Math.min(a1.length, a2.length);
    for (let i = 0; i < n; i++) {
       a2[i] = a1[i]; }}
+
+/**
+* Copies a subarray of `a1` to `a2`.
+*/
+export function copySubarray <T> (a1: ArrayLike<T>, pos1: number, a2: MutableArrayLike<T>, pos2: number, len: number) {
+   for (let i = 0; i < len; i++) {
+      a2[pos2 + i] = a1[pos1 + i]; }}
 
 /**
 * Fills an array.
