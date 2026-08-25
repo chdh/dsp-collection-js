@@ -35,6 +35,10 @@
 * The reference implementations are easier to understand and are used to verify the results of
 * the optimized versions.
 *
+* Apart from the resampling functions, the module exports {@link computeSumOfRange} and
+* {@link computeAverageOfRange}, general-purpose helpers for summing up and averaging the
+* values of an array within a range specified by fractional positions.
+*
 * @module
 */
 
@@ -297,6 +301,9 @@ function interpolateLinear (a: ArrayLike<number>, pos: number) : number {
 * are set to `NaN` when the corresponding input array range extends outside
 * of the input array.
 *
+* {@link computeAverageOfRange} performs the same range averaging for a single range and can be
+* used directly when the ranges are not evenly spaced.
+*
 * @param ia
 *    Input array.
 * @param oa
@@ -366,8 +373,30 @@ export function resampleAverageRef (ia: ArrayLike<number>, oa: MutableArrayLike<
       const ip2 = ip1 + w;                                           // ip2 = end of range in input array
       oa[op] = computeAverageOfRange(ia, ip1, ip2); }}               // compute average of range [ip1 .. ip2]
 
-// Returns the average of the array values within the range from pos1 to pos2.
-function computeAverageOfRange (a: ArrayLike<number>, pos1: number, pos2: number) : number {
+/**
+* Computes the average of the values of an array within a range specified by fractional positions.
+*
+* Conceptually the numeric value of an element `a[i]` of the array is assumed to be evenly spread
+* between positions `i - 0.5` and `i + 0.5`. Elements that are only partially covered by the range
+* contribute proportionally to their covered fraction.
+* In order to compute the average of the first three elements of an array `a` for example, the call
+* would be `computeAverageOfRange(a, -0.5, 2.5)`.
+*
+* In contrast to {@link computeSumOfRange}, the range must lie within the array range
+* `-0.5 .. a.length - 0.5`.
+*
+* @param a
+*    Input array.
+* @param pos1
+*    Start position of the range.
+* @param pos2
+*    End position of the range.
+* @returns
+*    The average of the array values within the range from `pos1` to `pos2`.
+*    NaN is returned if the range extends beyond the ends of the array, if the range is empty,
+*    or if the array is empty.
+*/
+export function computeAverageOfRange (a: ArrayLike<number>, pos1: number, pos2: number) : number {
    const p1 = Math.max(pos1, -0.5);                                  // clipped start position
    const p2 = Math.min(pos2, a.length - 1 + 0.5);                    // clipped end position
    if (p1 - pos1 > eps || pos2 - p2 > eps) {                       // specified range extends outside of the array range
@@ -409,6 +438,9 @@ function computeAverageOfRange (a: ArrayLike<number>, pos1: number, pos2: number
 *
 * When `preserveScale` is `true`, the mapped range can cross over the borders of the
 * input array. The parts of the range that lie outside the input array are treated as zero.
+*
+* {@link computeSumOfRange} performs the same range summation for a single range and can be
+* used directly when the ranges are not evenly spaced.
 *
 * @param ia
 *    Input array.
@@ -476,8 +508,31 @@ export function resampleSumPreservingRef (ia: ArrayLike<number>, oa: MutableArra
       const ip2 = ip1 + w;                                           // ip2 = end of range in input array
       oa[op] = computeSumOfRange(ia, ip1, ip2); }}                   // compute sum of range [ip1 .. ip2]
 
-// Returns the sum of the array values within the range from pos1 to pos2.
-function computeSumOfRange (a: ArrayLike<number>, pos1: number, pos2: number) : number {
+/**
+* Computes the sum of the values of an array within a range specified by fractional positions.
+*
+* Conceptually the numeric value of an element `a[i]` of the array is assumed to be evenly spread
+* between positions `i - 0.5` and `i + 0.5`. Elements that are only partially covered by the range
+* contribute proportionally to their covered fraction.
+* In order to sum up the first three elements of an array `a` for example, the call would be
+* `computeSumOfRange(a, -0.5, 2.5)`.
+*
+* The range may extend beyond the ends of the array. It is clipped to the array range
+* `-0.5 .. a.length - 0.5` and the parts outside the array are treated as zero.
+* Note that {@link computeAverageOfRange} handles this case differently and returns NaN.
+*
+* @param a
+*    Input array.
+* @param pos1
+*    Start position of the range.
+* @param pos2
+*    End position of the range.
+* @returns
+*    The sum of the array values within the range from `pos1` to `pos2`.
+*    0 is returned if the range is empty, if it lies completely outside the array,
+*    or if the array is empty.
+*/
+export function computeSumOfRange (a: ArrayLike<number>, pos1: number, pos2: number) : number {
    const p1 = Math.max(pos1, -0.5);                                  // clipped start position
    const p2 = Math.min(pos2, a.length - 1 + 0.5);                    // clipped end position
    const w = p2 - p1;                                                // width of summing range
