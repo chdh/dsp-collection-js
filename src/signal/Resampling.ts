@@ -35,9 +35,12 @@
 * The reference implementations are easier to understand and are used to verify the results of
 * the optimized versions.
 *
-* Apart from the resampling functions, the module exports {@link computeSumOfRange} and
-* {@link computeAverageOfRange}, general-purpose helpers for summing up and averaging the
-* values of an array within a range specified by fractional positions.
+* Apart from the resampling functions, the module exports the following general-purpose
+* helpers, which operate on a single position or range specified by fractional numbers:
+*
+* - {@link interpolateLinear}: Linearly interpolated array value at a fractional position.
+* - {@link computeSumOfRange}: Sum of the array values within a range of fractional positions.
+* - {@link computeAverageOfRange}: Average of the array values within a range of fractional positions.
 *
 * @module
 */
@@ -169,6 +172,9 @@ function interpolateNearestNeighbor (a: ArrayLike<number>, pos: number) : number
 * Each output value is the input array value linearly interpolated at the input
 * position that corresponds to the output array index (see `preserveScale`).
 *
+* {@link interpolateLinear} performs the same interpolation for a single position and can be
+* used directly when the positions are not evenly spaced.
+*
 * @param ia
 *    Input array.
 * @param oa
@@ -273,16 +279,39 @@ export function resampleLinearRef (ia: ArrayLike<number>, oa: MutableArrayLike<n
        else {
          oa[op] = extraValues; }}}
 
-function interpolateLinear (a: ArrayLike<number>, pos: number) : number {
-   const p1 = Math.floor(pos);
-   const p2 = Math.ceil(pos);
+/**
+* Computes the linearly interpolated value of an array at a fractional position.
+*
+* The specified position refers directly to the array index, i.e. position `i` corresponds to
+* the element `a[i]`.
+* For a position between two array elements, the value is linearly interpolated between
+* these two elements.
+*
+* The position must lie within the array range `0 .. a.length - 1`. A small tolerance is
+* applied to compensate for floating point rounding errors: A position that lies within the
+* tolerance of an integer position is treated as that exact integer position. This also applies
+* at both ends of the valid range.
+*
+* @param a
+*    Input array.
+* @param pos
+*    Position within the array, within the range `0 .. a.length - 1`.
+* @returns
+*    The linearly interpolated array value at position `pos`.
+*    NaN is returned if the position lies outside the array range or if the array is empty.
+*/
+export function interpolateLinear (a: ArrayLike<number>, pos: number) : number {
+   const posr = Math.round(pos);                                      // position rounded to the nearest integer
+   const p0 = (Math.abs(pos - posr) < eps) ? posr : pos;              // snapped position, to compensate for rounding errors
+   const p1 = Math.floor(p0);
+   const p2 = Math.ceil(p0);
    if (p1 < 0 || p2 >= a.length) {
       return NaN; }
    if (p1 == p2) {
       return a[p1]; }
    const v1 = a[p1];
    const v2 = a[p2];
-   return v1 + (pos - p1) * (v2 - v1); }
+   return v1 + (p0 - p1) * (v2 - v1); }
 
 //--- Averaging ----------------------------------------------------------------
 
